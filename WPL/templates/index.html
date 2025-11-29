@@ -7,9 +7,10 @@
 {% block content %}
 <style>
 body {
-        background-image: url('/static/images/banner_bg.jpg');
+        background: linear-gradient(90deg, #00b9de, #009fbe)!important;
+        background-image: url('/static/images/banner_bg.png');
         background-size: cover;
-        background-attachment: fixed;"
+        background-attachment: fixed;
         font-family: 'Exo 2', sans-serif;
         color: #fff;
         margin: 0;
@@ -203,19 +204,14 @@ h3.section-title {
 </style>
 
 <center>
-  <div style="background-image: url('/static/images/banner_bg.jpg'); background-size: cover; background-attachment: fixed; padding: 30px 10px; background-color: rgba(255, 255, 255, 0.3);">
-    <div class="marquee-container">
-      <marquee style="font-weight: bold; font-family: 'Exo 2', sans-serif; transform: skew(-5deg)" width="60%" direction="left" scrollamount="8">
-          <h1><b>Welcome to TATA WPL 2025 Info Tab</b></h1>
-      </marquee>
-    </div>
+  <div style="padding: 10px 10px;">
 
     <div>
-      <img src="{{ url_for('static', filename= 'images/WPL logo 2.png') }}" class="logo" alt="TATA WPL Logo">
+      <img src="{{ url_for('static', filename= 'images/WPL Logo.svg') }}" class="logo" alt="TATA WPL Logo">
     </div>
 
     <div class="team-container">
-      <h3 class="section-title"><span class="section-title-highlight"><span style="color: #d5edff;">🔥 TATA WPL 2025 🔥<br>Teams</span></span></h3>
+      <h3 class="section-title"><span class="section-title-highlight"><span style="color: #d5edff;">🔥 TATA WPL 2026 🔥<br>Teams</span></span></h3>
       <div class="flex-container">
         {% for i in teams[:-1] %}
         <div class="card-wrapper">

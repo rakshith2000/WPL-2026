@@ -7,10 +7,12 @@ from flask import Blueprint, render_template, url_for, redirect, request, flash,
 from flask_login import login_required, current_user
 from sqlalchemy import and_, or_
 from sqlalchemy.sql import text
-import requests
+import requests, warnings
 from bs4 import BeautifulSoup
 from fuzzywuzzy import fuzz, process
 from urllib.request import Request, urlopen
+
+warnings.filterwarnings("ignore")
 
 main = Blueprint('main', __name__)
 
@@ -77,6 +79,16 @@ sqclr = {
     'RCBW': {'c1': 'hsl(356 99% 45%)', 'c2': 'hsl(0 0% 3%)'},
     'UPW': {'c1': 'hsl(338 81% 62%)', 'c2': 'hsl(273 46% 31%)'}
 }
+
+def serialize(obj):
+    if isinstance(obj, dict):
+        return {k: serialize(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [serialize(i) for i in obj]
+    elif isinstance(obj, (time, datetime, date)):
+        return obj.isoformat()
+    else:
+        return obj
 
 def normalize_name(name):
     """Normalize names for better matching"""
@@ -178,6 +190,11 @@ def get_data_from_url(url):
             return None
     else:
         return None
+    
+def get_innings_data(matID):
+    inn1 = requests.get(f"https://apiv2.cricket.com.au/web/views/comments?fixtureId={matID}&inningNumber=1&commentType=&overLimit=51&jsconfig=eccn%3Atrue&format=json", verify=False).json()
+    inn2 = requests.get(f"https://apiv2.cricket.com.au/web/views/comments?fixtureId={matID}&inningNumber=2&commentType=&overLimit=51&jsconfig=eccn%3Atrue&format=json", verify=False).json()
+    return inn1, inn2
 
 def oversAdd(a, b):
     A, B = round(int(a)*6 + (a-int(a))*10, 0), round(int(b)*6 + (b-int(b))*10, 2)
@@ -245,9 +262,9 @@ def calculate_age(dob, current_date):
 @main.route('/')
 def index():
     if db.session.execute(text('select count(*) from user')).scalar() == 0:
-        user = User(email='adminwpl2025@gmail.com', \
-                    password=generate_password_hash('Admin@wpl2025', method='pbkdf2:sha256', salt_length=8), \
-                    name='AdminWPL2025')
+        user = User(email='adminwpl2026@gmail.com', \
+                    password=generate_password_hash('Admin@wpl2026', method='pbkdf2:sha256', salt_length=8), \
+                    name='AdminWPL2026')
         db.session.add(user)
         db.session.commit()
     if db.session.execute(text('select count(*) from pointstable')).scalar() == 0:
@@ -261,11 +278,11 @@ def index():
             db.session.add(tm)
             db.session.commit()
     if db.session.execute(text('select count(*) from fixture')).scalar() == 0:
-        df = open('WPL/WPL2025.csv', 'r')
+        df = open('WPL/WPL2026.csv', 'r')
         df = list(csv.reader(df))
         for i in df[1:]:
-            mt = Fixture(Match_No=i[0], Date=(datetime.strptime(i[1],'%d/%m/%Y')).date(),\
-                                    Time=(datetime.strptime(i[2],'%H:%M:%S')).time(),\
+            mt = Fixture(Match_No=i[0], Date=(datetime.strptime(i[1],'%d-%m-%Y')).date(),\
+                                    Time=(datetime.strptime(i[2],'%H.%M.%S')).time(),\
                                     Team_A=i[3], Team_B=i[4], Venue=i[5],\
                                     A_info={'runs':0, 'overs':0.0, 'wkts':0},\
                                     B_info={'runs':0, 'overs':0.0, 'wkts':0})
@@ -275,9 +292,9 @@ def index():
         df = open('WPL/all teams squad wpl.csv', 'r')
         df = list(csv.reader(df))
         for i in df[1:]:
-            pl = Squad(Player_ID=i[0], Name=i[1], Team=i[2], Full_Name=i[3], Captain=i[4], Keeper=i[5], Overseas=i[6],\
-                       Role=i[7], Batting=i[8], Bowling=i[9], Nationality=i[10],\
-                       DOB=(datetime.strptime(i[11],'%d/%m/%Y')).date())
+            pl = Squad(Player_ID=i[0], Name=i[2], Team=i[1], Captain=i[4], Keeper=i[5], Overseas=i[6],\
+                       Role=i[7], Batting=i[12], Bowling=i[13], Nationality=i[9], Debut=i[11], Player_URL=i[8],\
+                       DOB=(datetime.strptime(i[10],'%d-%m-%Y')).date(), URL_ID=i[3])
             db.session.add(pl)
             db.session.commit()
     return render_template('index.html', teams=list(full_name.keys()), clr=clr)
@@ -363,12 +380,12 @@ def displayFR():
 def teams():
     return render_template('teams.html', fn=full_name, clr=clr, champions=champions, sqclr=sqclr)
 
-@main.route('/<team>')
+@main.route('/teams/<team>')
 def squad(team):
     sq = Squad.query.filter_by(Team=team).order_by(Squad.Player_ID).all()
     return render_template('squad.html', team=team, sq=sq, fn=full_name[team], clr=clr[team], sqclr=sqclr[team])
 
-@main.route('/<team>/squad_details/<name>')
+@main.route('/team-<team>/squad_details/<name>')
 def squad_details(team, name):
     sq = Squad.query.filter_by(Name=name).first()
     current_date = datetime.now(tz)
@@ -376,70 +393,194 @@ def squad_details(team, name):
     age = calculate_age(sq.DOB, current_date)
     return render_template('squad_details.html', sq=sq, clr=clr[team], team=team, age=age, sqclr=sqclr[team])
 
-@main.route('/match-<match>/matchInfo')
-def matchInfo(match):
-    MatchDT = (db.session.execute(text('SELECT * FROM Fixture WHERE "Match_No" = :matchno'), {'matchno': match}).fetchall())[0]
-    MatchURL = render_live_URL(MatchDT[4], MatchDT[5], match, MatchDT[2])
-    dttm = concat_DT(MatchDT[2], MatchDT[3])
-    response = requests.get(MatchURL)
+def get_matchInfo(match):
+    MatchDT = db.session.execute(text('SELECT * FROM Fixture WHERE "Match_No" = :matchno'), {'matchno': match}).fetchall()
+    MatchURL = render_live_URL(MatchDT[0][4], MatchDT[0][5], match, MatchDT[0][2])
+    dttm = concat_DT(MatchDT[0][2], MatchDT[0][3])
+    response = requests.get(MatchURL, verify=False)
     MatchLDT = response.json()
-    print(MatchLDT)
     MatchDT2 = []
-    MatchDT2.append(num_suffix(int(MatchDT[1]))+" Match" if MatchDT[1].isdigit() else MatchDT[1])
-    MatchDT2.append(MatchDT[6].split(", ")[1])
-    MatchDT2.append(num_suffix(MatchDT[2].day)+" "+MatchDT[2].strftime("%B %Y"))
+    MatchDT2.append(num_suffix(int(MatchDT[0][1]))+" Match" if MatchDT[0][1].isdigit() else MatchDT[0][1])
+    MatchDT2.append(MatchDT[0][6].split(", ")[1])
+    MatchDT2.append(num_suffix(MatchDT[0][2].day)+" "+MatchDT[0][2].strftime("%B %Y"))
     current_date = datetime.now(tz)
     current_date = current_date.replace(tzinfo=None)
-    return render_template('info.html', match=match, cd=current_date, dt1=MatchDT, dt2=MatchDT2, dt3=MatchLDT, tid=teamID, dttm=dttm)
+    MatchDT = [dict(row._mapping) for row in MatchDT]
+    return serialize({'match': match, 'cd': current_date, 'dt1': MatchDT, 'dt2': MatchDT2, 'dt3': MatchLDT, 'tid': teamID, 'dttm': dttm})
+
+@main.route('/match-<match>/matchInfo')
+def matchInfo(match):
+    source = request.args.get('source', None)
+    team = request.args.get('fteam', None)
+    return render_template('info.html', match=match, source=source, fteam=team)
+
+def get_matchOvers(match):
+    MatchDT = db.session.execute(text('SELECT * FROM Fixture WHERE "Match_No" = :matchno'), {'matchno': match}).fetchall()
+    MatchURL = render_live_URL(MatchDT[0][4], MatchDT[0][5], match, MatchDT[0][2])
+    Inn1, Inn2 = get_innings_data(MatchDT[0][11])
+    dttm = concat_DT(MatchDT[0][2], MatchDT[0][3])
+    response = requests.get(MatchURL, verify=False)
+    MatchLDT = response.json()
+    MatchDT2 = []
+    MatchDT2.append(num_suffix(int(MatchDT[0][1]))+" Match" if MatchDT[0][1].isdigit() else MatchDT[0][1])
+    MatchDT2.append(MatchDT[0][6].split(", ")[1])
+    MatchDT2.append(num_suffix(MatchDT[0][2].day)+" "+MatchDT[0][2].strftime("%B %Y"))
+    current_date = datetime.now(tz)
+    current_date = current_date.replace(tzinfo=None)
+    MatchDT = [dict(row._mapping) for row in MatchDT]
+    return serialize({'match':match, 'cd':current_date, 'dt1':MatchDT, 'dt2':MatchDT2, 'dt3':MatchLDT, 'tid':teamID, 'dttm':dttm, 'inn1':Inn1, 'inn2':Inn2, 'clr':clr})
+
+@main.route('/match-<match>/Overs')
+def matchOvers(match):
+    source = request.args.get('source', None)
+    team = request.args.get('fteam', None)
+    return render_template('overs.html', match=match, source=source, fteam=team)
+
+def get_liveScore(match):
+    MatchDT = db.session.execute(text('SELECT * FROM Fixture WHERE "Match_No" = :matchno'),{'matchno': match}).fetchall()
+    SquadFull = (db.session.execute(text('SELECT * FROM Squad')).fetchall())
+    MatchURL = render_live_URL(MatchDT[0][4], MatchDT[0][5], match, MatchDT[0][2])
+    Inn1, Inn2 = get_innings_data(MatchDT[0][11])
+    dttm = concat_DT(MatchDT[0][2], MatchDT[0][3])
+    response = requests.get(MatchURL, verify=False)
+    MatchLDT = response.json()
+    if "player_of_match" in MatchLDT and MatchLDT["player_of_match"]["player_name"] != "":
+        pom = find_player(MatchLDT["player_of_match"]["player_name"], SquadFull)
+        MatchLDT["player_of_match"]["player_name"] = pom[2] if pom is not None else MatchLDT["player_of_match"]["player_name"]
+        MatchLDT["player_of_match"]["team_name"] = pom[3] if pom is not None else "NA"
+    if "player_of_series" in MatchLDT and MatchLDT["player_of_series"]["player_name"] != "":
+        pos = find_player(MatchLDT["player_of_series"]["player_name"], SquadFull)
+        MatchLDT["player_of_series"]["player_name"] = pos[2] if pos is not None else MatchLDT["player_of_series"]["player_name"]
+        MatchLDT["player_of_series"]["team_name"] = pos[3] if pos is not None else "NA"
+    for key, batsman in MatchLDT["now_batting"].items():
+        if batsman["name"] != "":
+            player = find_player(batsman["name"], SquadFull)
+            batsman["name"] = player[2] if player is not None else batsman["name"]
+            batsman["team"] = player[3] if player is not None else "NA"
+    for key, bowler in MatchLDT["now_bowling"].items():
+        if bowler["name"] != "":
+            player = find_player(bowler["name"], SquadFull)
+            bowler["name"] = player[2] if player is not None else bowler["name"]
+            bowler["team"] = player[3] if player is not None else "NA"
+    MatchDT2 = []
+    MatchDT2.append(num_suffix(int(MatchDT[0][1])) + " Match" if MatchDT[0][1].isdigit() else MatchDT[0][1])
+    MatchDT2.append(MatchDT[0][6].split(", ")[1])
+    MatchDT2.append(num_suffix(MatchDT[0][2].day) + " " + MatchDT[0][2].strftime("%B %Y"))
+    current_date = datetime.now(tz)
+    current_date = current_date.replace(tzinfo=None)
+    MatchDT = [dict(row._mapping) for row in MatchDT]
+    return serialize({'match': match, 'cd': current_date, 'dt1': MatchDT, 'dt2': MatchDT2, 'dt3': MatchLDT, 'tid': teamID, 'dttm': dttm, 'clr': ptclr, 'clr2': clr, 'inn1': Inn1, 'inn2': Inn2, 'fn': full_name})
 
 @main.route('/match-<match>/liveScore')
 def liveScore(match):
-    MatchDT = (db.session.execute(text('SELECT * FROM Fixture WHERE "Match_No" = :matchno'),{'matchno': match}).fetchall())[0]
+    source = request.args.get('source', None)
+    team = request.args.get('fteam', None)
+    return render_template('live.html', match=match, source=source, fteam=team)
+
+def get_scoreCard(match):
+    MatchDT = db.session.execute(text('SELECT * FROM Fixture WHERE "Match_No" = :matchno'), {'matchno': match}).fetchall()
     SquadFull = (db.session.execute(text('SELECT * FROM Squad')).fetchall())
-    MatchURL = render_live_URL(MatchDT[4], MatchDT[5], match, MatchDT[2])
-    dttm = concat_DT(MatchDT[2], MatchDT[3])
-    response = requests.get(MatchURL)
+    MatchURL = render_live_URL(MatchDT[0][4], MatchDT[0][5], match, MatchDT[0][2])
+    dttm = concat_DT(MatchDT[0][2], MatchDT[0][3])
+    response = requests.get(MatchURL, verify=False)
     MatchLDT = response.json()
+    if "player_of_match" in MatchLDT and MatchLDT["player_of_match"]["player_name"] != "":
+        pom = find_player(MatchLDT["player_of_match"]["player_name"], SquadFull)
+        MatchLDT["player_of_match"]["player_name"] = pom[2] if pom is not None else MatchLDT["player_of_match"]["player_name"]
+        MatchLDT["player_of_match"]["team_name"] = pom[3] if pom is not None else "NA"
+    if "player_of_series" in MatchLDT and MatchLDT["player_of_series"]["player_name"] != "":
+        pos = find_player(MatchLDT["player_of_series"]["player_name"], SquadFull)
+        MatchLDT["player_of_series"]["player_name"] = pos[2] if pos is not None else MatchLDT["player_of_series"]["player_name"]
+        MatchLDT["player_of_series"]["team_name"] = pos[3] if pos is not None else "NA"
+    for inn in MatchLDT.get("innings", [])[:2]:
+        if "batting" in inn:
+            for batsman in inn["batting"]:
+                player = find_player(batsman["name"], SquadFull)
+                batsman["name"] = player[2] if player is not None else batsman["name"]
+                batsman["team"] = player[3] if player is not None else "NA"
+        if "bowling" in inn:
+            for bowler in inn["bowling"]:
+                player = find_player(bowler["name"], SquadFull)
+                bowler["name"] = player[2] if player is not None else bowler["name"]
+                bowler["team"] = player[3] if player is not None else "NA"
+        if "not_batted" in inn:
+            nb = sorted(inn['not_batted'].values(), key=lambda x: x['order'])
+            for nbb in nb:
+                nbd = find_player(nbb["name"], SquadFull)
+                nbb["name"] = nbd[2] if nbd is not None else nbb["name"]
+                nbb["team"] = nbd[3] if nbd is not None else "NA"
+            inn['not_batted'] = nb
+        if inn["fall_of_wickets"] is not None:
+            fow = []
+            if inn["fall_of_wickets"] != "":
+                for bt in inn["fall_of_wickets"].split('),'):
+                    btd = find_player(bt.split(' (')[1].split(',')[0], SquadFull)
+                    n = btd[2] if btd is not None else bt.split(' (')[1].split(',')[0]
+                    t = btd[3] if btd is not None else "NA"
+                    score = bt.split(' (')[0]
+                    over = bt.split(' (')[1].split(', ')[1].strip('()')
+                    fow.append({"name": n, "team": t, "score": score, "over": over})
+            inn["fall_of_wickets"] = fow
     MatchDT2 = []
-    MatchDT2.append(num_suffix(int(MatchDT[1])) + " Match" if MatchDT[1].isdigit() else MatchDT[1])
-    MatchDT2.append(MatchDT[6].split(", ")[1])
-    MatchDT2.append(num_suffix(MatchDT[2].day) + " " + MatchDT[2].strftime("%B %Y"))
+    MatchDT2.append(num_suffix(int(MatchDT[0][1])) + " Match" if MatchDT[0][1].isdigit() else MatchDT[0][1])
+    MatchDT2.append(MatchDT[0][6].split(", ")[1])
+    MatchDT2.append(num_suffix(MatchDT[0][2].day) + " " + MatchDT[0][2].strftime("%B %Y"))
     current_date = datetime.now(tz)
     current_date = current_date.replace(tzinfo=None)
-    return render_template('live.html', match=match, cd=current_date, dt1=MatchDT, dt2=MatchDT2, dt3=MatchLDT, tid=teamID, dttm=dttm, clr=ptclr, clr2=clr, sqf=SquadFull, find_player=find_player, fn=full_name)
+    MatchDT = [dict(row._mapping) for row in MatchDT]
+    return serialize({'match': match, 'cd': current_date, 'dt1': MatchDT, 'dt2': MatchDT2, 'dt3': MatchLDT, 'tid': teamID, 'dttm': dttm, 'clr2': clr, 'fn': full_name})
 
 @main.route('/match-<match>/scoreCard')
 def scoreCard(match):
-    MatchDT = (db.session.execute(text('SELECT * FROM Fixture WHERE "Match_No" = :matchno'), {'matchno': match}).fetchall())[0]
+    source = request.args.get('source', None)
+    team = request.args.get('fteam', None)
+    return render_template('scorecard.html', match=match, source=source, fteam=team)
+
+def get_liveSquad(match):
+    MatchDT = db.session.execute(text('SELECT * FROM Fixture WHERE "Match_No" = :matchno'), {'matchno': match}).fetchall()
     SquadFull = (db.session.execute(text('SELECT * FROM Squad')).fetchall())
-    MatchURL = render_live_URL(MatchDT[4], MatchDT[5], match, MatchDT[2])
-    dttm = concat_DT(MatchDT[2], MatchDT[3])
-    response = requests.get(MatchURL)
+    SquadDT = db.session.execute(text('SELECT * FROM Squad WHERE "Captain" = :captain OR "Overseas" = :overseas'), {'captain': 'Y', 'overseas': 'Y'}).fetchall()
+    MatchURL = render_live_URL(MatchDT[0][4], MatchDT[0][5], match, MatchDT[0][2])
+    dttm = concat_DT(MatchDT[0][2], MatchDT[0][3])
+    response = requests.get(MatchURL, verify=False)
     MatchLDT = response.json()
+    for sqd in MatchLDT.get("squad", []):
+        if sqd['players'] is not None:
+            for player in sqd['players']:
+                p = find_player(player['name'], SquadFull)
+                player['name'] = p[2] if p is not None else player['name']
+                player['team'] = p[3] if p is not None else "NA"
+                player['captain'] = (True if p[4] == 'Y' else False) if p is not None else False
+                player['overseas'] = (True if p[6] == 'Y' else False) if p is not None else False
+        if sqd['substitute_players'] is not None:
+            for sub in sqd['substitute_players']:
+                p = find_player(sub['name'], SquadFull)
+                sub['name'] = p[2] if p is not None else sub['name']
+                sub['team'] = p[3] if p is not None else "NA"
+                sub['captain'] = (True if p[4] == 'Y' else False) if p is not None else False
+                sub['overseas'] = (True if p[6] == 'Y' else False) if p is not None else False
+        if sqd['bench_players'] is not None:
+            for bench in sqd['bench_players']:
+                p = find_player(bench['name'], SquadFull)
+                bench['name'] = p[2] if p is not None else bench['name']
+                bench['team'] = p[3] if p is not None else "NA"
+                bench['captain'] = (True if p[4] == 'Y' else False) if p is not None else False
+                bench['overseas'] = (True if p[6] == 'Y' else False) if p is not None else False
     MatchDT2 = []
-    MatchDT2.append(num_suffix(int(MatchDT[1])) + " Match" if MatchDT[1].isdigit() else MatchDT[1])
-    MatchDT2.append(MatchDT[6].split(", ")[1])
-    MatchDT2.append(num_suffix(MatchDT[2].day) + " " + MatchDT[2].strftime("%B %Y"))
+    MatchDT2.append(num_suffix(int(MatchDT[0][1])) + " Match" if MatchDT[0][1].isdigit() else MatchDT[0][1])
+    MatchDT2.append(MatchDT[0][6].split(", ")[1])
+    MatchDT2.append(num_suffix(MatchDT[0][2].day) + " " + MatchDT[0][2].strftime("%B %Y"))
     current_date = datetime.now(tz)
     current_date = current_date.replace(tzinfo=None)
-    return render_template('scorecard.html', match=match, cd=current_date, dt1=MatchDT, dt2=MatchDT2, dt3=MatchLDT, tid=teamID, dttm=dttm, sqf=SquadFull, clr2=clr, find_player=find_player, fn=full_name)
+    MatchDT = [dict(row._mapping) for row in MatchDT]
+    SquadDT = [dict(row._mapping) for row in SquadDT]
+    return serialize({'match': match, 'cd':current_date, 'dt1':MatchDT, 'dt2':MatchDT2, 'dt3':MatchLDT, 'tid':teamID, 'dttm':dttm, 'sqd':SquadDT})
 
 @main.route('/match-<match>/liveSquad')
 def liveSquad(match):
-    MatchDT = (db.session.execute(text('SELECT * FROM Fixture WHERE "Match_No" = :matchno'), {'matchno': match}).fetchall())[0]
-    SquadFull = (db.session.execute(text('SELECT * FROM Squad')).fetchall())
-    SquadDT = (db.session.execute(text('SELECT * FROM Squad WHERE "Captain" = :captain OR "Overseas" = :overseas'), {'captain': 'Y', 'overseas': 'Y'}).fetchall())
-    MatchURL = render_live_URL(MatchDT[4], MatchDT[5], match, MatchDT[2])
-    dttm = concat_DT(MatchDT[2], MatchDT[3])
-    response = requests.get(MatchURL)
-    MatchLDT = response.json()
-    MatchDT2 = []
-    MatchDT2.append(num_suffix(int(MatchDT[1])) + " Match" if MatchDT[1].isdigit() else MatchDT[1])
-    MatchDT2.append(MatchDT[6].split(", ")[1])
-    MatchDT2.append(num_suffix(MatchDT[2].day) + " " + MatchDT[2].strftime("%B %Y"))
-    current_date = datetime.now(tz)
-    current_date = current_date.replace(tzinfo=None)
-    return render_template('livesquad.html', match=match, cd=current_date, dt1=MatchDT, dt2=MatchDT2, dt3=MatchLDT, tid=teamID, dttm=dttm, sqd=SquadDT, sqf=SquadFull, find_player=find_player)
+    source = request.args.get('source', None)
+    team = request.args.get('fteam', None)
+    return render_template('livesquad.html', match=match, source=source, fteam=team)
 
 @main.route('/match-<match>/FRScore')
 def FRScore(match):
@@ -449,13 +590,14 @@ def FRScore(match):
     matchDT = datetime.combine(MatchFR.Date, MatchFR.Time)
     current_date = datetime.now(tz)
     current_date = current_date.replace(tzinfo=None)
-
+    source = request.args.get('source', None)
+    team = request.args.get('fteam', None)
     if current_date < (matchDT - timedelta(minutes=30)):
-        return redirect(url_for('main.matchInfo', match=match))
+        return redirect(url_for('main.matchInfo', match=match, source=source, fteam=team))
     elif current_date >= (matchDT - timedelta(minutes=30)) and MatchFR[10] is None:
-        return redirect(url_for('main.liveScore', match=match))
+        return redirect(url_for('main.liveScore', match=match, source=source, fteam=team))
     elif MatchFR[10] is not None:
-        return redirect(url_for('main.scoreCard', match=match))
+        return redirect(url_for('main.scoreCard', match=match, source=source, fteam=team))
 
 @main.route('/todayMatch')
 def todayMatch():
@@ -498,8 +640,7 @@ def todayMatch():
         current_date = current_date.replace(tzinfo=None)
         return render_template('liveMatches.html', FR=dt, fn=full_name, current_date=current_date, clr=clr)
 
-@main.route('/battingstats')
-def battingstats():
+def get_battingstats():
     stats = {}
     stats['Most Runs'] = get_data_from_url("https://www.cricbuzz.com/api/html/series/9351/most-runs/0/0/0")
     highest_scores = get_data_from_url("https://www.cricbuzz.com/api/html/series/9351/highest-score/0/0/0")
@@ -515,10 +656,9 @@ def battingstats():
     stats['Most Fours'] = get_data_from_url("https://www.cricbuzz.com/api/html/series/9351/most-fours/0/0/0")
     stats['Most Sixes'] = get_data_from_url("https://www.cricbuzz.com/api/html/series/9351/most-sixes/0/0/0")
     stats['Most Nineties'] = get_data_from_url("https://www.cricbuzz.com/api/html/series/9351/most-nineties/0/0/0")
-    return render_template('battingStat.html', stats=stats)
+    return {'stats': stats}
 
-@main.route('/bowlingstats')
-def bowlingstats():
+def get_bowlingstats():
     stats = {}
     stats['Most Wickets'] = get_data_from_url("https://www.cricbuzz.com/api/html/series/9351/most-wickets/0/0/0")
     stats['Best Bowling Average'] = get_data_from_url(
@@ -533,8 +673,15 @@ def bowlingstats():
     stats['Best Economy'] = get_data_from_url("https://www.cricbuzz.com/api/html/series/9351/lowest-econ/0/0/0")
     stats['Best Bowling Strike Rate'] = get_data_from_url(
         "https://www.cricbuzz.com/api/html/series/9351/lowest-sr/0/0/0")
+    return {'stats': stats}
 
-    return render_template('bowlingStat.html', stats=stats)
+@main.route('/battingstats')
+def battingstats():
+    return render_template('battingStat.html')
+
+@main.route('/bowlingstats')
+def bowlingstats():
+    return render_template('bowlingStat.html')
 
 @main.route('/update')
 @login_required
