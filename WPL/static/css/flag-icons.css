@@ -1,0 +1,41 @@
+.fib, .fi {
+  background-size: contain;
+  background-position: 50%;
+  background-repeat: no-repeat;
+}
+
+.fi {
+  position: relative;
+  display: inline-block;
+  width: 1.333333em;
+  line-height: 1em;
+}
+.fi:before {
+  content: " ";
+}
+
+.fi-tba {
+  background-image: url(../images/team_flags/TBA.png);
+}
+
+.fi-dcw {
+  background-image: url(../images/team_flags/DCW.png);
+}
+
+.fi-gg {
+  background-image: url(../images/team_flags/GG.png);
+}
+
+.fi-miw {
+  background-image: url(../images/team_flags/MIW.png);
+}
+
+.fi-rcbw {
+  background-image: url(../images/team_flags/RCBW.png);
+}
+
+.fi-upw {
+  background-image: url(../images/team_flags/UPW.png);
+}
+
+

@@ -1,0 +1,393 @@
+{% extends "base.html" %} {% block head %} {{ super() }}
+<meta name="robots" content="noindex,nofollow" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html"/>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+        {% if dt3['info'] != "" and 'won' not in dt3['info'] and 'abandoned' not in dt3['info'] | lower and 'no result' not in dt3['info'] | lower %}
+        <meta http-equiv="refresh" content="8">{% endif %}
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="{{ url_for('static', filename= 'css/bootstrap.min.css') }}" rel="stylesheet" >
+	 <link href="{{ url_for('static', filename= 'fonts/css/fontawesome.min.css') }}" rel="stylesheet" >
+	<link href="{{ url_for('static', filename= 'fonts/css/brands.min.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename= 'fonts/css/solid.min.css') }}" rel="stylesheet" />
+	<link href="{{ url_for('static', filename= 'css/global.css') }}" rel="stylesheet">
+	<link href="{{ url_for('static', filename= 'css/live.css') }}" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+	<link href="{{ url_for('static', filename= 'css/flag-icons.css') }}" rel="stylesheet">
+    <style>
+    body {
+    	font-family: 'Exo 2', sans-serif;
+        background-image: url('/static/images/banner_bg.jpg');
+        background-size: cover;
+        background-attachment: fixed;
+    }
+    .cb-col{
+    	display: inline-block;
+    	box-sizing: border-box;
+    	float: left;
+    	min-height: 1px;
+    }
+    .cb-teams-hdr{
+    	display: flex;
+    	justify-content: space-between;
+    }
+    .cb-col-100{
+    	width: 100%;
+    }
+    .cb-col-50{
+    	width: 50%;
+    }
+    .score_2_inner a{
+        color: #0398dc !important;
+    }
+    </style>
+{% endblock %}
+
+{% block content %}
+{% macro check_captain(player_name, data) %}
+    {% for player in data %}
+        {% if player[2] | lower == player_name | lower %}
+            {% set captain = player[4] %}
+            {% if captain == 'Y' %}
+                <span class="text-muted">(C)</span>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+{% endmacro %}
+
+{% macro check_overseas(player_name, data, pos) %}
+    {% for player in data %}
+        {% if player[2] | lower == player_name | lower %}
+            {% set overseas = player[6] %}
+			{% if overseas == 'Y' and pos == 'L' %}
+				<div class="d-flex align-items-center me-2"><img src="{{ url_for('static', filename= 'images/overseas2.png') }}" width="11px" height="11px"></div>
+			{% endif %}
+			{% if overseas == 'Y' and pos == 'R' %}
+				<div class="d-flex align-items-center ms-2"><img src="{{ url_for('static', filename= 'images/overseas2.png') }}" width="11px" height="11px"></div>
+			{% endif %}
+        {% endif %}
+    {% endfor %}
+{% endmacro %}
+
+<div style="padding-top: 55px;"></div>
+<section id="center" class="pt-3 pb-3 center_live">
+	<div class="container-xl">
+        <div class="row schedule2">
+            <div class="col-md-9">
+                <div class="live">
+                    <div class="live_2 rounded_10 border mt-2" style="background-color: #00816a">
+                        <div class="live_2_inner row px-3 pt-2 pb-2">
+                             <div class="col-md-8">
+                              <div class="live_2_inner_left">
+                                <b class="text-white" style="font-size: 20px">{{ dt1[4] }} vs {{ dt1[5] }}</b>
+                                <span class="d-block font_14 text-white">{{ dt2[0] }}, {{ dt2[1] }}, {{ dt2[2] }}, TATA Indian Premier League 2025</span>
+                              </div>
+                             </div>
+                        </div>
+                           <span class="bg-white px-3 d-block pt-2"><span class="fi fi-{{ tid[dt3['score_strip'][0].team_id][0] | lower }} me-1"></span> <b>{{ tid[dt3['score_strip'][0].team_id][0] }}</b> <span class="float-end font_14">{% if dt3['score_strip'][0].score %}<b class="fs-6">{{ dt3['score_strip'][0].score.split(' (')[0].split('/')[0] if dt3['score_strip'][0].score.split(' (')[0].split('/')[1] == "10" else dt3['score_strip'][0].score.split(' (')[0] }}</b>{{ ' ('~dt3['score_strip'][0].score.split(' (')[1].replace(' ov', '') }}{% else %}{{ 'Yet to Bat' }}{% endif %}</span></span>
+                           <span class="bg-white px-3 d-block pt-2"><span class="fi fi-{{ tid[dt3['score_strip'][1].team_id][0] | lower }} me-1"></span> <b>{{ tid[dt3['score_strip'][1].team_id][0] }}</b> <span class="float-end font_14">{% if dt3['score_strip'][1].score %}<b class="fs-6">{{ dt3['score_strip'][1].score.split(' (')[0].split('/')[0] if dt3['score_strip'][1].score.split(' (')[0].split('/')[1] == "10" else dt3['score_strip'][1].score.split(' (')[0] }}</b>{{ ' ('~dt3['score_strip'][1].score.split(' (')[1].replace(' ov', '') }}{% else %}{{ 'Yet to Bat' }}{% endif %}</span></span>
+                            {% if dt3['info'] == "" %}{% set fc = 'text-orange' %}{% elif 'won' in dt3['info'] %}{% set fc = 'text-blue' %}{% else %}{% set fc = 'text-danger' %}{% endif %}
+                            <span class="bg-white font_14 d-block pt-2 pb-2 px-3">{% if dt3['info'] %}<b class="{{ fc }}">{{ dt3['info'] }}</b>{% endif %}{% if dttm > cd %}
+                            <div class="clockdiv" data-deadline="{{ dttm.strftime('%Y-%m-%dT%H:%M:%S') }}">
+                                <b class="text-orange"><span> Starts in: </span>
+                                <span class="days" id="day" style="font-size: 22px;"></span><span style="color: #a6a6a6;"> Days</span>
+                                <span class="hours" id="hour" style="font-size: 22px;"></span><span style="color: #a6a6a6;"> Hrs</span>
+                                <span class="minutes" id="minute" style="font-size: 22px;"></span><span style="color: #a6a6a6;"> Mins</span>
+                                <span class="seconds" id="second" style="font-size: 22px;"></span><span style="color: #a6a6a6;"> Secs</span></b>
+                            </div>
+                            {% endif %}</span>
+                           {% if dt3['info'] != "" and 'won' not in dt3['info'] and 'abandoned' not in dt3['info'] | lower and 'no result' not in dt3['info'] | lower %}
+                               {% if dt3['score_strip'][0]['currently_batting'] == true %}
+                                   <span class="d-block pt-2 pt-2 pb-2 px-3 font_12 bg-light">Current RR: <b>{{ dt3['score_strip'][0]['run_rate'].split(' ')[2] }}</b><br>Current Partnership: <b>{{ dt3['innings'][0]['current_partnership']['runs'] }} ({{ dt3['innings'][0]['current_partnership']['balls'] }})</b></span>
+                               {% elif dt3['score_strip'][1]['currently_batting'] == true %}
+                                   <span class="d-block pt-2 pt-2 pb-2 px-3 font_12 bg-light">Target: <b>{{ (dt3['score_strip'][0]['score'].split('/')[0] | int) + 1 }}</b>&nbsp;&nbsp;&bull;&nbsp;&nbsp;Current RR: <b>{{ dt3['score_strip'][1]['run_rate'].split(' ')[2] }}</b>&nbsp;&nbsp;|&nbsp;&nbsp;Required RR: <b>{{ dt3['score_strip'][0]['required_run_rate'] }}</b><br>Current Partnership: <b>{{ dt3['innings'][1]['current_partnership']['runs'] }} ({{ dt3['innings'][1]['current_partnership']['balls'] }})</b></span>
+                               {% endif %}
+                             {% endif %}
+                        <ul class="mb-0 bg-white rounded_bottom px-3 score_tab d-block">
+                         <li class="mx-2 d-inline-block"><a class="d-block" href="{{ url_for('main.matchInfo', match=match) }}">Info</a></li>
+                         <li class="mx-2 d-inline-block"><a class="d-block" href="{{ url_for('main.liveScore', match=match) }}">Live</a></li>
+                         <li class="mx-2 d-inline-block"><a class="d-block" href="{{ url_for('main.scoreCard', match=match) }}">Scorecard</a></li>
+                            <li class="mx-2 d-inline-block"><a class="active d-block" href="{{ url_for('main.liveSquad', match=match) }}">Squad</a></li>
+                        </ul>
+                    </div>
+                    {% if dt3['squad'] is not none %}
+                    <div class="score_2_inner border rounded_10 bg-white mt-3">
+                        <div class="bg_green font_18 d-block px-4 fw-bold text-white pt-2 pb-2 rounded_top cb-teams-hdr">
+                             <span><span class="fi fi-{{ tid[dt3['squad'][0].team_id][0] | lower }} me-1"></span>{{ tid[dt3['squad'][0].team_id][0] }}</span>
+                             <span class="float-end">{{ tid[dt3['squad'][1].team_id][0] }}<span class="fi fi-{{ tid[dt3['squad'][1].team_id][0] | lower }} ms-1"></span></span>
+                        </div>
+                        {% if dt3['squad'][0]['players'] is none %}
+                        <div class="bg-greenlight font_14 pt-1 pb-1 text-muted fw-bold" style="text-align: center;">
+                            Squad
+                        </div>
+                        <div class="d-flex w-100">
+                            <div class="d-flex w-50 border-right border-1 ms-2 flex-column">
+                                {% for sq in dt3['squad'][0]['bench_players'] %}
+                                {% set result = find_player(sq['name'], sqf) %}
+                                {% set team = result[3] if result else "NA" %}
+                                {% set name = result[2] if result else sq['name'] %}
+                                    <div class="d-flex border-bottom border-1">
+                                        <div class="d-block w-100 p-1">
+                                            <a href="{{ url_for('main.squad_details', team=team, name=name) }}">
+                                            <div class="font_12 text-blue fw-bold p-0 m-0">{{ name }}&nbsp;{{ check_captain(name, sqd) }}</div>
+                                            </a>
+					                        <div class="font_11 m-0 p-0">{{ sq['role'] | replace('-',' ') | capitalize }}</div>
+                                        </div>
+                                        {{ check_overseas(name, sqd, 'L') }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div class="d-flex w-50 border-left border-1 me-2 flex-column text-end">
+                                {% for sq in dt3['squad'][1]['bench_players'] %}
+                                {% set result = find_player(sq['name'], sqf) %}
+                                {% set team = result[3] if result else "NA" %}
+                                {% set name = result[2] if result else sq['name'] %}
+                                    <div class="d-flex border-bottom border-1">
+                                        {{ check_overseas(name, sqd, 'R') }}
+                                        <div class="d-block w-100 p-1">
+                                            <a href="{{ url_for('main.squad_details', team=team, name=name) }}">
+                                            <div class="font_12 text-blue fw-bold p-0 m-0">{{ check_captain(name, sqd) }}&nbsp;{{ name }}</div>
+                                            </a>
+					                        <div class="font_11 m-0 p-0">{{ sq['role'] | replace('-',' ') | capitalize }}</div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        {% else %}
+                        <div class="bg-greenlight font_14 pt-1 pb-1 text-muted fw-bold" style="text-align: center;">
+                            Playing XI
+                        </div>
+                        <div class="d-flex w-100">
+                            <div class="d-flex w-50 border-right border-1 ms-2 flex-column">
+                                {% for sq in dt3['squad'][0]['players'] %}
+                                {% set result = find_player(sq['name'], sqf) %}
+                                {% set team = result[3] if result else "NA" %}
+                                {% set name = result[2] if result else sq['name'] %}
+                                {% set bg_color = "" %}
+                                {% if 'delta' in sq %}
+                                    {% if sq['delta'] == 1 %}
+                                        {% set bg_color = "background-color: #abf7b1" %}
+                                    {% elif sq['delta'] == -1 %}
+                                        {% set bg_color = "background-color: #fcc7c3" %}
+                                    {% endif %}
+                                {% endif %}
+                                    <div class="d-flex border-bottom border-1" style="{{ bg_color }}">
+                                        <div class="d-block w-100 p-1">
+                                            <a href="{{ url_for('main.squad_details', team=team, name=name) }}">
+                                            <div class="font_12 text-blue fw-bold p-0 m-0">{{ name }}&nbsp;{{ check_captain(name, sqd) }}{% if dt3['squad'][0]['impact_players'][1] %}{% if sq['name'] == dt3['squad'][0]['impact_players'][1].name %}<img src="{{ url_for('static', filename= 'images/out.png') }}" width="8px" height="10px" class="ms-1">{% endif %}{% endif %}</div>
+                                            </a>
+                                            <div class="font_11 m-0 p-0">{{ sq['role'] | replace('-',' ') | capitalize }}</div>
+                                        </div>
+                                        {{ check_overseas(name, sqd, 'L') }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div class="d-flex w-50 border-left border-1 me-2 flex-column text-end">
+                                {% for sq in dt3['squad'][1]['players'] %}
+                                {% set result = find_player(sq['name'], sqf) %}
+                                {% set team = result[3] if result else "NA" %}
+                                {% set name = result[2] if result else sq['name'] %}
+                                {% set bg_color = "" %}
+                                {% if 'delta' in sq %}
+                                    {% if sq['delta'] == 1 %}
+                                        {% set bg_color = "background-color: #abf7b1" %}
+                                    {% elif sq['delta'] == -1 %}
+                                        {% set bg_color = "background-color: #fcc7c3" %}
+                                    {% endif %}
+                                {% endif %}
+                                    <div class="d-flex border-bottom border-1" style="{{ bg_color }}">
+                                        {{ check_overseas(name, sqd, 'R') }}
+                                        <div class="d-block w-100 p-1">
+                                            <a href="{{ url_for('main.squad_details', team=team, name=name) }}">
+                                            <div class="font_12 text-blue fw-bold p-0 m-0">{% if dt3['squad'][1]['impact_players'][1] %}{% if sq['name'] == dt3['squad'][1]['impact_players'][1].name %}<img src="{{ url_for('static', filename= 'images/out.png') }}" width="8px" height="10px" class="me-1">{% endif %}{% endif %}{{ check_captain(name, sqd) }}&nbsp;{{ name }}</div>
+                                            </a>
+                                            <div class="font_11 m-0 p-0">{{ sq['role'] | replace('-',' ') | capitalize }}</div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="bg-greenlight font_14 pt-1 pb-1 text-muted fw-bold" style="text-align: center;">
+                            Substitutes
+                        </div>
+                        <div class="d-flex w-100">
+                            <div class="d-flex w-50 border-right border-1 ms-2 flex-column">
+                                {% for sq in dt3['squad'][0]['substitute_players'] %}
+                                {% set result = find_player(sq['name'], sqf) %}
+                                {% set team = result[3] if result else "NA" %}
+                                {% set name = result[2] if result else sq['name'] %}
+                                {% set bg_color = "" %}
+                                {% if 'delta' in sq %}
+                                    {% if sq['delta'] == 1 %}
+                                        {% set bg_color = "background-color: #abf7b1" %}
+                                    {% elif sq['delta'] == -1 %}
+                                        {% set bg_color = "background-color: #fcc7c3" %}
+                                    {% endif %}
+                                {% endif %}
+                                    <div class="d-flex border-bottom border-1" style="{{ bg_color }}">
+                                        <div class="d-block w-100 p-1">
+                                            <a href="{{ url_for('main.squad_details', team=team, name=name) }}">
+                                            <div class="font_12 text-blue fw-bold p-0 m-0">{{ name }}&nbsp;{{ check_captain(name, sqd) }}{% if dt3['squad'][0]['impact_players'][0] %}{% if sq['name'] == dt3['squad'][0]['impact_players'][0].name %}<img src="{{ url_for('static', filename= 'images/in.png') }}" width="8px" height="10px" class="ms-1">{% endif %}{% endif %}</div>
+                                            </a>
+                                            <div class="font_11 m-0 p-0">{{ sq['role'] | replace('-',' ') | capitalize }}</div>
+                                        </div>
+                                        {{ check_overseas(name, sqd, 'L') }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div class="d-flex w-50 border-left border-1 me-2 flex-column text-end">
+                                {% for sq in dt3['squad'][1]['substitute_players'] %}
+                                {% set result = find_player(sq['name'], sqf) %}
+                                {% set team = result[3] if result else "NA" %}
+                                {% set name = result[2] if result else sq['name'] %}
+                                {% set bg_color = "" %}
+                                {% if 'delta' in sq %}
+                                    {% if sq['delta'] == 1 %}
+                                        {% set bg_color = "background-color: #abf7b1" %}
+                                    {% elif sq['delta'] == -1 %}
+                                        {% set bg_color = "background-color: #fcc7c3" %}
+                                    {% endif %}
+                                {% endif %}
+                                    <div class="d-flex border-bottom border-1" style="{{ bg_color }}">
+                                        {{ check_overseas(name, sqd, 'R') }}
+                                        <div class="d-block w-100 p-1">
+                                            <a href="{{ url_for('main.squad_details', team=team, name=name) }}">
+                                            <div class="font_12 text-blue fw-bold p-0 m-0">{% if dt3['squad'][1]['impact_players'][0] %}{% if sq['name'] == dt3['squad'][1]['impact_players'][0].name %}<img src="{{ url_for('static', filename= 'images/in.png') }}" width="8px" height="10px" class="me-1">{% endif %}{% endif %}{{ check_captain(name, sqd) }}&nbsp;{{ name }}</div>
+                                            </a>
+                                            <div class="font_11 m-0 p-0">{{ sq['role'] | replace('-',' ') | capitalize }}</div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="bg-greenlight font_14 pt-1 pb-1 text-muted fw-bold" style="text-align: center;">
+                            Bench
+                        </div>
+                        <div class="d-flex w-100">
+                            <div class="d-flex w-50 border-right border-1 ms-2 flex-column">
+                                {% for sq in dt3['squad'][0]['bench_players'] %}
+                                {% set result = find_player(sq['name'], sqf) %}
+                                {% set team = result[3] if result else "NA" %}
+                                {% set name = result[2] if result else sq['name'] %}
+                                {% set bg_color = "" %}
+                                {% if 'delta' in sq %}
+                                    {% if sq['delta'] == 1 %}
+                                        {% set bg_color = "background-color: #abf7b1" %}
+                                    {% elif sq['delta'] == -1 %}
+                                        {% set bg_color = "background-color: #fcc7c3" %}
+                                    {% endif %}
+                                {% endif %}
+                                    <div class="d-flex border-bottom border-1" style="{{ bg_color }}">
+                                        <div class="d-block w-100 p-1">
+                                            <a href="{{ url_for('main.squad_details', team=team, name=name) }}">
+                                            <div class="font_12 text-blue fw-bold p-0 m-0">{{ name }}&nbsp;{{ check_captain(name, sqd) }}</div>
+                                            </a>
+					                        <div class="font_11 m-0 p-0">{{ sq['role'] | replace('-',' ') | capitalize }}</div>
+                                        </div>
+                                        {{ check_overseas(name, sqd, 'L') }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div class="d-flex w-50 border-left border-1 me-2 flex-column text-end">
+                                {% for sq in dt3['squad'][1]['bench_players'] %}
+                                {% set result = find_player(sq['name'], sqf) %}
+                                {% set team = result[3] if result else "NA" %}
+                                {% set name = result[2] if result else sq['name'] %}
+                                {% set bg_color = "" %}
+                                {% if 'delta' in sq %}
+                                    {% if sq['delta'] == 1 %}
+                                        {% set bg_color = "background-color: #abf7b1" %}
+                                    {% elif sq['delta'] == -1 %}
+                                        {% set bg_color = "background-color: #fcc7c3" %}
+                                    {% endif %}
+                                {% endif %}
+                                    <div class="d-flex border-bottom border-1" style="{{ bg_color }}">
+                                        {{ check_overseas(name, sqd, 'R') }}
+                                        <div class="d-block w-100 p-1">
+                                            <a href="{{ url_for('main.squad_details', team=team, name=name) }}">
+                                            <div class="font_12 text-blue fw-bold p-0 m-0">{{ check_captain(name, sqd) }}&nbsp;{{ name }}</div>
+                                            </a>
+					                        <div class="font_11 m-0 p-0">{{ sq['role'] | replace('-',' ') | capitalize }}</div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+	</div>
+</section>
+<script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/theme.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/index.js') }}"></script>
+<script>
+  // Example starter JavaScript for disabling form submissions if there are invalid fields
+(function () {
+  'use strict'
+
+  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  var forms = document.querySelectorAll('.needs-validation')
+
+  // Loop over them and prevent submission
+  Array.prototype.slice.call(forms)
+    .forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+      }, false)
+    })
+})()
+</script>
+<script>
+      // Function to create a timer for a given clock element
+      function createTimer(clockElement) {
+      const deadline = new Date(clockElement.getAttribute("data-deadline")).getTime();
+
+      const daysSpan = clockElement.querySelector(".days");
+      const hoursSpan = clockElement.querySelector(".hours");
+      const minutesSpan = clockElement.querySelector(".minutes");
+      const secondsSpan = clockElement.querySelector(".seconds");
+
+      const interval = setInterval(function () {
+        const Tnow = new Date();
+        const timeZone = 'Asia/Kolkata';
+        const dateInTimeZone = new Date(Tnow.toLocaleString('en-US', { timeZone }));
+        const now = dateInTimeZone.getTime();
+        const t = deadline - now;
+
+        if (t < 0) {
+          clearInterval(interval);
+          daysSpan.textContent = "0";
+          hoursSpan.textContent = "0";
+          minutesSpan.textContent = "0";
+          secondsSpan.textContent = "0";
+          return;
+        }
+
+        const days = Math.floor(t / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((t % (1000 * 60)) / 1000);
+
+        daysSpan.textContent = days;
+        hoursSpan.textContent = hours;
+        minutesSpan.textContent = minutes;
+        secondsSpan.textContent = seconds;
+      }, 1000);
+    }
+
+    // Initialize timers for all clock elements
+    document.querySelectorAll(".clockdiv").forEach(function(clockElement) {
+  createTimer(clockElement); // This will start the timer instantly
+});
+</script>
+{% endblock %}
