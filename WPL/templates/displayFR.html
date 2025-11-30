@@ -290,7 +290,7 @@
       const interval = setInterval(function () {
         const Tnow = new Date();
         const timeZone = 'Asia/Kolkata';
-        const dateInTimeZone = new Date(Tnow.toLocaleString('en-US', { timeZone })).getTime();
+        const dateInTimeZone = new Date(Tnow.toLocaleString('en-US', { timeZone }));
         const now = dateInTimeZone.getTime();
         const t = deadline - now;
 
