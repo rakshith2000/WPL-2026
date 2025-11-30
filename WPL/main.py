@@ -152,38 +152,22 @@ def find_player(full_name, player_data, threshold=80):
     return best_match if best_score >= threshold else None
 
 def get_data_from_url(url):
-    headers = {
-        'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.447.124 Safari/537.36',
-        'Accept-Language' : 'en-US,en;q=0.9',
-    }
-    req = Request(url, headers=headers)
-    with urlopen(req) as response:
-        html = response.read().decode('utf-8')
+    response = requests.get(url, verify=False)
+    res = response.json()
     SquadDT = (db.session.execute(text('SELECT * FROM Squad')).fetchall())
-    if response.getcode() == 200:
+    if response.status_code == 200:
         try:
-            soup = BeautifulSoup(html, 'html.parser')
-            thead = soup.find('thead', class_="cb-srs-gray-strip")
-            
-            if thead is None:
-                return None
-                
-            headcells = soup.find_all('th')[1:]
-            headers = []
-            for i in headcells:
-                headers.append(i.text.strip())
-            tbody = soup.find('tbody')
+            headers = res['t20StatsList']['headers']
             data = []
-            for body in tbody.find_all('tr'):
-                bodycells = body.find_all('td')[1:]
+            for row in res['t20StatsList']['values']:
                 d = {}
-                for i, val in enumerate(bodycells):
-                    if i == 0:
-                        match = find_player(val.text.strip(), SquadDT)
+                for value, head in zip(row['values'][1:], headers):
+                    if 'Team' not in d:
+                        match = find_player(value, SquadDT)
                         d['Team'] = match[3] if match else "NA"
-                        d[headers[i]] = match[2] if match else val.text.strip()
+                        d[head.capitalize()] = match[2] if match else value
                     else:
-                        d[headers[i]] = val.text.strip()
+                        d[head.capitalize()] = value
                 data.append(d)
             return data
         except Exception:
@@ -302,7 +286,7 @@ def index():
 @main.route('/pointstable')
 def displayPT():
     dataPT = Pointstable.query.order_by(Pointstable.Points.desc(),Pointstable.NRR.desc(),Pointstable.id.asc()).all()
-    dt = [['#', 'Logo', 'Teams', 'P', 'W', 'L', 'NR', 'Points', 'NRR', 'Last 5', 'Next Match'], [i for i in range(1,11)],\
+    dt = [['#', '', 'Team', 'P', 'W', 'L', 'NR', 'Pts', 'NRR', 'Last 5', 'Next'], [i for i in range(1,11)],\
          [], [], [], [], [], [], [], [], [], [], []]
     teams_ABV = []
     for i in dataPT:
@@ -354,7 +338,7 @@ def displayFR():
         dttm = i[2].strftime('%Y-%m-%d')+' '+ \
                      i[3].strftime('%H:%M:%S')
         dtt.append(datetime.strptime(dttm, '%Y-%m-%d %H:%M:%S'))  #DateTime
-        dtt.append(i[6].split(', ')[1])  #Venue
+        dtt.append(i[6])  #Venue
         dtt.append(i[4])  #Team A
         dtt.append(i[5])  #Team B
         A, B = i[8], i[9]
@@ -364,6 +348,11 @@ def displayFR():
             dtt.append('TBA') #Win-Team
             dtt.append('TBA')
             dtt.append('TBA')
+        elif i[10] == 'NA':
+            dtt.append('NA')
+            dtt.append('NA')
+            dtt.append('NA')
+            dtt.append(i[7])
         else:
             dtt.append(i[10])
             WType = 'wickets' if 'wickets' in i[7] else 'runs'
@@ -613,7 +602,7 @@ def todayMatch():
             dttm = i[2].strftime('%Y-%m-%d') + ' ' + \
                    i[3].strftime('%H:%M:%S')
             dtt.append(datetime.strptime(dttm, '%Y-%m-%d %H:%M:%S'))  # DateTime
-            dtt.append(i[6].split(', ')[1])  # Venue
+            dtt.append(i[6])  # Venue
             dtt.append(i[4])  # Team A
             dtt.append(i[5])  # Team B
             A, B = i[8], i[9]
@@ -642,37 +631,37 @@ def todayMatch():
 
 def get_battingstats():
     stats = {}
-    stats['Most Runs'] = get_data_from_url("https://www.cricbuzz.com/api/html/series/9351/most-runs/0/0/0")
-    highest_scores = get_data_from_url("https://www.cricbuzz.com/api/html/series/9351/highest-score/0/0/0")
+    stats['Most Runs'] = get_data_from_url("https://www.cricbuzz.com/api/cricket-series/series-stats/9351/mostRuns")
+    highest_scores = get_data_from_url("https://www.cricbuzz.com/api/cricket-series/series-stats/9351/highestScore")
     for hs in highest_scores:
         hs['Vs'] = next(k for k, v in full_name2.items() if v == hs['Vs'])
     stats['Highest Scores'] = highest_scores
     stats['Best Batting Average'] = get_data_from_url(
-        "https://www.cricbuzz.com/api/html/series/9351/highest-avg/0/0/0")
+        "https://www.cricbuzz.com/api/cricket-series/series-stats/9351/highestAvg")
     stats['Best Batting Strike Rate'] = get_data_from_url(
-        "https://www.cricbuzz.com/api/html/series/9351/highest-sr/0/0/0")
-    stats['Most Hundreds'] = get_data_from_url("https://www.cricbuzz.com/api/html/series/9351/most-hundreds/0/0/0")
-    stats['Most Fifties'] = get_data_from_url("https://www.cricbuzz.com/api/html/series/9351/most-fifties/0/0/0")
-    stats['Most Fours'] = get_data_from_url("https://www.cricbuzz.com/api/html/series/9351/most-fours/0/0/0")
-    stats['Most Sixes'] = get_data_from_url("https://www.cricbuzz.com/api/html/series/9351/most-sixes/0/0/0")
-    stats['Most Nineties'] = get_data_from_url("https://www.cricbuzz.com/api/html/series/9351/most-nineties/0/0/0")
+        "https://www.cricbuzz.com/api/cricket-series/series-stats/9351/highestSr")
+    stats['Most Hundreds'] = get_data_from_url("https://www.cricbuzz.com/api/cricket-series/series-stats/9351/mostHundreds")
+    stats['Most Fifties'] = get_data_from_url("https://www.cricbuzz.com/api/cricket-series/series-stats/9351/mostFifties")
+    stats['Most Fours'] = get_data_from_url("https://www.cricbuzz.com/api/cricket-series/series-stats/9351/mostFours")
+    stats['Most Sixes'] = get_data_from_url("https://www.cricbuzz.com/api/cricket-series/series-stats/9351/mostSixes")
+    stats['Most Nineties'] = get_data_from_url("https://www.cricbuzz.com/api/cricket-series/series-stats/9351/mostNineties")
     return {'stats': stats}
 
 def get_bowlingstats():
     stats = {}
-    stats['Most Wickets'] = get_data_from_url("https://www.cricbuzz.com/api/html/series/9351/most-wickets/0/0/0")
+    stats['Most Wickets'] = get_data_from_url("https://www.cricbuzz.com/api/cricket-series/series-stats/9351/mostWickets")
     stats['Best Bowling Average'] = get_data_from_url(
-        "https://www.cricbuzz.com/api/html/series/9351/lowest-avg/0/0/0")
+        "https://www.cricbuzz.com/api/cricket-series/series-stats/9351/lowestAvg")
     best_bowling = get_data_from_url(
-        "https://www.cricbuzz.com/api/html/series/9351/best-bowling-innings/0/0/0")
+        "https://www.cricbuzz.com/api/cricket-series/series-stats/9351/bestBowlingInnings")
     for bb in best_bowling:
         bb['Vs'] = next(k for k, v in full_name2.items() if v == bb['Vs'])
     stats['Best Bowling'] = best_bowling
     stats['Most 5 Wickets Haul'] = get_data_from_url(
-        "https://www.cricbuzz.com/api/html/series/9351/most-five-wickets/0/0/0")
-    stats['Best Economy'] = get_data_from_url("https://www.cricbuzz.com/api/html/series/9351/lowest-econ/0/0/0")
+        "https://www.cricbuzz.com/api/cricket-series/series-stats/9351/mostFiveWickets")
+    stats['Best Economy'] = get_data_from_url("https://www.cricbuzz.com/api/cricket-series/series-stats/9351/lowestEcon")
     stats['Best Bowling Strike Rate'] = get_data_from_url(
-        "https://www.cricbuzz.com/api/html/series/9351/lowest-sr/0/0/0")
+        "https://www.cricbuzz.com/api/cricket-series/series-stats/9351/lowestSr")
     return {'stats': stats}
 
 @main.route('/battingstats')

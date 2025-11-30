@@ -30,6 +30,9 @@ def create_app():
     from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint)
 
+    from .api import api as api_blueprint
+    app.register_blueprint(api_blueprint)
+
     from . import models
     scheduler = APScheduler()
     scheduler.init_app(app)
@@ -39,7 +42,7 @@ def create_app():
     def ping():
         try:
             # Replace with your app's URL
-            response = requests.get('https://python.org/')
+            response = requests.get('https://tatawpl2026.onrender.com/login')
             print(f"Ping successful, status code: {response.status_code}")
         except Exception as e:
             print(f"Error pinging app: {e}")

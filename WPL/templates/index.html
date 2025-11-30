@@ -97,9 +97,8 @@ body {
 }
 
 img.logo {
-  height: 450px;
+  height: 300px;
   max-width: 100%;
-  margin: 20px 0;
   border-radius: 10px;
   animation: zoomIn 1.5s ease-in-out;
 }
@@ -204,14 +203,14 @@ h3.section-title {
 </style>
 
 <center>
-  <div style="padding: 10px 10px;">
+  <div style="padding: 0px 10px 10px 10px;">
 
     <div>
       <img src="{{ url_for('static', filename= 'images/WPL Logo.svg') }}" class="logo" alt="TATA WPL Logo">
     </div>
 
     <div class="team-container">
-      <h3 class="section-title"><span class="section-title-highlight"><span style="color: #d5edff;">🔥 TATA WPL 2026 🔥<br>Teams</span></span></h3>
+      <h3 class="section-title"><span class="section-title-highlight"><span style="color: #d5edff;">🔥 WPL 2026 🔥<br>Teams</span></span></h3>
       <div class="flex-container">
         {% for i in teams[:-1] %}
         <div class="card-wrapper">
