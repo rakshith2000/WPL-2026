@@ -206,12 +206,12 @@
       <div class="team-new left-team">
         {% if "Super over" not in i[10] %}
         <div class="score-board">
-          <div class="score-new {% if TA == i[7] %}score-win{% endif %}">{{ TA_S['runs'] }}{{ "" if TA_S['wkts'] == 10 else '/' ~ TA_S['wkts'] }}</div>
+          <div class="score-new {% if TA == i[7] and i[0] | int(default=None) is none %}playoff-win{% elif TA == i[7] %}score-win{% endif %}">{{ TA_S['runs'] }}{{ "" if TA_S['wkts'] == 10 else '/' ~ TA_S['wkts'] }}</div>
           <div class="overs {% if TA == i[7] %}overs-win{% endif %}">({{ TA_S['overs'] }})</div>
         </div>
         {% else %}
         <div class="score-board">
-          <div class="score-new {% if TA == i[7] %}score-win{% endif %}">{{ TA_S['runs'][1] }}{{ "" if TA_S['wkts'][1] == 10 else '/' ~ TA_S['wkts'][1] }}</div>
+          <div class="score-new {% if TA == i[7] and i[0] | int(default=None) is none %}playoff-win{% elif TA == i[7] %}score-win{% endif %}">{{ TA_S['runs'][1] }}{{ "" if TA_S['wkts'][1] == 10 else '/' ~ TA_S['wkts'][1] }}</div>
           <div class="overs {% if TA == i[7] %}overs-win{% endif %}">({{ TA_S['overs'][1] }})</div>
         </div>
         <div class="super-over-label">|
@@ -240,7 +240,7 @@
         </div>
         {% if "Super over" not in i[10] %}
         <div class="score-board">
-          <div class="score-new {% if TB == i[7] %}score-win{% endif %}">{{ TB_S['runs'] }}{{ "" if TB_S['wkts'] == 10 else '/' ~ TB_S['wkts'] }}</div>
+          <div class="score-new {% if TB == i[7] and i[0] | int(default=None) is none %}playoff-win{% elif TB == i[7] %}score-win{% endif %}">{{ TB_S['runs'] }}{{ "" if TB_S['wkts'] == 10 else '/' ~ TB_S['wkts'] }}</div>
           <div class="overs {% if TB == i[7] %}overs-win{% endif %}">({{ TB_S['overs'] }})</div>
         </div>
         {% else %}
@@ -251,7 +251,7 @@
         <div class="super-over-label">|
         </div>
         <div class="score-board">
-          <div class="score-new {% if TB == i[7] %}score-win{% endif %}">{{ TB_S['runs'][1] }}{{ "" if TB_S['wkts'][1] == 10 else '/' ~ TB_S['wkts'][1] }}</div>
+          <div class="score-new {% if TB == i[7] and i[0] | int(default=None) is none %}playoff-win{% elif TB == i[7] %}score-win{% endif %}">{{ TB_S['runs'][1] }}{{ "" if TB_S['wkts'][1] == 10 else '/' ~ TB_S['wkts'][1] }}</div>
           <div class="overs {% if TB == i[7] %}overs-win{% endif %}">({{ TB_S['overs'][1] }})</div>
         </div>
         {% endif %}

@@ -64,13 +64,15 @@ clr = {'DCW':{'c1':'#d71921', 'c2':'#2561ae', 'c3':'#282968'},
         'GG':{'c1':'#ffe338', 'c2':'#e27602', 'c3':'#ff6600'},
         'MIW':{'c1':'#004ba0', 'c2':'#0077b6', 'c3':'#d1ab3e'},
         'RCBW':{'c1':'#2b2a29', 'c2':'#444444', 'c3':'#ec1c24'},
-        'UPW': {'c1': '#7600bc', 'c2': '#b100cd', 'c3': '#ffff00'}}
+        'UPW': {'c1': '#7600bc', 'c2': '#b100cd', 'c3': '#ffff00'},
+        'TBA': {'c1': '#FFFFFF', 'c2': '#FFFFFF', 'c3': '#FFFFFF'}}
 
 ptclr = {'DCW':{'c1':'#024c8d', 'c2':'#04046c', 'c3':'#e00034'},
         'GG':{'c1':'#fba146', 'c2':'#e0590b', 'c3':'#f3bc44'},
         'MIW':{'c1':'#0077b6', 'c2':'#004ba0', 'c3':'#aa9174'},
         'RCBW':{'c1':'#e40719', 'c2':'#7e2a20', 'c3':'#2b2a29'},
-        'UPW': {'c1': '#6e30bb', 'c2': '#3c0070', 'c3':'#f4c404'}}
+        'UPW': {'c1': '#6e30bb', 'c2': '#3c0070', 'c3':'#f4c404'},
+        'TBA': {'c1': '#FFFFFF', 'c2': '#FFFFFF', 'c3': '#FFFFFF'}}
 
 sqclr = {
     'DCW': {'c1': 'hsl(346 100% 44%)', 'c2': 'hsl(213 100% 25%)'},
@@ -247,7 +249,7 @@ def calculate_age(dob, current_date):
 def index():
     if db.session.execute(text('select count(*) from user')).scalar() == 0:
         user = User(email='adminwpl2026@gmail.com', \
-                    password=generate_password_hash('Admin@wpl2026', method='pbkdf2:sha256', salt_length=8), \
+                    password=generate_password_hash('*************', method='pbkdf2:sha256', salt_length=8), \
                     name='AdminWPL2026')
         db.session.add(user)
         db.session.commit()
@@ -269,7 +271,8 @@ def index():
                                     Time=(datetime.strptime(i[2],'%H.%M.%S')).time(),\
                                     Team_A=i[3], Team_B=i[4], Venue=i[5],\
                                     A_info={'runs':0, 'overs':0.0, 'wkts':0},\
-                                    B_info={'runs':0, 'overs':0.0, 'wkts':0})
+                                    B_info={'runs':0, 'overs':0.0, 'wkts':0},\
+                                    Match_ID=i[6])
             db.session.add(mt)
             db.session.commit()
     if db.session.execute(text('select count(*) from squad')).scalar() == 0:

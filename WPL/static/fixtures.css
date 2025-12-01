@@ -336,6 +336,10 @@ h1 {
       color: #e91e63;
     }
 
+    .playoff-win {
+      color: #FF9933;
+    }
+
     .overs-win {
       color: #000 !important;
     }
