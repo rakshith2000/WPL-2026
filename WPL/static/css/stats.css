@@ -18,12 +18,13 @@
     color: white;
     padding: 7px 3px;
     border: 0px solid #ffb09e;
-    border-radius: 25px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 14px;
     font-weight: bold;
     min-width: 250px;
     text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
   }
 
   .dropdown-menu {
@@ -81,6 +82,7 @@
   overflow-x: auto;
   border: 0px solid #ffb09e;
   background-color: white;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.4);
 }
 
 /* Updated table styling */

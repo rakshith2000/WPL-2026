@@ -459,6 +459,7 @@ color:#25478A;
 background-color: #25478A;
 color:var(--bs-white);
 transition: transform 0.4s ease-in-out;
+box-shadow: 0 4px 8px rgba(0,0,0,0.4);
  }
 .score_1 ul a:hover{
 /*	

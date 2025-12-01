@@ -322,7 +322,7 @@ def displayPT():
 
 @main.route('/fixtures')
 def displayFR():
-    team = request.args.get('team','All',type=str)
+    team = request.args.get('fteam','All',type=str)
     if team == 'All':
         dataFR = db.session.execute(text('select * from Fixture order by id'))\
             #Fixture.query.all()
