@@ -2,8 +2,6 @@
 	<meta name="robots" content="noindex,nofollow" />
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-        {% if dt3['info'] != "" and 'won' not in dt3['info'] and 'abandoned' not in dt3['info'] | lower and 'no result' not in dt3['info'] | lower %}
-        <meta http-equiv="refresh" content="8">{% endif %}
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href="{{ url_for('static', filename= 'css/bootstrap.min.css') }}" rel="stylesheet" >
 	 <link href="{{ url_for('static', filename= 'fonts/css/fontawesome.min.css') }}" rel="stylesheet" >
@@ -14,9 +12,15 @@
 	<link href="{{ url_for('static', filename= 'css/live.css') }}" rel="stylesheet">
    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
    <link href="{{ url_for('static', filename= 'css/flag-icons.css') }}" rel="stylesheet">
+   <script>
+  var match = "{{ match }}";
+  var source = "{{ source }}";
+  var fteam = "{{ fteam }}";
+</script>
     <style>
     body {
         font-family: 'Exo 2', sans-serif;
+        background: linear-gradient(90deg, #00b9de, #009fbe)!important;
         background-image: url('/static/images/banner_bg.jpg');
         background-size: cover;
         background-attachment: fixed;
@@ -74,8 +78,7 @@
     .team-logo {
       width: 20px;
       height: 20px;
-      margin-right: 8px;
-      border-radius: 50%;
+      margin-right: 4px;
     }
         .potm-stats {
       display: flex;
@@ -120,208 +123,25 @@
     }
     </style>
 {% endblock %}
+{% block nav_class %}extra-pr-60 pl-40{% endblock %}
 
 {% block content %}
 <div style="padding-top: 55px;"></div>
 <section id="center" class="pt-3 pb-3 center_live">
  <div class="container-xl">
-
    <div class="row schedule2">
     <div class="col-md-9">
-	  <div class="live">
-	    <div class="live_2 rounded_10 border mt-2" style="background-color: #00816a">
-           <div class="live_2_inner row px-3 pt-2 pb-2">
-		     <div class="col-md-8">
-			  <div class="live_2_inner_left">
-			    <b class="text-white" style="font-size: 20px">{{ dt1[4] }} vs {{ dt1[5] }}</b>
-				<span class="d-block font_14 text-white">{{ dt2[0] }}, {{ dt2[1] }}, {{ dt2[2] }}, TATA Indian Premier League 2025</span>
-			  </div>
-			 </div>
-		   </div>
-		   <span class="bg-white px-3 d-block pt-2"><span class="fi fi-{{ tid[dt3['score_strip'][0].team_id][0] | lower }} me-1"></span> <b>{{ tid[dt3['score_strip'][0].team_id][0] }}</b> <span class="float-end font_14">{% if dt3['score_strip'][0].score %}<b class="fs-6">{{ dt3['score_strip'][0].score.split(' (')[0].split('/')[0] if dt3['score_strip'][0].score.split(' (')[0].split('/')[1] == "10" else dt3['score_strip'][0].score.split(' (')[0] }}</b>{{ ' ('~dt3['score_strip'][0].score.split(' (')[1].replace(' ov', '') }}{% else %}{{ 'Yet to Bat' }}{% endif %}</span></span>
-		   <span class="bg-white px-3 d-block pt-2"><span class="fi fi-{{ tid[dt3['score_strip'][1].team_id][0] | lower }} me-1"></span> <b>{{ tid[dt3['score_strip'][1].team_id][0] }}</b> <span class="float-end font_14">{% if dt3['score_strip'][1].score %}<b class="fs-6">{{ dt3['score_strip'][1].score.split(' (')[0].split('/')[0] if dt3['score_strip'][1].score.split(' (')[0].split('/')[1] == "10" else dt3['score_strip'][1].score.split(' (')[0] }}</b>{{ ' ('~dt3['score_strip'][1].score.split(' (')[1].replace(' ov', '') }}{% else %}{{ 'Yet to Bat' }}{% endif %}</span></span>
-            {% if dt3['info'] == "" %}{% set fc = 'text-orange' %}{% elif 'won' in dt3['info'] %}{% set fc = 'text-blue' %}{% else %}{% set fc = 'text-danger' %}{% endif %}
-            <span class="bg-white font_14 d-block pt-2 pb-2 px-3">{% if dt3['info'] %}<b class="{{ fc }}">{{ dt3['info'] }}</b>{% endif %}{% if dttm > cd %}
-		    <div class="clockdiv" data-deadline="{{ dttm.strftime('%Y-%m-%dT%H:%M:%S') }}">
-			    <b class="text-orange"><span> Starts in: </span>
-			    <span class="days" id="day" style="font-size: 22px;"></span><span style="color: #a6a6a6;"> Days</span>
-			    <span class="hours" id="hour" style="font-size: 22px;"></span><span style="color: #a6a6a6;"> Hrs</span>
-			    <span class="minutes" id="minute" style="font-size: 22px;"></span><span style="color: #a6a6a6;"> Mins</span>
-                <span class="seconds" id="second" style="font-size: 22px;"></span><span style="color: #a6a6a6;"> Secs</span></b>
-		    </div>
-		    {% endif %}</span>
-		   {% if dt3['info'] != "" and 'won' not in dt3['info'] and 'abandoned' not in dt3['info'] | lower and 'no result' not in dt3['info'] | lower %}
-               {% if dt3['score_strip'][0]['currently_batting'] == true %}
-                   <span class="d-block pt-2 pt-2 pb-2 px-3 font_12 bg-light">Current RR: <b>{{ dt3['score_strip'][0]['run_rate'].split(' ')[2] }}</b><br>Current Partnership: <b>{{ dt3['innings'][0]['current_partnership']['runs'] }} ({{ dt3['innings'][0]['current_partnership']['balls'] }})</b></span>
-               {% elif dt3['score_strip'][1]['currently_batting'] == true %}
-                   <span class="d-block pt-2 pt-2 pb-2 px-3 font_12 bg-light">Target: <b>{{ (dt3['score_strip'][0]['score'].split('/')[0] | int) + 1 }}</b>&nbsp;&nbsp;&bull;&nbsp;&nbsp;Current RR: <b>{{ dt3['score_strip'][1]['run_rate'].split(' ')[2] }}</b>&nbsp;&nbsp;|&nbsp;&nbsp;Required RR: <b>{{ dt3['score_strip'][0]['required_run_rate'] }}</b><br>Current Partnership: <b>{{ dt3['innings'][1]['current_partnership']['runs'] }} ({{ dt3['innings'][1]['current_partnership']['balls'] }})</b></span>
-               {% endif %}
-             {% endif %}
-
-        <ul class="mb-0 bg-white rounded_bottom px-3 score_tab d-block">
-         <li class="mx-2 d-inline-block"><a class="d-block" href="{{ url_for('main.matchInfo', match=match) }}">Info</a></li>
-		 <li class="mx-2 d-inline-block"><a class="d-block" href="{{ url_for('main.liveScore', match=match) }}">Live</a></li>
-		 <li class="mx-2 d-inline-block"><a class="active d-block" href="{{ url_for('main.scoreCard', match=match) }}">Scorecard</a></li>
-            <li class="mx-2 d-inline-block"><a class="d-block" href="{{ url_for('main.liveSquad', match=match) }}">Squad</a></li>
-		</ul>
-	    </div>
-
-          {% if 'won' in dt3['info'] %}
-          {% if "player_of_match" in dt3 %}
-          {% set result = find_player(dt3['player_of_match']['player_name'], sqf) %}
-          {% set team = result[3] if result else "NA" %}
-          {% set name = result[2] if result else dt3['player_of_match']['player_name'] %}
-          <div class="score_2_inner border rounded_10 bg-white mt-3">
-              <b class="bg_green font_18 d-block px-3 text-white text-center pt-2 pb-2 rounded_top">Player of the Match</b>
-              <div class="potm-content">
-                  <a href="{{ url_for('main.squad_details', team=team, name=name) }}">
-                  <div class="potm-image" style="{% if team == 'RCBW' %} --c1: {{ clr2[team]['c3'] }}; --c2: {{ clr2[team]['c1'] }}; {% elif team == 'GG' %} --c1: {{ clr2[team]['c1'] }}; --c2: {{ clr2[team]['c3'] }}; {% else %} --c1: {{ clr2[team]['c1'] }}; --c2: {{ clr2[team]['c2'] }};{% endif %}">
-                      <img src="/static/images/squads/{{ team }}/{{ name.replace(' ', '-') }}.png" alt="{{ name }}">
-                  </div></a>
-                  <div class="potm-details">
-                      <div class="potm-name"><a href="{{ url_for('main.squad_details', team=team, name=name) }}">{{ name }}</a></div>
-                      <div class="potm-team fw-bold">
-                          <img src="/static/images/squad_logos/{{ team }}.webp" alt="Team Logo" class="team-logo">
-                          {{ fn[team] }}
-                      </div>
-                      <div class="potm-stats">
-                          <div class="stat-item">
-                              <div class="stat-label">Bat</div>
-                              <div class="stat-value">{{ '-' if dt3['player_of_match']['batting_stat'] == '' else dt3['player_of_match']['batting_stat'] }}</div>
-                          </div>
-                          <div class="stat-item">
-                              <div class="stat-label">Bowl</div>
-                              <div class="stat-value">{{ '-' if dt3['player_of_match']['bowling_stat'] == '' else dt3['player_of_match']['bowling_stat'] }}</div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      {% endif %}{% endif %}
-
-		<div class="score_1 mt-3">
-		  <ul class="d-flex flex-wrap font_12 fw-bold nav nav-tabs border-0" id="inningsTabs">
-        {% for i in dt3['innings'][:2] %}
-	   {% set is_active = dt3['score_strip'][loop.index0]['currently_batting'] %}
-        <li class="me-2 mt-1 mb-1"><a class="border_orange d-block p-1 px-3 rounded-pill {% if is_active %}active{% endif %}" data-bs-toggle="tab" aria-expanded="true"  href="#profile{{ loop.index }}">{{ tid[i['batting_team_id']][1] }} Innings <i class="fa fa-chevron-right font_10 ms-1"></i></a></li>
-        {% endfor %}
-          </ul>
-		</div>
-		<div class="score_2">
-			<div class="tab-content">
-                {% for i in dt3['innings'][:2] %}
-                {% set is_active = dt3['score_strip'][loop.index0]['currently_batting'] %}
-			  <div class="tab-pane {% if is_active %}active{% endif %}" id="profile{{ loop.index }}">
-			   <div class="score_2_inner border rounded_10 bg-white mt-3">
-			     <b class="bg_green font_14 d-block px-3 text-white pt-3 pb-3 rounded_top">{{ tid[i['batting_team_id']][1] }} <span class="font_12">Innings</span> </b>
-				 <div class="table-responsive">
-		    <table class="table font_12 mb-0">
-  <thead class="border-0">
-    <tr class="bg-greenlight">
-      <th class="text-muted">BATTING</th>
-      <th class="text-muted">R</th>
-      <th class="text-muted">B</th>
-      <th class="text-muted">4s</th>
-	  <th class="text-muted">6s</th>
-	  <th class="text-muted">SR</th>
-    </tr>
-  </thead>
-  <tbody>
-  {% for batsmen in i['batting'] %}
-  {% if batsmen['out_str'] == "Not out" %}{% set bgcolor = '#2E7D32db' %}{% else %}{% set bgcolor = '#666666b0' %}{% endif %}
-    <tr class="border-0">
-        {% set result = find_player(batsmen['name'], sqf) %}
-        {% set team = result[3] if result else "NA" %}
-        {% set name = result[2] if result else batsmen['name'] %}
-        <td class="pb-0 text-blue"><b><a href="{{ url_for('main.squad_details', team=team, name=name) }}">{{ name }}{% if batsmen['is_captain'] == true %}&nbsp;<span class="text-muted">(C)</span>{% endif %}</a></b></td>
-      <td class="pb-0" ><b>{{ batsmen['runs'] }}</b></td>
-      <td class="pb-0" >{{ batsmen['balls'] }}</td>
-	  <td class="pb-0" >{{ batsmen['fours'] }}</td>
-	  <td class="pb-0" >{{ batsmen['sixes'] }}</td>
-	  <td class="pb-0" >{{ batsmen['strike_rate'] }}</td>
-    </tr>
-    <tr class="border-bottom">
-        <td class="pt-0 fw-bold font_11" colspan="6" style="color: {{ bgcolor }}">{{ batsmen['out_str'] }}</td>
-    </tr>
-      {% endfor %}
-
-
-    <tr class="border-0">
-        <td class="pb-0" colspan="6"><b class="font_13 fw-bold">{% if dt3['match_status'] == "post" %}Didn't bat:{% elif dt3['score_strip'][loop.index0]['currently_batting'] %}Yet to bat:{% else %}Didn't bat:{% endif %}</b> </td>
-    </tr>
-  {% set not_batted_list = i['not_batted'].values() | list %}
-{% set sorted_not_batted = not_batted_list | sort(attribute='order') %}
-{% set names = sorted_not_batted | map(attribute='name') | list %}
-    <tr class="border-bottom">
-        <td class="pt-0 fw-bold" colspan="6">
-            {% for nb in names %}
-                {% set result = find_player(nb, sqf) %}
-                {% set team = result[3] if result else "NA" %}
-                {% set name = result[2] if result else nb %}
-            <a href="{{ url_for('main.squad_details', team=team, name=name) }}">{{ name }}</a>{% if not loop.last %},{% endif %}
-            {% endfor %}</td>
-    </tr>
-	<tr class="border-bottom">
-      <td>Extras</td>
-        <td colspan="6"><b>{{ i['extras'] }}</b> (b {{ i['bye'] }}, lb {{ i['legbye'] }}, w {{ i['wide'] }}, nb {{ i['noball'] }}, p {{ i['penalties'] }})</td>
-    </tr>
-	<tr class="bg-light">
-      <td><b class="font_14">TOTAL</b></td>
-      <td colspan="6"><b class="font_14">{{ i['runs'] }}/{{ i['wickets'] }} ({{ i['overs'] }} Ov) CRR: {{ i['run_rate'] }}</b></td>
-    </tr>
-
-  </tbody>
-</table>
-		  </div>
-		         <span class="font_12 d-block px-3 mt-2 mb-2"><b>Fall of wickets:</b>{{ i['fall_of_wickets'] }}</span>
-				 <div class="table-responsive">
-				 <table class="table font_12 mb-0">
-  <thead class="border-0">
-    <tr class="bg-greenlight">
-      <th class="text-muted">BOWLING</th>
-	  <th class="text-muted">O</th>
-      <th class="text-muted">M</th>
-      <th class="text-muted">R</th>
-      <th class="text-muted">W</th>
-	  <th class="text-muted">ECON</th>
-	  <th class="text-muted">Extras</th>
-    </tr>
-  </thead>
-  <tbody>
-  {% for bowler in i['bowling'] %}
-    <tr class="border-top">
-        {% set result = find_player(bowler['name'], sqf) %}
-        {% set team = result[3] if result else "NA" %}
-        {% set name = result[2] if result else bowler['name'] %}
-        <td class="text-blue"><b><a href="{{ url_for('main.squad_details', team=team, name=name) }}">{{ name }}</a></b> </td>
-      <td>{{ bowler['overs'] }}</td>
-      <td>{{ bowler['maiden_overs'] }}</td>
-      <td>{{ bowler['runs'] }}</td>
-	  <td><b>{{ bowler['wickets'] }}</b></td>
-	  <td>{{ bowler['economy'] }}</td>
-	  <td>{{ bowler['extras'] }}</td>
-    </tr>
-      {% endfor %}
-
-  </tbody>
-</table>
-                 </div>
-			   </div>
-			</div>{% endfor %}
-			</div>
-		</div>
+	  <div id="liveContainer" class="live">
 	  </div>
 	</div>
-
    </div>
  </div>
 </section>
 
-
-
 <script src="{{ url_for('static', filename= 'js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ url_for('static', filename= 'js/theme.min.js') }}"></script>
 <script src="{{ url_for('static', filename= 'js/index.js') }}"></script>
+<script src="{{ url_for('static', filename='js/scorecard.js') }}"></script>
 <script>
   // Example starter JavaScript for disabling form submissions if there are invalid fields
 (function () {
@@ -344,66 +164,48 @@
     })
 })()
 </script>
-<script>
-      // Function to create a timer for a given clock element
-      function createTimer(clockElement) {
-      const deadline = new Date(clockElement.getAttribute("data-deadline")).getTime();
-
-      const daysSpan = clockElement.querySelector(".days");
-      const hoursSpan = clockElement.querySelector(".hours");
-      const minutesSpan = clockElement.querySelector(".minutes");
-      const secondsSpan = clockElement.querySelector(".seconds");
-
-      const interval = setInterval(function () {
-        const Tnow = new Date();
-        const timeZone = 'Asia/Kolkata';
-        const dateInTimeZone = new Date(Tnow.toLocaleString('en-US', { timeZone }));
-        const now = dateInTimeZone.getTime();
-        const t = deadline - now;
-
-        if (t < 0) {
-          clearInterval(interval);
-          daysSpan.textContent = "0";
-          hoursSpan.textContent = "0";
-          minutesSpan.textContent = "0";
-          secondsSpan.textContent = "0";
-          return;
-        }
-
-        const days = Math.floor(t / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((t % (1000 * 60)) / 1000);
-
-        daysSpan.textContent = days;
-        hoursSpan.textContent = hours;
-        minutesSpan.textContent = minutes;
-        secondsSpan.textContent = seconds;
-      }, 1000);
-    }
-
-    // Initialize timers for all clock elements
-    document.querySelectorAll(".clockdiv").forEach(function(clockElement) {
-  createTimer(clockElement); // This will start the timer instantly
-});
-</script>
-<script>
-// Save active tab to localStorage when a tab is clicked
-document.addEventListener('DOMContentLoaded', function() {
-    const tabs = document.querySelectorAll('#inningsTabs a[data-bs-toggle="tab"]');
-    tabs.forEach(tab => {
-        tab.addEventListener('click', function() {
-            localStorage.setItem('activeInningsTab', this.getAttribute('href'));
-        });
-    });
-
-    // Restore active tab from localStorage
-    const savedTab = localStorage.getItem('activeInningsTab');
-    if (savedTab) {
-        const tabInstance = new bootstrap.Tab(document.querySelector(`a[href="${savedTab}"]`));
-        tabInstance.show();
-    }
-});
-</script>
+<!-- Floating Back Button -->
+<style>
+.floating-back-btn {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 9999;
+  background: #fff;
+  color: #25478A;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.floating-back-btn:hover {
+  background: #e6e6e6;
+}
+@media (max-width: 600px) {
+  .floating-back-btn {
+    top: 10px;
+    left: 10px;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+  }
+}
+</style>
+{% if source == 'displayFR' %}
+  <a href="{{ url_for('main.displayFR', fteam=fteam) }}" class="floating-back-btn" title="Back to Fixtures">
+    <i class="fa fa-arrow-left"></i>
+  </a>
+{% elif source == 'liveMatches' %}
+  <a href="{{ url_for('main.todayMatch') }}" class="floating-back-btn" title="Back to Live Matches">
+    <i class="fa fa-arrow-left"></i>
+  </a>
+{% endif %}
 
 {% endblock %}

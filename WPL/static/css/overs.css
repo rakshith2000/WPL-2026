@@ -3,6 +3,9 @@
     gap: 9px;
     padding: 4px 8px 4px 8px;
     border-bottom: 2px solid #ecebeb;
+    box-shadow: inset 5px 5px 10px #bcbcbc,
+                inset -5px -5px 10px #f0f0f0;
+    border-radius: 10px;
 }
 
 .over-left {
@@ -13,6 +16,7 @@
     justify-content: center;
     gap: .25rem;
     width: 16.66667%;
+    border-radius: 5px;
 }
 
 .over-left-items {
@@ -108,4 +112,21 @@
 
 .bg-wicket {
     background: linear-gradient(145deg, #ff3b30, #ad0404);
+}
+
+.ball-entry {
+    border-style: solid;
+    border-color: #d9d9d9;
+    border-width: 1px 0px 1px 0px;
+    border-radius: 10px;
+}
+
+.over-entry {
+    background: #d9d9d9;
+    border-style: solid;
+    border-color: #d9d9d9;
+    border-width: 1px 0px 1px 0px;
+    border-radius: 10px;
+    box-shadow: inset 5px 5px 10px #bcbcbc,
+                inset -5px -5px 10px #f0f0f0; 
 }

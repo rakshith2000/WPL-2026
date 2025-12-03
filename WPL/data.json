@@ -1,0 +1,1749 @@
+{
+"score_strip": [
+{
+"name": "Gujarat Giants Women",
+"p_name": "Gujarat Giants Women",
+"short_name": "GJ-W",
+"team_flag": "https://staticg.sportskeeda.com/skm/assets/team-logos/cricket/gujarat-giants-women.png",
+"team_id": 127613,
+"slug": "gujarat-giants-women",
+"score": "201/5 (20 ov)",
+"currently_batting": false,
+"run_rate": "",
+"run_rate_numeric": 0
+},
+{
+"name": "Royal Challengers Bengaluru Women",
+"p_name": "Royal Challengers Bengaluru Women",
+"short_name": "RCB W",
+"team_flag": "https://staticg.sportskeeda.com/skm/assets/team-logos/cricket/royal-challengers-bangalore-women.png",
+"team_id": 127611,
+"slug": "royal-challengers-bangalore-women",
+"score": "202/4 (18.3 ov)",
+"currently_batting": true,
+"run_rate": "Run rate 10.92",
+"run_rate_numeric": 10.92
+}
+],
+"squad": [
+{
+"team": "Royal Challengers Bengaluru Women",
+"team_id": 127611,
+"team_slug": "royal-challengers-bangalore-women",
+"team_flag": "https://staticg.sportskeeda.com/skm/assets/team-logos/cricket/royal-challengers-bangalore-women.png",
+"team_shortname": "RCB W",
+"squad": [],
+"players": [
+{
+"provider_id": "49818",
+"sk_slug": "smriti-mandhana",
+"slug": "",
+"name": "Smriti Mandhana",
+"role": "batsman",
+"position": "batter",
+"gender": "female",
+"fantasy_player_rating": 0
+},
+{
+"provider_id": "119",
+"sk_slug": "danni-wyatt",
+"slug": "",
+"name": "Danni Wyatt",
+"role": "batsman",
+"position": "",
+"gender": "male",
+"fantasy_player_rating": 0
+},
+{
+"provider_id": "617",
+"sk_slug": "ellyse-perry",
+"slug": "",
+"name": "Ellyse Perry",
+"role": "batsman",
+"position": "",
+"out": "true",
+"gender": "male",
+"fantasy_player_rating": 0
+},
+{
+"provider_id": "90351",
+"sk_slug": "raghvi-anand-singh-bist",
+"slug": "",
+"name": "Raghvi Anand Singh Bist",
+"role": "batsman",
+"position": "captain",
+"gender": "male",
+"fantasy_player_rating": 0
+},
+{
+"provider_id": "48436",
+"sk_slug": "richa-ghosh",
+"slug": "",
+"name": "Richa Ghosh",
+"role": "wicket-keeper",
+"position": "",
+"gender": "male",
+"fantasy_player_rating": 0
+},
+{
+"provider_id": "55210",
+"sk_slug": "kanika-ahuja",
+"slug": "",
+"name": "Kanika Ahuja",
+"role": "all-rounder",
+"position": "wicket-keeper",
+"gender": "male",
+"fantasy_player_rating": 0
+},
+{
+"provider_id": "93031",
+"sk_slug": "georgia-wareham",
+"slug": "",
+"name": "Georgia Wareham",
+"role": "all-rounder",
+"position": "",
+"gender": "male",
+"fantasy_player_rating": 0
+},
+{
+"provider_id": "55237",
+"sk_slug": "kim-garth",
+"slug": "",
+"name": "Kim Garth",
+"role": "all-rounder",
+"position": "",
+"gender": "male",
+"fantasy_player_rating": 0
+},
+{
+"provider_id": "434",
+"sk_slug": "prema-rawat",
+"slug": "",
+"name": "Prema Rawat",
+"role": "bowler",
+"position": "",
+"gender": "male",
+"fantasy_player_rating": 0
+},
+{
+"provider_id": "94016",
+"sk_slug": "v-j-joshitha",
+"slug": "",
+"name": "V J Joshitha",
+"role": "bowler",
+"delta": 1,
+"position": "",
+"gender": "male",
+"fantasy_player_rating": 0
+},
+{
+"provider_id": "91",
+"sk_slug": "renuka-thakur",
+"slug": "",
+"name": "Renuka Thakur",
+"role": "bowler",
+"position": "",
+"gender": "male",
+"fantasy_player_rating": 0
+}
+],
+"bench_players": [
+{
+"provider_id": "93389",
+"sk_slug": "georgia-voll",
+"slug": "",
+"name": "Georgia Voll",
+"role": "batsman",
+"position": "",
+"gender": "male",
+"fantasy_player_rating": 0
+},
+{
+"provider_id": "130868",
+"sk_slug": "radha-yadav",
+"slug": "",
+"name": "Radha Yadav",
+"role": "all-rounder",
+"position": "",
+"gender": "male",
+"fantasy_player_rating": 0
+},
+{
+"provider_id": "98007",
+"sk_slug": "shreyanka-patil",
+"slug": "",
+"name": "Shreyanka Patil",
+"role": "all-rounder",
+"position": "",
+"gender": "male",
+"fantasy_player_rating": 0
+},
+{
+"provider_id": "43820",
+"sk_slug": "lauren-bell",
+"slug": "",
+"name": "Lauren Bell",
+"role": "bowler",
+"position": "",
+"delta": -1,
+"gender": "male",
+"fantasy_player_rating": 0
+}
+],
+"substitute_players": [],
+"impact_players": []
+},
+{
+"team": "Gujarat Giants Women",
+"team_id": 127613,
+"team_slug": "gujarat-giants-women",
+"team_flag": "https://staticg.sportskeeda.com/skm/assets/team-logos/cricket/gujarat-giants-women.png",
+"team_shortname": "GJ-W",
+"squad": [],
+"players": [
+{
+"provider_id": "94810",
+"sk_slug": "beth-mooney",
+"slug": "",
+"name": "Beth Mooney",
+"role": "batsman",
+"position": "",
+"gender": "male",
+"fantasy_player_rating": 0
+},
+{
+"provider_id": "55846",
+"sk_slug": "laura-wolvaardt",
+"slug": "",
+"name": "Laura Wolvaardt",
+"role": "batsman",
+"position": "wicket-keeper",
+"gender": "male",
+"fantasy_player_rating": 0
+},
+{
+"provider_id": "620",
+"sk_slug": "dayalan-hemalatha",
+"slug": "",
+"name": "Dayalan Hemalatha",
+"role": "batsman",
+"position": "captain",
+"gender": "male",
+"fantasy_player_rating": 0
+},
+{
+"provider_id": "94190",
+"sk_slug": "ashleigh-gardner",
+"slug": "",
+"name": "Ashleigh Gardner",
+"role": "all-rounder",
+"position": "",
+"gender": "male",
+"fantasy_player_rating": 0
+},
+{
+"provider_id": "48347",
+"sk_slug": "deandra-dottin",
+"slug": "",
+"name": "Deandra Dottin",
+"role": "batsman",
+"position": "",
+"gender": "male",
+"fantasy_player_rating": 0
+},
+{
+"provider_id": "43482",
+"sk_slug": "simran-shaikh",
+"slug": "",
+"name": "Simran Shaikh",
+"role": "all-rounder",
+"position": "",
+"gender": "male",
+"fantasy_player_rating": 0
+},
+{
+"provider_id": "93481",
+"sk_slug": "harleen-deol",
+"slug": "",
+"name": "Harleen Deol",
+"role": "all-rounder",
+"position": "",
+"gender": "male",
+"fantasy_player_rating": 0
+},
+{
+"provider_id": "46287",
+"sk_slug": "kashvee-gautam",
+"slug": "",
+"name": "Kashvee Gautam",
+"role": "bowler",
+"position": "",
+"gender": "male",
+"fantasy_player_rating": 0
+},
+{
+"provider_id": "56394",
+"sk_slug": "tanuja-kanwer",
+"slug": "",
+"name": "Tanuja Kanwer",
+"role": "bowler",
+"position": "",
+"gender": "male",
+"fantasy_player_rating": 0
+},
+{
+"provider_id": "93497",
+"sk_slug": "priya-mishra",
+"slug": "",
+"name": "Priya Mishra",
+"role": "bowler",
+"position": "",
+"gender": "male",
+"fantasy_player_rating": 0
+},
+{
+"provider_id": "654",
+"sk_slug": "shivani-singh",
+"slug": "",
+"name": "Shivani Singh",
+"role": "bowler",
+"position": "",
+"out": "true",
+"gender": "male",
+"fantasy_player_rating": 0
+}
+],
+"bench_players": [
+{
+"provider_id": "55261",
+"sk_slug": "barti-fulmail",
+"slug": "",
+"name": "Bharti Fulmali",
+"role": "batsman",
+"position": "wicket-keeper",
+"gender": "male",
+"fantasy_player_rating": 0
+},
+{
+"provider_id": "113910",
+"sk_slug": "yastika-bhatia",
+"slug": "",
+"name": "Yastika Bhatia",
+"role": "batsman",
+"position": "",
+"gender": "male",
+"fantasy_player_rating": 0
+},
+{
+"provider_id": "103959",
+"sk_slug": "anushka-sharma",
+"slug": "",
+"name": "Anushka Sharma",
+"role": "all-rounder",
+"position": "",
+"gender": "male",
+"fantasy_player_rating": 0
+},
+{
+"provider_id": "122351",
+"sk_slug": "titas-sadhu",
+"slug": "",
+"name": "Titas Sadhu",
+"role": "bowler",
+"position": "",
+"gender": "male",
+"fantasy_player_rating": 0
+}
+],
+"substitute_players": [],
+"impact_players": []
+}
+],
+"datetime": 1739541600,
+"innings": [
+{
+"name": "Gujarat Giants Women Inning",
+"short_name": "GJ-W Inning",
+"batting": [
+{
+"name": "Beth Mooney",
+"slug": "",
+"balls": "42",
+"runs": "56",
+"out_str": "c Mandhana b Rawat",
+"fours": "8",
+"sixes": "0",
+"strike_rate": 133.33
+},
+{
+"name": "Laura Wolvaardt",
+"slug": "",
+"balls": "10",
+"runs": "6",
+"out_str": "b Thakur",
+"fours": "1",
+"sixes": "0",
+"strike_rate": 60
+},
+{
+"name": "Dayalan Hemalatha",
+"slug": "",
+"balls": "9",
+"runs": "4",
+"out_str": "c Rawat b Ahuja",
+"fours": "0",
+"sixes": "0",
+"strike_rate": 44.44
+},
+{
+"name": "Ashleigh Gardner",
+"slug": "",
+"balls": "37",
+"runs": "79",
+"out_str": "Not out",
+"fours": "3",
+"sixes": "8",
+"strike_rate": 213.51
+},
+{
+"name": "Deandra Dottin",
+"slug": "",
+"balls": "13",
+"runs": "25",
+"out_str": "c Wyatt b Thakur",
+"fours": "3",
+"sixes": "1",
+"strike_rate": 192.31
+},
+{
+"name": "Simran Shaikh",
+"slug": "",
+"balls": "5",
+"runs": "11",
+"out_str": "b Wareham",
+"fours": "1",
+"sixes": "1",
+"strike_rate": 220
+},
+{
+"name": "Harleen Deol",
+"slug": "",
+"balls": "4",
+"runs": "9",
+"out_str": "Not out",
+"fours": "2",
+"sixes": "0",
+"strike_rate": 225
+}
+],
+"bowling": [
+{
+"name": "Renuka Thakur",
+"slug": "",
+"overs": "4",
+"maiden_overs": "0",
+"runs": "25",
+"wickets": "2",
+"economy": 6.25,
+"extras": 3
+},
+{
+"name": "Kim Garth",
+"slug": "",
+"overs": "4",
+"maiden_overs": "0",
+"runs": "34",
+"wickets": "0",
+"economy": 8.5,
+"extras": 1
+},
+{
+"name": "VJ Joshitha",
+"slug": "",
+"overs": "4",
+"maiden_overs": "0",
+"runs": "43",
+"wickets": "0",
+"economy": 10.75,
+"extras": 0
+},
+{
+"name": "Kanika Ahuja",
+"slug": "",
+"overs": "3",
+"maiden_overs": "0",
+"runs": "19",
+"wickets": "1",
+"economy": 6.33,
+"extras": 0
+},
+{
+"name": "Georgia Wareham",
+"slug": "",
+"overs": "3",
+"maiden_overs": "0",
+"runs": "50",
+"wickets": "1",
+"economy": 16.67,
+"extras": 2
+},
+{
+"name": "Prema Rawat",
+"slug": "",
+"overs": "2",
+"maiden_overs": "0",
+"runs": "26",
+"wickets": "1",
+"economy": 13,
+"extras": 0
+}
+],
+"batting_team_id": 127613,
+"fall_of_wickets": " 35-1 (Laura Wolvaardt, 4.3), 41-2 (Dayalan Hemalatha, 6.4), 85-3 (Beth Mooney, 11.4), 152-4 (Deandra Dottin, 16.5), 182-5 (Simran Shaikh, 18.3)",
+"extras": "11",
+"bye": "1",
+"legbye": "3",
+"noball": "0",
+"wide": "7",
+"penalties": "0",
+"wickets": "5",
+"overs": "20",
+"runs": "201",
+"run_rate": 10.05,
+"result": 4,
+"did_not_bat": {
+"47898": "Tanuja Kanwar",
+"104108": "Kashvee Gautam",
+"106019": "Sayali Satghare",
+"115390": "Priya Mishra"
+},
+"not_batted": {
+"47898": {
+"name": "Tanuja Kanwar",
+"slug": "",
+"order": 2,
+"provider_id": "47898"
+},
+"104108": {
+"name": "Kashvee Gautam",
+"slug": "",
+"order": 1,
+"provider_id": "104108"
+},
+"106019": {
+"name": "Sayali Satghare",
+"slug": "",
+"order": 3,
+"provider_id": "106019"
+},
+"115390": {
+"name": "Priya Mishra",
+"slug": "",
+"order": 4,
+"provider_id": "115390"
+}
+},
+"innings_no": 1,
+"fours": "18",
+"sixes": "10",
+"fall_of_wickets_array": [
+{
+"batsman_name": "Laura Wolvaardt",
+"batsman_slug": "",
+"overs": "4.3",
+"score": "35",
+"runs": "6",
+"how_out": "b Thakur",
+"bowler_name": "",
+"bowler_slug": "",
+"number": 1
+},
+{
+"batsman_name": "Dayalan Hemalatha",
+"batsman_slug": "",
+"overs": "6.4",
+"score": "41",
+"runs": "4",
+"how_out": "c Rawat b Ahuja",
+"bowler_name": "",
+"bowler_slug": "",
+"number": 2
+},
+{
+"batsman_name": "Beth Mooney",
+"batsman_slug": "",
+"overs": "11.4",
+"score": "85",
+"runs": "56",
+"how_out": "c Mandhana b Rawat",
+"bowler_name": "",
+"bowler_slug": "",
+"number": 3
+},
+{
+"batsman_name": "Deandra Dottin",
+"batsman_slug": "",
+"overs": "16.5",
+"score": "152",
+"runs": "25",
+"how_out": "c Wyatt b Thakur",
+"bowler_name": "",
+"bowler_slug": "",
+"number": 4
+},
+{
+"batsman_name": "Simran Shaikh",
+"batsman_slug": "",
+"overs": "18.3",
+"score": "182",
+"runs": "11",
+"how_out": "b Wareham",
+"bowler_name": "",
+"bowler_slug": "",
+"number": 5
+}
+],
+"current_partnership": {
+"runs": 19,
+"balls": 9,
+"overs": 1.3,
+"batsmen": [
+{
+"runs": 9,
+"balls": 4,
+"name": "Harleen Deol",
+"slug": ""
+},
+{
+"runs": 8,
+"balls": 5,
+"name": "Ashleigh Gardner",
+"slug": ""
+}
+]
+},
+"powerplay": {
+"p1": {
+"endover": "6",
+"startover": "0.1"
+}
+},
+"review": {
+"batting": {
+"batting_team_review_available": "2",
+"batting_team_review_failed": "0",
+"batting_team_review_retained": "0",
+"batting_team_review_success": "1",
+"batting_team_total_review": "2"
+},
+"bowling": {
+"bowling_team_review_available": "2",
+"bowling_team_review_failed": "0",
+"bowling_team_review_retained": "0",
+"bowling_team_review_success": "0",
+"bowling_team_total_review": "2"
+}
+}
+},
+{
+"name": "Royal Challengers Bengaluru Women Inning",
+"short_name": "RCB W Inning",
+"batting": [
+{
+"name": "Smriti Mandhana",
+"slug": "",
+"balls": "7",
+"runs": "9",
+"out_str": "lbw b Gardner",
+"fours": "2",
+"sixes": "0",
+"strike_rate": 128.57
+},
+{
+"name": "Danielle Wyatt",
+"slug": "",
+"balls": "4",
+"runs": "4",
+"out_str": "b Gardner",
+"fours": "1",
+"sixes": "0",
+"strike_rate": 100
+},
+{
+"name": "Ellyse Perry",
+"slug": "",
+"balls": "34",
+"runs": "57",
+"out_str": "c Wolvaardt b Satghare",
+"fours": "6",
+"sixes": "2",
+"strike_rate": 167.65
+},
+{
+"name": "Raghvi Anand Singh Bist",
+"slug": "",
+"balls": "27",
+"runs": "25",
+"out_str": "c Satghare b Dottin",
+"fours": "3",
+"sixes": "0",
+"strike_rate": 92.59
+},
+{
+"name": "Richa Ghosh",
+"slug": "",
+"balls": "27",
+"runs": "64",
+"out_str": "Not out",
+"fours": "7",
+"sixes": "4",
+"strike_rate": 237.04
+},
+{
+"name": "Kanika Ahuja",
+"slug": "",
+"balls": "13",
+"runs": "30",
+"out_str": "Not out",
+"fours": "4",
+"sixes": "0",
+"strike_rate": 230.77
+}
+],
+"bowling": [
+{
+"name": "Kashvee Gautam",
+"slug": "",
+"overs": "2",
+"maiden_overs": "0",
+"runs": "22",
+"wickets": "0",
+"economy": 11,
+"extras": 0
+},
+{
+"name": "Ashleigh Gardner",
+"slug": "",
+"overs": "3",
+"maiden_overs": "0",
+"runs": "33",
+"wickets": "2",
+"economy": 11,
+"extras": 1
+},
+{
+"name": "Deandra Dottin",
+"slug": "",
+"overs": "3.3",
+"maiden_overs": "0",
+"runs": "41",
+"wickets": "1",
+"economy": 11.71,
+"extras": 3
+},
+{
+"name": "Tanuja Kanwar",
+"slug": "",
+"overs": "3",
+"maiden_overs": "0",
+"runs": "29",
+"wickets": "0",
+"economy": 9.67,
+"extras": 0
+},
+{
+"name": "Sayali Satghare",
+"slug": "",
+"overs": "4",
+"maiden_overs": "0",
+"runs": "44",
+"wickets": "1",
+"economy": 11,
+"extras": 1
+},
+{
+"name": "Priya Mishra",
+"slug": "",
+"overs": "3",
+"maiden_overs": "0",
+"runs": "29",
+"wickets": "0",
+"economy": 9.67,
+"extras": 0
+}
+],
+"batting_team_id": 127611,
+"fall_of_wickets": " 13-1 (Smriti Mandhana, 1.2), 14-2 (Danielle Wyatt, 1.6), 100-3 (Raghvi Anand Singh Bist, 10.6), 109-4 (Ellyse Perry, 12.2)",
+"extras": "13",
+"bye": "0",
+"legbye": "4",
+"noball": "1",
+"wide": "8",
+"penalties": "0",
+"wickets": "4",
+"overs": "18.3",
+"runs": "202",
+"run_rate": 10.92,
+"result": 3,
+"did_not_bat": {
+"44498": "Kim Garth",
+"47731": "Georgia Wareham",
+"47899": "Renuka Thakur",
+"106836": "VJ Joshitha",
+"131817": "Prema Rawat"
+},
+"not_batted": {
+"44498": {
+"name": "Kim Garth",
+"slug": "",
+"order": 2,
+"provider_id": "44498"
+},
+"47731": {
+"name": "Georgia Wareham",
+"slug": "",
+"order": 1,
+"provider_id": "47731"
+},
+"47899": {
+"name": "Renuka Thakur",
+"slug": "",
+"order": 5,
+"provider_id": "47899"
+},
+"106836": {
+"name": "VJ Joshitha",
+"slug": "",
+"order": 4,
+"provider_id": "106836"
+},
+"131817": {
+"name": "Prema Rawat",
+"slug": "",
+"order": 3,
+"provider_id": "131817"
+}
+},
+"innings_no": 2,
+"fours": "23",
+"sixes": "6",
+"fall_of_wickets_array": [
+{
+"batsman_name": "Smriti Mandhana",
+"batsman_slug": "",
+"overs": "1.2",
+"score": "13",
+"runs": "9",
+"how_out": "lbw b Gardner",
+"bowler_name": "",
+"bowler_slug": "",
+"number": 1
+},
+{
+"batsman_name": "Danielle Wyatt",
+"batsman_slug": "",
+"overs": "1.6",
+"score": "14",
+"runs": "4",
+"how_out": "b Gardner",
+"bowler_name": "",
+"bowler_slug": "",
+"number": 2
+},
+{
+"batsman_name": "Raghvi Anand Singh Bist",
+"batsman_slug": "",
+"overs": "10.6",
+"score": "100",
+"runs": "25",
+"how_out": "c Satghare b Dottin",
+"bowler_name": "",
+"bowler_slug": "",
+"number": 3
+},
+{
+"batsman_name": "Ellyse Perry",
+"batsman_slug": "",
+"overs": "12.2",
+"score": "109",
+"runs": "57",
+"how_out": "c Wolvaardt b Satghare",
+"bowler_name": "",
+"bowler_slug": "",
+"number": 4
+}
+],
+"current_partnership": {
+"runs": 93,
+"balls": 37,
+"overs": 6.1,
+"batsmen": [
+{
+"runs": 30,
+"balls": 13,
+"name": "Kanika Ahuja",
+"slug": ""
+},
+{
+"runs": 61,
+"balls": 24,
+"name": "Richa Ghosh",
+"slug": ""
+}
+]
+},
+"powerplay": {
+"p1": {
+"endover": "6",
+"startover": "0.1"
+}
+},
+"review": {
+"batting": {
+"batting_team_review_available": "1",
+"batting_team_review_failed": "1",
+"batting_team_review_retained": "0",
+"batting_team_review_success": "0",
+"batting_team_total_review": "2"
+},
+"bowling": {
+"bowling_team_review_available": "2",
+"bowling_team_review_failed": "0",
+"bowling_team_review_retained": "0",
+"bowling_team_review_success": "0",
+"bowling_team_total_review": "2"
+}
+}
+}
+],
+"now_batting": {
+"b1": {
+"name": "",
+"slug": "",
+"stats": {
+"sixes": "",
+"runs": "",
+"balls": "",
+"fours": "",
+"strike_rate": 0
+}
+},
+"b2": {
+"name": "",
+"slug": "",
+"stats": {
+"sixes": "",
+"runs": "",
+"balls": "",
+"fours": "",
+"strike_rate": 0
+}
+},
+"team": {
+"name": "",
+"short_name": "",
+"score": ""
+}
+},
+"now_bowling": {
+"b1": {
+"name": "",
+"slug": "",
+"stats": {
+"runs": "",
+"balls": "",
+"maiden_overs": "",
+"wickets": "",
+"overs": "",
+"economy": 0
+}
+},
+"b2": {
+"name": "",
+"slug": "",
+"stats": {
+"runs": "",
+"balls": "",
+"maiden_overs": "",
+"wickets": "",
+"overs": "",
+"economy": 0
+}
+}
+},
+"has_commentary": true,
+"is_line": true,
+"title": "Gujarat Giants Women vs Royal Challengers Bengaluru Women",
+"short_title": "GJ-W vs RCB W",
+"series": "Women's Premier League",
+"series_keeda_slug": "",
+"series_image_url": "",
+"series_tv_streaming": "",
+"game_type": "Women T20",
+"game_format": 8,
+"game_state": 0,
+"last_wkt": "",
+"last_wkt_min": "",
+"endtime": 1739577600,
+"match_status": "post",
+"stumps": false,
+"in_play": false,
+"secondary_info": "Royal Challengers Bengaluru Women elected to bowl",
+"venue": "Kotambi Stadium, Vadodara",
+"venue_stadium": "Kotambi Stadium",
+"venue_location": "Vadodara",
+"venue_country": "India",
+"session": "",
+"info": "Royal Challengers Bengaluru Women won by 6 wickets",
+"day": "",
+"mom": "Richa Ghosh",
+"description": "1st Match",
+"win_type_id": "2",
+"home_team": "",
+"away_team": "",
+"winner_team": "Royal Challengers Bengaluru Women",
+"umpires": "Bhavesh Patel (India), Gayathri Venugopalan (India), N Janani (India, TV)",
+"referee": "GS Lakshmi (India)",
+"topic_slug": "gujarat-giants-women-vs-royal-challengers-bengaluru-women-1st-match-14-february-2025",
+"commentary": [
+{
+"comment_type": "comment",
+"timestamp": 1739555402000,
+"source": "comment",
+"comment_text": "<div><strong>AND BREATHE!&nbsp;</strong>A cracking win to launch the third season of WPL. But we have more action in store, so join us tomorrow at 6:30 pm for the second game of the season, which sees Mumbai Indians take on Delhi Capitals. This has been Lavil Saldanha alongside Arya signing off. Keep checking Sportskeeda for the latest in the world of sports. SEE YA!</div>",
+"_id": {
+"$oid": "67af824abddc7e11111c917b",
+"$id": "67af824abddc7e11111c917b"
+},
+"cardSlug": "gujarat-giants-women-vs-royal-challengers-bengaluru-women-1st-match-14-february-2025",
+"cardId": "679a773052ce727fce88bf28",
+"auto_comms_idx": 0
+},
+{
+"comment_type": "comment",
+"timestamp": 1739555288000,
+"source": "comment",
+"comment_text": "<div><strong>Richa Ghosh (Player of the Match, Royal Challengers Bengaluru):&nbsp;</strong>My plan was to take time and take the game deep, see how the pitch plays out and play my natural game. (Batting with Kanika) We thought we could chase this down and we will play a positive game. Our preparations helped and the match simulations with various situations also helped us. One side was shorter but I didn't think about it and played the ball on its merit (Translated from Hindi)</div>",
+"comment_edited": true,
+"_id": {
+"$oid": "67af81d8bddc7e1114d4310b",
+"$id": "67af81d8bddc7e1114d4310b"
+},
+"cardSlug": "gujarat-giants-women-vs-royal-challengers-bengaluru-women-1st-match-14-february-2025",
+"cardId": "679a773052ce727fce88bf28",
+"comment_category": "post_match_speech_player_of_the_match",
+"auto_comms_idx": 0
+},
+{
+"comment_type": "comment",
+"timestamp": 1739555168000,
+"source": "comment",
+"comment_text": "<div><strong>Smriti Mandhana (captain, Royal Challengers Bengaluru): </strong>I am really happy we are on the winning side. The way Richa and Pez (Perry) batted was great to watch. They have been brilliant to watch, have been doing this to our bowlers in the nets for the last couple of days. We knew dew would settle in and we were always in the game. We lost the top three wicket-takers of the season, but the replacements did a fine job. (On Ashleigh Gardner) Time to take her on a run (laughs)</div>",
+"comment_edited": true,
+"_id": {
+"$oid": "67af8160bddc7e11159d626e",
+"$id": "67af8160bddc7e11159d626e"
+},
+"cardSlug": "gujarat-giants-women-vs-royal-challengers-bengaluru-women-1st-match-14-february-2025",
+"cardId": "679a773052ce727fce88bf28",
+"comment_category": "post_match_speech_winning_cap",
+"auto_comms_idx": 0
+},
+{
+"comment_type": "comment",
+"timestamp": 1739554545000,
+"source": "comment",
+"comment_text": "<div><strong>Kanika Ahuja:</strong> I am feeling great. Playing after a year so it's a special feeling. The realisation and what I did in rehab helped me improve as a better player. I felt that whatever I get in my reach, I will go after that. A great feeling to win the match. I didn't visualise to get a wicket in my first over (chuckles). I was just enjoying my wicket. We felt if we could take the game, we could chase it down. Exceptional batting from Perry and Richa.</div>",
+"_id": {
+"$oid": "67af7ef1bddc7e1114d4310a",
+"$id": "67af7ef1bddc7e1114d4310a"
+},
+"cardSlug": "gujarat-giants-women-vs-royal-challengers-bengaluru-women-1st-match-14-february-2025",
+"cardId": "679a773052ce727fce88bf28",
+"auto_comms_idx": 0
+},
+{
+"comment_type": "comment",
+"timestamp": 1739554530000,
+"source": "comment",
+"comment_text": "<div><strong>Ashleigh Gardner is the Gujarat Giants captain, here is what she had to say:</strong> Yeah it's pretty flattering to be honest. We knew 200 was just a par score. Unfortunately, it wasn't to be and the dropped chances hurt us in the end. There will always be positives from this game. Beth Mooney set the tone and then Deandra Dottin did what she does best. Richa capitalised on the chances, rode her luck and batted beautifully. It was very difficult to be honest. We know it gets dewey playing at night in India. Certainly not gonna use that as an excuse. Yeah it's okay to take the emotions out of this game. We were in a really good position but some real positives to take from this game. Keep attacking with both bat and ball in the coming games and hopefully the result will take care of itself.</div>",
+"_id": {
+"$oid": "67af7ee2bddc7e11111c917a",
+"$id": "67af7ee2bddc7e11111c917a"
+},
+"cardSlug": "gujarat-giants-women-vs-royal-challengers-bengaluru-women-1st-match-14-february-2025",
+"cardId": "679a773052ce727fce88bf28",
+"comment_category": "post_match_speech_losing_cap",
+"auto_comms_idx": 0
+},
+{
+"comment_type": "comment",
+"timestamp": 1739554417000,
+"source": "comment",
+"comment_text": "<div><strong>11:00 PM local time (11:00 PM IST): Royal Challengers Bengaluru beat Gujarat Giants by six wickets<br><br>Royal Challengers Bengaluru: 202/4 in 18.3 overs<br><br>Richa Ghosh: 64(27b)* | Ashleigh Gardner: 2/33 (3 overs)<br>Ellyse Perry: 57(34b) | Sayali Satghare: 1/44 (4 overs)<br><br>The highest chase in the history of WPL.&nbsp;</strong>Defending their title, RCB have started off on a strong note. They lost a couple of players at the start of the season, but they have put that behind them and started off on a positive note. As for Gujarat Giants, there will be a lot of reflection on what has happened.<br><br>RCB started it right, getting 13 runs off the first overs but then back-to-back wickets of Smriti Mandhana and Danni Wyatt Hodge seems to have derailed the momentum for the defending champions. Ellyse Perry and Raghavi Bist then managed to gain control of the chase, with the former scoring a half-century. Wickets tumbled at a quick pace again but towards the end, Richa Ghosh and Kanika Ahuja managed to firmly grasp the game and never let it go.<br><br>As for the Giants, they will be disappointed with the nature of their defeat. Their bowlers gave away a bit too much while their fielding was all over the play, dropping catches and giving away runs as Valentine's presents. Ashleigh Gardner, after starring with the bat in hand, did a fine job with the ball but then was expensive in the next over she bowled. Deandra Dottin and Sayali Satghare picked up a wicket each but failed to contain the batters and conceded one too many.</div>",
+"_id": {
+"$oid": "67af7e71bddc7e11111c9179",
+"$id": "67af7e71bddc7e11111c9179"
+},
+"cardSlug": "gujarat-giants-women-vs-royal-challengers-bengaluru-women-1st-match-14-february-2025",
+"cardId": "679a773052ce727fce88bf28",
+"auto_comms_idx": 0
+},
+{
+"runs": 6,
+"comment_type": "comment",
+"timestamp": 1739553948000,
+"source": "comment",
+"comment_text": "<div>18.3 Deandra Dottin to Richa Ghosh, SIX! <strong>Richa Ghosh finishes it off in style. The highest successful run chase in the history of WPL.</strong> Short of a length delivery from Dottin, Richa gets into position very early and nails the pull shot from her presence, sends that many a mile over the midwicket fence. <strong>RCB win by 6 wickets with 9 deliveries to spare.&nbsp;</strong></div>",
+"opta_ball_type": "normal",
+"comment_edited": true,
+"_id": {
+"$oid": "67af7c9cbddc7e11111c9178",
+"$id": "67af7c9cbddc7e11111c9178"
+},
+"cardSlug": "gujarat-giants-women-vs-royal-challengers-bengaluru-women-1st-match-14-february-2025",
+"cardId": "679a773052ce727fce88bf28",
+"auto_comms_idx": 0
+},
+{
+"runs": 0,
+"comment_type": "comment",
+"timestamp": 1739553924000,
+"source": "comment",
+"comment_text": "<div>18.2 Deandra Dottin to Richa Ghosh, Richa comes down the track to a slower back of a length delivery a shade outside off, tries to slam it towards midwicket, ends up cue ending it back to the bowler.&nbsp;</div>",
+"opta_ball_type": "normal",
+"_id": {
+"$oid": "67af7c84bddc7e1118e6868a",
+"$id": "67af7c84bddc7e1118e6868a"
+},
+"cardSlug": "gujarat-giants-women-vs-royal-challengers-bengaluru-women-1st-match-14-february-2025",
+"cardId": "679a773052ce727fce88bf28",
+"auto_comms_idx": 0
+},
+{
+"comment_type": "comment",
+"timestamp": 1739553897000,
+"source": "comment",
+"comment_text": "<div>Also, the previous highest chase in WPL: 191/3 by Mumbai Indians vs Gujarat Giants in WPL 2024.&nbsp;<strong>RCB have now scored the most runs for a team batting second in WPL&nbsp;</strong></div>",
+"_id": {
+"$oid": "67af7c69bddc7e1114d43109",
+"$id": "67af7c69bddc7e1114d43109"
+},
+"cardSlug": "gujarat-giants-women-vs-royal-challengers-bengaluru-women-1st-match-14-february-2025",
+"cardId": "679a773052ce727fce88bf28",
+"auto_comms_idx": 0
+},
+{
+"runs": 1,
+"comment_type": "comment",
+"timestamp": 1739553888000,
+"source": "comment",
+"comment_text": "<div>18.1 Deandra Dottin to Kanika Ahuja, slower low full toss a shade outside off, sliced away towards the deep cover-point fielder for a single.&nbsp;</div>",
+"opta_ball_type": "normal",
+"_id": {
+"$oid": "67af7c60bddc7e1118e68689",
+"$id": "67af7c60bddc7e1118e68689"
+},
+"cardSlug": "gujarat-giants-women-vs-royal-challengers-bengaluru-women-1st-match-14-february-2025",
+"cardId": "679a773052ce727fce88bf28",
+"auto_comms_idx": 0
+},
+{
+"runs": 17,
+"comment_type": "comment",
+"timestamp": 1739553852000,
+"source": "comment",
+"comment_text": "End of over 18 (17 runs), Royal Challengers Bengaluru Women 195/4",
+"bowler": "Priya Mishra",
+"bowlers": [
+{
+"player_id": 115390,
+"name": "Priya Mishra",
+"wickets": 0,
+"runs_conceded": 29
+}
+],
+"batsmen": [
+{
+"player_id": 96981,
+"name": "Richa Ghosh",
+"runs": 58,
+"balls": 25,
+"is_playing": true
+},
+{
+"player_id": 106225,
+"name": "Kanika Ahuja",
+"runs": 29,
+"balls": 12,
+"is_playing": false
+}
+],
+"over": "18.0",
+"over_summary": "1 0 4 4 2 6",
+"score": "195/4",
+"opta_ball_type": "end of over",
+"_id": {
+"$oid": "67af7c3cbddc7e11111c9177",
+"$id": "67af7c3cbddc7e11111c9177"
+},
+"inning_number": "2",
+"cardSlug": "gujarat-giants-women-vs-royal-challengers-bengaluru-women-1st-match-14-february-2025",
+"cardId": "679a773052ce727fce88bf28",
+"auto_comms_idx": 0
+},
+{
+"runs": 6,
+"comment_type": "comment",
+"timestamp": 1739553851000,
+"source": "comment",
+"comment_text": "<div>17.6 Priya Mishra to Richa Ghosh, SIX! A flighted wrong un around off and middle, down on one knee goes Richa and slams it down the ground, didn't quite nail that but the power of Richa takes it over the long-on fence.</div>",
+"opta_ball_type": "normal",
+"_id": {
+"$oid": "67af7c3bbddc7e1114d43108",
+"$id": "67af7c3bbddc7e1114d43108"
+},
+"cardSlug": "gujarat-giants-women-vs-royal-challengers-bengaluru-women-1st-match-14-february-2025",
+"cardId": "679a773052ce727fce88bf28",
+"auto_comms_idx": 0
+},
+{
+"comment_type": "comment",
+"timestamp": 1739553836000,
+"source": "comment",
+"comment_text": "<div>Richa Ghosh might probably have changed the fate of the game. It looked like a last over thriller, but she has hit that one fine and over the fen.&nbsp;<strong>RCB need 7 runs in 12 deliveries.&nbsp;</strong>Gujarat Giants need something special from Deandra Dottin in the penultimate over</div>",
+"_id": {
+"$oid": "67af7c2cbddc7e11159d626d",
+"$id": "67af7c2cbddc7e11159d626d"
+},
+"cardSlug": "gujarat-giants-women-vs-royal-challengers-bengaluru-women-1st-match-14-february-2025",
+"cardId": "679a773052ce727fce88bf28",
+"auto_comms_idx": 0
+},
+{
+"runs": 2,
+"comment_type": "comment",
+"timestamp": 1739553797000,
+"source": "comment",
+"comment_text": "<div>17.5 Priya Mishra to Richa Ghosh, flighted good-length delivery around middle, swept away from the inner half of the bat, down towards the deep backward square leg region and comes back for a brace.&nbsp;</div>",
+"opta_ball_type": "normal",
+"_id": {
+"$oid": "67af7c05bddc7e11111c9176",
+"$id": "67af7c05bddc7e11111c9176"
+},
+"cardSlug": "gujarat-giants-women-vs-royal-challengers-bengaluru-women-1st-match-14-february-2025",
+"cardId": "679a773052ce727fce88bf28",
+"auto_comms_idx": 0
+},
+{
+"comment_type": "comment",
+"timestamp": 1739553750000,
+"source": "comment",
+"comment_text": "<div><strong><em>I'sak: </em></strong><em>\"Richa, she's just unstoppable!\"</em> -- And relentless as well. <strong>Brings up her half century in 23 deliveries, a stunning display of ball striking.&nbsp;</strong>But the job is not yet done</div>",
+"_id": {
+"$oid": "67af7bd6bddc7e1118e68688",
+"$id": "67af7bd6bddc7e1118e68688"
+},
+"cardSlug": "gujarat-giants-women-vs-royal-challengers-bengaluru-women-1st-match-14-february-2025",
+"cardId": "679a773052ce727fce88bf28",
+"auto_comms_idx": 0
+},
+{
+"runs": 4,
+"comment_type": "comment",
+"timestamp": 1739553715000,
+"source": "comment",
+"comment_text": "<div>17.4 Priya Mishra to Richa Ghosh, FOUR! What a stunning knock this has been from Richa Ghosh, flighted on a fuller-length around off, Richa stays a bit leg side of that delivery and goes inside out, perfectly finds the gap and the equation is getting easier and easier.&nbsp;</div>",
+"opta_ball_type": "normal",
+"comment_edited": true,
+"_id": {
+"$oid": "67af7bb3bddc7e11159d626c",
+"$id": "67af7bb3bddc7e11159d626c"
+},
+"cardSlug": "gujarat-giants-women-vs-royal-challengers-bengaluru-women-1st-match-14-february-2025",
+"cardId": "679a773052ce727fce88bf28",
+"auto_comms_idx": 0
+},
+{
+"runs": 4,
+"comment_type": "comment",
+"timestamp": 1739553712000,
+"source": "comment",
+"comment_text": "<div>17.3 Priya Mishra to Richa Ghosh, FOUR! Slower and shorter outside off and it's too easy for Richa. Waits for the ball to arrive and cuts it away fiercely past the backward point fielder and finds the boundary.&nbsp;</div>",
+"opta_ball_type": "normal",
+"_id": {
+"$oid": "67af7bb0bddc7e11111c9175",
+"$id": "67af7bb0bddc7e11111c9175"
+},
+"cardSlug": "gujarat-giants-women-vs-royal-challengers-bengaluru-women-1st-match-14-february-2025",
+"cardId": "679a773052ce727fce88bf28",
+"auto_comms_idx": 0
+},
+{
+"runs": 0,
+"comment_type": "comment",
+"timestamp": 1739553671000,
+"source": "comment",
+"comment_text": "<div>17.2 Priya Mishra to Richa Ghosh, slowish on the shorter side a shade outside off, chops it from the inner half of the bat back to the bowler.&nbsp;</div>",
+"opta_ball_type": "normal",
+"_id": {
+"$oid": "67af7b87bddc7e1114d43107",
+"$id": "67af7b87bddc7e1114d43107"
+},
+"cardSlug": "gujarat-giants-women-vs-royal-challengers-bengaluru-women-1st-match-14-february-2025",
+"cardId": "679a773052ce727fce88bf28",
+"auto_comms_idx": 0
+},
+{
+"comment_type": "comment",
+"timestamp": 1739553653000,
+"source": "comment",
+"comment_text": "<div>Deep backward square leg in place for Richa Ghosh. No fielders in the deep on the offside</div>",
+"_id": {
+"$oid": "67af7b75bddc7e11159d626b",
+"$id": "67af7b75bddc7e11159d626b"
+},
+"cardSlug": "gujarat-giants-women-vs-royal-challengers-bengaluru-women-1st-match-14-february-2025",
+"cardId": "679a773052ce727fce88bf28",
+"auto_comms_idx": 0
+},
+{
+"runs": 1,
+"comment_type": "comment",
+"timestamp": 1739553631000,
+"source": "comment",
+"comment_text": "<div>17.1 Priya Mishra to Kanika Ahuja, slower and shorter outside off, that almost rolled along the surface and Kanika bunts it away towards the long-off region for a single.&nbsp;</div>",
+"opta_ball_type": "normal",
+"_id": {
+"$oid": "67af7b5fbddc7e1118e68687",
+"$id": "67af7b5fbddc7e1118e68687"
+},
+"cardSlug": "gujarat-giants-women-vs-royal-challengers-bengaluru-women-1st-match-14-february-2025",
+"cardId": "679a773052ce727fce88bf28",
+"auto_comms_idx": 0
+}
+],
+"dirty": [
+{
+"comment_type": "comment",
+"timestamp": 1739555402000,
+"source": "comment",
+"comment_text": "<div><strong>AND BREATHE!&nbsp;</strong>A cracking win to launch the third season of WPL. But we have more action in store, so join us tomorrow at 6:30 pm for the second game of the season, which sees Mumbai Indians take on Delhi Capitals. This has been Lavil Saldanha alongside Arya signing off. Keep checking Sportskeeda for the latest in the world of sports. SEE YA!</div>",
+"_id": {
+"$oid": "67af824abddc7e11111c917b",
+"$id": "67af824abddc7e11111c917b"
+},
+"cardSlug": "gujarat-giants-women-vs-royal-challengers-bengaluru-women-1st-match-14-february-2025",
+"cardId": "679a773052ce727fce88bf28",
+"auto_comms_idx": 0
+},
+{
+"comment_type": "comment",
+"timestamp": 1739555288000,
+"source": "comment",
+"comment_text": "<div><strong>Richa Ghosh (Player of the Match, Royal Challengers Bengaluru):&nbsp;</strong>My plan was to take time and take the game deep, see how the pitch plays out and play my natural game. (Batting with Kanika) We thought we could chase this down and we will play a positive game. Our preparations helped and the match simulations with various situations also helped us. One side was shorter but I didn't think about it and played the ball on its merit (Translated from Hindi)</div>",
+"comment_edited": true,
+"_id": {
+"$oid": "67af81d8bddc7e1114d4310b",
+"$id": "67af81d8bddc7e1114d4310b"
+},
+"cardSlug": "gujarat-giants-women-vs-royal-challengers-bengaluru-women-1st-match-14-february-2025",
+"cardId": "679a773052ce727fce88bf28",
+"comment_category": "post_match_speech_player_of_the_match",
+"auto_comms_idx": 0
+},
+{
+"comment_type": "comment",
+"timestamp": 1739555168000,
+"source": "comment",
+"comment_text": "<div><strong>Smriti Mandhana (captain, Royal Challengers Bengaluru): </strong>I am really happy we are on the winning side. The way Richa and Pez (Perry) batted was great to watch. They have been brilliant to watch, have been doing this to our bowlers in the nets for the last couple of days. We knew dew would settle in and we were always in the game. We lost the top three wicket-takers of the season, but the replacements did a fine job. (On Ashleigh Gardner) Time to take her on a run (laughs)</div>",
+"comment_edited": true,
+"_id": {
+"$oid": "67af8160bddc7e11159d626e",
+"$id": "67af8160bddc7e11159d626e"
+},
+"cardSlug": "gujarat-giants-women-vs-royal-challengers-bengaluru-women-1st-match-14-february-2025",
+"cardId": "679a773052ce727fce88bf28",
+"comment_category": "post_match_speech_winning_cap",
+"auto_comms_idx": 0
+},
+{
+"comment_type": "comment",
+"timestamp": 1739554545000,
+"source": "comment",
+"comment_text": "<div><strong>Kanika Ahuja:</strong> I am feeling great. Playing after a year so it's a special feeling. The realisation and what I did in rehab helped me improve as a better player. I felt that whatever I get in my reach, I will go after that. A great feeling to win the match. I didn't visualise to get a wicket in my first over (chuckles). I was just enjoying my wicket. We felt if we could take the game, we could chase it down. Exceptional batting from Perry and Richa.</div>",
+"_id": {
+"$oid": "67af7ef1bddc7e1114d4310a",
+"$id": "67af7ef1bddc7e1114d4310a"
+},
+"cardSlug": "gujarat-giants-women-vs-royal-challengers-bengaluru-women-1st-match-14-february-2025",
+"cardId": "679a773052ce727fce88bf28",
+"auto_comms_idx": 0
+},
+{
+"comment_type": "comment",
+"timestamp": 1739554530000,
+"source": "comment",
+"comment_text": "<div><strong>Ashleigh Gardner is the Gujarat Giants captain, here is what she had to say:</strong> Yeah it's pretty flattering to be honest. We knew 200 was just a par score. Unfortunately, it wasn't to be and the dropped chances hurt us in the end. There will always be positives from this game. Beth Mooney set the tone and then Deandra Dottin did what she does best. Richa capitalised on the chances, rode her luck and batted beautifully. It was very difficult to be honest. We know it gets dewey playing at night in India. Certainly not gonna use that as an excuse. Yeah it's okay to take the emotions out of this game. We were in a really good position but some real positives to take from this game. Keep attacking with both bat and ball in the coming games and hopefully the result will take care of itself.</div>",
+"_id": {
+"$oid": "67af7ee2bddc7e11111c917a",
+"$id": "67af7ee2bddc7e11111c917a"
+},
+"cardSlug": "gujarat-giants-women-vs-royal-challengers-bengaluru-women-1st-match-14-february-2025",
+"cardId": "679a773052ce727fce88bf28",
+"comment_category": "post_match_speech_losing_cap",
+"auto_comms_idx": 0
+},
+{
+"comment_type": "comment",
+"timestamp": 1739554417000,
+"source": "comment",
+"comment_text": "<div><strong>11:00 PM local time (11:00 PM IST): Royal Challengers Bengaluru beat Gujarat Giants by six wickets<br><br>Royal Challengers Bengaluru: 202/4 in 18.3 overs<br><br>Richa Ghosh: 64(27b)* | Ashleigh Gardner: 2/33 (3 overs)<br>Ellyse Perry: 57(34b) | Sayali Satghare: 1/44 (4 overs)<br><br>The highest chase in the history of WPL.&nbsp;</strong>Defending their title, RCB have started off on a strong note. They lost a couple of players at the start of the season, but they have put that behind them and started off on a positive note. As for Gujarat Giants, there will be a lot of reflection on what has happened.<br><br>RCB started it right, getting 13 runs off the first overs but then back-to-back wickets of Smriti Mandhana and Danni Wyatt Hodge seems to have derailed the momentum for the defending champions. Ellyse Perry and Raghavi Bist then managed to gain control of the chase, with the former scoring a half-century. Wickets tumbled at a quick pace again but towards the end, Richa Ghosh and Kanika Ahuja managed to firmly grasp the game and never let it go.<br><br>As for the Giants, they will be disappointed with the nature of their defeat. Their bowlers gave away a bit too much while their fielding was all over the play, dropping catches and giving away runs as Valentine's presents. Ashleigh Gardner, after starring with the bat in hand, did a fine job with the ball but then was expensive in the next over she bowled. Deandra Dottin and Sayali Satghare picked up a wicket each but failed to contain the batters and conceded one too many.</div>",
+"_id": {
+"$oid": "67af7e71bddc7e11111c9179",
+"$id": "67af7e71bddc7e11111c9179"
+},
+"cardSlug": "gujarat-giants-women-vs-royal-challengers-bengaluru-women-1st-match-14-february-2025",
+"cardId": "679a773052ce727fce88bf28",
+"auto_comms_idx": 0
+},
+{
+"runs": 6,
+"comment_type": "comment",
+"timestamp": 1739553948000,
+"source": "comment",
+"comment_text": "<div>18.3 Deandra Dottin to Richa Ghosh, SIX! <strong>Richa Ghosh finishes it off in style. The highest successful run chase in the history of WPL.</strong> Short of a length delivery from Dottin, Richa gets into position very early and nails the pull shot from her presence, sends that many a mile over the midwicket fence. <strong>RCB win by 6 wickets with 9 deliveries to spare.&nbsp;</strong></div>",
+"opta_ball_type": "normal",
+"comment_edited": true,
+"_id": {
+"$oid": "67af7c9cbddc7e11111c9178",
+"$id": "67af7c9cbddc7e11111c9178"
+},
+"cardSlug": "gujarat-giants-women-vs-royal-challengers-bengaluru-women-1st-match-14-february-2025",
+"cardId": "679a773052ce727fce88bf28",
+"auto_comms_idx": 0
+},
+{
+"runs": 0,
+"comment_type": "comment",
+"timestamp": 1739553924000,
+"source": "comment",
+"comment_text": "<div>18.2 Deandra Dottin to Richa Ghosh, Richa comes down the track to a slower back of a length delivery a shade outside off, tries to slam it towards midwicket, ends up cue ending it back to the bowler.&nbsp;</div>",
+"opta_ball_type": "normal",
+"_id": {
+"$oid": "67af7c84bddc7e1118e6868a",
+"$id": "67af7c84bddc7e1118e6868a"
+},
+"cardSlug": "gujarat-giants-women-vs-royal-challengers-bengaluru-women-1st-match-14-february-2025",
+"cardId": "679a773052ce727fce88bf28",
+"auto_comms_idx": 0
+},
+{
+"comment_type": "comment",
+"timestamp": 1739553897000,
+"source": "comment",
+"comment_text": "<div>Also, the previous highest chase in WPL: 191/3 by Mumbai Indians vs Gujarat Giants in WPL 2024.&nbsp;<strong>RCB have now scored the most runs for a team batting second in WPL&nbsp;</strong></div>",
+"_id": {
+"$oid": "67af7c69bddc7e1114d43109",
+"$id": "67af7c69bddc7e1114d43109"
+},
+"cardSlug": "gujarat-giants-women-vs-royal-challengers-bengaluru-women-1st-match-14-february-2025",
+"cardId": "679a773052ce727fce88bf28",
+"auto_comms_idx": 0
+},
+{
+"runs": 1,
+"comment_type": "comment",
+"timestamp": 1739553888000,
+"source": "comment",
+"comment_text": "<div>18.1 Deandra Dottin to Kanika Ahuja, slower low full toss a shade outside off, sliced away towards the deep cover-point fielder for a single.&nbsp;</div>",
+"opta_ball_type": "normal",
+"_id": {
+"$oid": "67af7c60bddc7e1118e68689",
+"$id": "67af7c60bddc7e1118e68689"
+},
+"cardSlug": "gujarat-giants-women-vs-royal-challengers-bengaluru-women-1st-match-14-february-2025",
+"cardId": "679a773052ce727fce88bf28",
+"auto_comms_idx": 0
+}
+],
+"recent_overs": [],
+"match_id": "87277",
+"publish_time": 1739555402,
+"preview_data": {
+"probable_home_team": {
+"team_name": "",
+"team_slug": "",
+"players": null,
+"bench_players": null
+},
+"probable_away_team": {
+"team_name": "",
+"team_slug": "",
+"players": null,
+"bench_players": null
+},
+"team_a_playing_11": {
+"team": "",
+"team_flag": "",
+"team_shortname": "",
+"squad": null,
+"players": null,
+"bench_players": null,
+"substitute_players": null,
+"impact_players": null
+},
+"team_b_playing_11": {
+"team": "",
+"team_flag": "",
+"team_shortname": "",
+"squad": null,
+"players": null,
+"bench_players": null,
+"substitute_players": null,
+"impact_players": null
+},
+"fantasy_tips": {
+"tips": {
+"one_liner_tip": "",
+"before_toss": null,
+"after_toss": null,
+"updated_at": 0
+},
+"top_players": {
+"players": null
+}
+},
+"key_players_home_team": null,
+"key_players_away_team": null,
+"injury_data_home_team": null,
+"injury_data_away_team": null,
+"is_playing_11": false,
+"expert_comment": {
+"expert_name": "",
+"expert_profile_pic": "",
+"expert_profile_url": "",
+"comment_text": ""
+},
+"preview_points": null,
+"toss_status": "",
+"fantasy_tips_points": null,
+"head_to_head": {
+"no_result": 0,
+"home_team_wins": 0,
+"away_team_wins": 0,
+"home_team_win_ratio": ""
+},
+"venue_stat": {},
+"pitch_report": "",
+"pitch_type": "",
+"toss_advantage": "",
+"weather_title": "",
+"weather_rain": "",
+"weather_temperature": "",
+"weather_timestamp": "",
+"weather_prediction": "",
+"avg_venue_scores": null,
+"tv_streaming": "",
+"match_venue_stats": null
+},
+"sr_id": "",
+"srScorePresent": false,
+"has_table": true,
+"is_follow_on": 0,
+"seoTitle": "Gujarat Giants Women Vs Royal Challengers Bengaluru Women 1st Match 14 February 2025",
+"player_images": {
+"amanjot-kaur": "https://staticg.sportskeeda.com/skm/assets/player-images/cricket/amanjot-kaur.png",
+"anneke-bosch": "https://staticg.sportskeeda.com/skm/assets/player-images/cricket/anneke-bosch.png",
+"annerie-dercksen": "https://staticg.sportskeeda.com/skm/assets/player-images/cricket/annerie-dercksen.png",
+"arundhati-reddy": "https://staticg.sportskeeda.com/skm/assets/player-images/cricket/arundhati-reddy.png",
+"ayabonga-khaka": "https://staticg.sportskeeda.com/skm/assets/player-images/cricket/ayabonga-khaka.png",
+"chloe-tryon": "https://staticg.sportskeeda.com/skm/assets/player-images/cricket/chloe-tryon.png",
+"deepti-sharma": "https://staticg.sportskeeda.com/skm/assets/player-images/cricket/deepti-sharma.png",
+"harleen-deol": "https://staticg.sportskeeda.com/skm/assets/player-images/cricket/harleen-deol.png",
+"harmanpreet-kaur": "https://staticg.sportskeeda.com/skm/assets/player-images/cricket/harmanpreet-kaur.png",
+"jemimah-rodrigues": "https://staticg.sportskeeda.com/skm/assets/player-images/cricket/jemimah-rodrigues.png",
+"karabo-meso": "https://staticg.sportskeeda.com/skm/assets/player-images/cricket/karabo-meso.png",
+"kranti-goud": "https://staticg.sportskeeda.com/skm/assets/player-images/cricket/kranti-goud.png",
+"laura-wolvaardt": "https://staticg.sportskeeda.com/skm/assets/player-images/cricket/laura-wolvaardt.png",
+"marizanne-kapp": "https://staticg.sportskeeda.com/skm/assets/player-images/cricket/marizanne-kapp.png",
+"masabata-klaas": "https://staticg.sportskeeda.com/skm/assets/player-images/cricket/masabata-klaas.png",
+"nadine-de-klerk": "https://staticg.sportskeeda.com/skm/assets/player-images/cricket/nadine-de-klerk.png",
+"nondumiso-shangase": "https://staticg.sportskeeda.com/skm/assets/player-images/cricket/nondumiso-shangase.png",
+"nonkululeko-mlaba": "https://staticg.sportskeeda.com/skm/assets/player-images/cricket/nonkululeko-mlaba.png",
+"nr-shree-charani": "https://staticg.sportskeeda.com/skm/assets/player-images/cricket/nr-shree-charani.png",
+"pratika-rawal": "https://staticg.sportskeeda.com/skm/assets/player-images/cricket/pratika-rawal.png",
+"radha-yadav ": "https://staticg.sportskeeda.com/skm/assets/player-images/cricket/radha-yadav .png",
+"renuka-thakur": "https://staticg.sportskeeda.com/skm/assets/player-images/cricket/renuka-singh.png",
+"richa-ghosh": "https://staticg.sportskeeda.com/skm/assets/player-images/cricket/richa-ghosh.png",
+"shafali-verma": "https://staticg.sportskeeda.com/skm/assets/player-images/cricket/shafali-verma.png",
+"sinalo-jafta": "https://staticg.sportskeeda.com/skm/assets/player-images/cricket/sinalo-jafta.png",
+"smriti-mandhana": "https://staticg.sportskeeda.com/skm/assets/player-images/cricket/smriti-mandhana.png",
+"sneh-rana": "https://staticg.sportskeeda.com/skm/assets/player-images/cricket/sneh-rana.png",
+"sune-luus": "https://staticg.sportskeeda.com/skm/assets/player-images/cricket/sune-luus.png",
+"tazmin-brits": "https://staticg.sportskeeda.com/skm/assets/player-images/cricket/tazmin-brits.png",
+"tumi-sekhukhune": "https://staticg.sportskeeda.com/skm/assets/player-images/cricket/tumi-sekhukhune.png",
+"uma-chetry": "https://staticg.sportskeeda.com/skm/assets/player-images/cricket/uma-chetry.png"
+},
+"prediction_poll": {
+"question": "Which team will win?",
+"created_at": "2025-01-30T01:54:13+05:30",
+"options": {
+"opt1": {
+"text": "Gujarat Giants Women",
+"vote_count": 1621
+},
+"opt2": {
+"text": "Royal Challengers Bengaluru Women",
+"vote_count": 3817
+}
+}
+},
+"predictor_poll": null,
+"current_poll": null,
+"auto_commentary": false,
+"latest_inning_number": 2,
+"competition_id": 129450,
+"is_highlights_available": false,
+"pinned_videos": {
+"preview": "",
+"fantasy": "",
+"live": ""
+},
+"overs_timeline": [
+[
+"1",
+"0",
+"6",
+"x",
+"x",
+"x"
+],
+[
+"1",
+"0",
+"4",
+"4",
+"2",
+"6"
+]
+],
+"overs_timeline_v2": [
+{
+"over": "19.0",
+"runs": 7,
+"summary": [
+"1",
+"0",
+"6",
+"x",
+"x",
+"x"
+]
+},
+{
+"over": "18.0",
+"runs": 17,
+"summary": [
+"1",
+"0",
+"4",
+"4",
+"2",
+"6"
+]
+},
+{
+"over": "17.0",
+"runs": 15,
+"summary": [
+"wd",
+"1",
+"4",
+"1",
+"4",
+"4",
+"1"
+]
+},
+{
+"over": "16.0",
+"runs": 23,
+"summary": [
+"4",
+"1wd",
+"6",
+"4",
+"4",
+"4",
+"0"
+]
+}
+],
+"player_of_match": {
+"player_name": "Richa Ghosh",
+"player_slug": "",
+"batting_stat": "64(27)",
+"bowling_stat": ""
+},
+"player_of_series": {
+"player_name": "",
+"player_slug": "",
+"batting_stat": "",
+"bowling_stat": ""
+},
+"weather": {
+"weather": "Clear",
+"weather_desc": "clear sky",
+"temp": "21.6",
+"humidity": "61",
+"visibility": "24140",
+"wind_speed": "3.9",
+"clouds": "0",
+"dew_point": "13.8",
+"pop": "0",
+"last_updated_at": "1739552408"
+},
+"weather_info_by_one_weather": {
+"temp": "0",
+"humidity": "0",
+"visibility": "0",
+"wind_speed": "<nil>",
+"dew_point": "<nil>",
+"pop": "0",
+"last_updated_at": "0"
+},
+"toss_won_by": 127611,
+"toss_decision": "BOWL",
+"winning_team": 127611,
+"winning_margin": "6 wickets",
+"match_number": "1",
+"team_win_probability": {
+"BLR-W": 99.9,
+"DRAW": 0,
+"GUJ-W": 0.1
+},
+"is_english_commentary": true,
+"pitch": {
+"pitch_condition": "Flat Track Pitch",
+"batting_condition": "Low Scoring",
+"pace_bowling_condition": "Pace & Bounce",
+"spine_bowling_condition": "Average"
+},
+"match_number_with_format": "1st T20",
+"team_live_odds": {
+"BLR-W": {
+"back": 0,
+"lay": 1.01
+},
+"DRAW": {
+"back": 0,
+"lay": 0
+},
+"GUJ-W": {
+"back": 1000,
+"lay": 0
+}
+},
+"pitch_report_from_venue": "<div>: The boundary dimensions are 61 to 68 metre to the side of the straight boundary while 69 metre straight. This looks an absolute belter. It's a black soil surface. It's rolled very well. The cracks are not too wide and there shouldn't be too much help for the spinners but the seamers might get some help with the new ball. There will be some carry and extra bounce. This should be a great contest.</div>"
+}

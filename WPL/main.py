@@ -1,7 +1,7 @@
-from datetime import datetime, date, timedelta
+from datetime import datetime, date, time, timedelta
 from . import db
 from .models import User, Pointstable, Fixture, Squad
-import os, csv, re, pytz, requests, time
+import os, csv, re, pytz, requests
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Blueprint, render_template, url_for, redirect, request, flash, Response, json, stream_with_context
 from flask_login import login_required, current_user
@@ -49,7 +49,7 @@ liveTN = {'DCW':['DEL-W','Delhi Capitals Women'],
           'GG':['GUJ-W','Gujarat Giants Women'],
           'MIW':['MUM-W','Mumbai Indians Women'],
           'RCBW':['BLR-W','Royal Challengers Bengaluru Women'],
-          'UPW':['UP-W','UP Warriorz'],
+          'UPW':['UP-W','UP Warriorz Women'],
           'TBA':['TBA','TBA']}
 
 teamID = {127612:['DCW','Delhi Capitals Women'],
@@ -215,15 +215,20 @@ def num_suffix(num):
         return str(num) + "th"
 
 def render_live_URL(tA, tB, mn, dt):
+    if int(mn) in [2, 7, 9, 10, 15, 16, 18]:
+        tA, tB = tB, tA
     teamAB = liveTN[tA][1].replace(" ", "-").lower() + "-vs-" + liveTN[tB][1].replace(" ", "-").lower() + "-"
     if mn.isdigit():
-        matchNo = num_suffix(int(mn)) + "-match" + "-"
+        #matchNo = num_suffix(int(mn)) + "-match" + "-"
+        matchNo = "match-" + str(mn) + "-"
     elif mn in ['Eliminator', 'Final'] and tA != 'TBA' and tB != 'TBA':
         matchNo = mn.lower() + '-'
     else:
-        matchNo = mn.lower() + "-wpl-2025" + '-'
+        matchNo = mn.lower() + "-wpl-2026" + '-'
     dt = dt.strftime("%d-%B-%Y").lower()
     URL = liveURL_Prefix + teamAB + matchNo + dt + liveURL_Suffix
+
+    print(URL)
     return URL
 
 def calculate_age(dob, current_date):

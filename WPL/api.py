@@ -28,7 +28,7 @@ def api_bowlingstats():
     return jsonify(get_bowlingstats())
 
 @api.route('/api/match-<match>/matchInfo')
-def api_match_info(match):
+def api_matchInfo(match):
     """Return JSON for the match info (used by API)."""
     return jsonify(get_matchInfo(match))
 
@@ -43,7 +43,7 @@ def api_liveScore(match):
     return jsonify(get_liveScore(match))
 
 @api.route('/api/match-<match>/Overs')
-def api_match_overs(match):
+def api_matchOvers(match):
     """Return JSON for the match overs (used by API)."""
     return jsonify(get_matchOvers(match))
 
