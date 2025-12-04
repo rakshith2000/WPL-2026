@@ -23,6 +23,13 @@ pofs = {'E':'Eliminator', 'F':'Final'}
 liveURL_Prefix = "https://cmc2.sportskeeda.com/live-cricket-score/"
 liveURL_Suffix = "/ajax"
 
+statsBaseURL = "https://www.cricbuzz.com/api/cricket-series/series-stats/9351/"
+
+statsList = {
+    "batting": {"Most Runs": "mostRuns", "Highest Scores": "highestScore", "Best Batting Average": "highestAvg", "Best Batting Strike Rate":"highestSr", "Most Hundreds": "mostHundreds", "Most Fifties": "mostFifties", "Most Fours": "mostFours", "Most Sixes": "mostSixes", "Most Nineties": "mostNineties"},
+    "bowling": {"Most Wickets": "mostWickets", "Best Bowling Average": "lowestAvg", "Best Bowling": "bestBowlingInnings", "Most 5 Wickets Haul": "mostFiveWickets", "Best Economy": "lowestEcon", "Best Bowling Strike Rate": "lowestSr"}
+}
+
 champions = {
     'MIW':   ['2023', '2025'],
     'UPW':   [],
@@ -215,7 +222,7 @@ def num_suffix(num):
         return str(num) + "th"
 
 def render_live_URL(tA, tB, mn, dt):
-    if int(mn) in [2, 7, 9, 10, 15, 16, 18]:
+    if mn.isdigit() and int(mn) in [2, 7, 9, 10, 15, 16, 18]:
         tA, tB = tB, tA
     teamAB = liveTN[tA][1].replace(" ", "-").lower() + "-vs-" + liveTN[tB][1].replace(" ", "-").lower() + "-"
     if mn.isdigit():
@@ -639,37 +646,28 @@ def todayMatch():
 
 def get_battingstats():
     stats = {}
-    stats['Most Runs'] = get_data_from_url("https://www.cricbuzz.com/api/cricket-series/series-stats/9351/mostRuns")
-    highest_scores = get_data_from_url("https://www.cricbuzz.com/api/cricket-series/series-stats/9351/highestScore")
-    for hs in highest_scores:
-        hs['Vs'] = next(k for k, v in full_name2.items() if v == hs['Vs'])
-    stats['Highest Scores'] = highest_scores
-    stats['Best Batting Average'] = get_data_from_url(
-        "https://www.cricbuzz.com/api/cricket-series/series-stats/9351/highestAvg")
-    stats['Best Batting Strike Rate'] = get_data_from_url(
-        "https://www.cricbuzz.com/api/cricket-series/series-stats/9351/highestSr")
-    stats['Most Hundreds'] = get_data_from_url("https://www.cricbuzz.com/api/cricket-series/series-stats/9351/mostHundreds")
-    stats['Most Fifties'] = get_data_from_url("https://www.cricbuzz.com/api/cricket-series/series-stats/9351/mostFifties")
-    stats['Most Fours'] = get_data_from_url("https://www.cricbuzz.com/api/cricket-series/series-stats/9351/mostFours")
-    stats['Most Sixes'] = get_data_from_url("https://www.cricbuzz.com/api/cricket-series/series-stats/9351/mostSixes")
-    stats['Most Nineties'] = get_data_from_url("https://www.cricbuzz.com/api/cricket-series/series-stats/9351/mostNineties")
+    for key, value in statsList['batting'].items():
+        url = statsBaseURL + value
+        if key == 'Highest Scores':
+            highest_scores = get_data_from_url(url)
+            for hs in highest_scores:
+                hs['Vs'] = next(k for k, v in full_name2.items() if v == hs['Vs'])
+            stats["Highest Scores"] = highest_scores
+            continue
+        stats[key] = get_data_from_url(url)
     return {'stats': stats}
 
 def get_bowlingstats():
     stats = {}
-    stats['Most Wickets'] = get_data_from_url("https://www.cricbuzz.com/api/cricket-series/series-stats/9351/mostWickets")
-    stats['Best Bowling Average'] = get_data_from_url(
-        "https://www.cricbuzz.com/api/cricket-series/series-stats/9351/lowestAvg")
-    best_bowling = get_data_from_url(
-        "https://www.cricbuzz.com/api/cricket-series/series-stats/9351/bestBowlingInnings")
-    for bb in best_bowling:
-        bb['Vs'] = next(k for k, v in full_name2.items() if v == bb['Vs'])
-    stats['Best Bowling'] = best_bowling
-    stats['Most 5 Wickets Haul'] = get_data_from_url(
-        "https://www.cricbuzz.com/api/cricket-series/series-stats/9351/mostFiveWickets")
-    stats['Best Economy'] = get_data_from_url("https://www.cricbuzz.com/api/cricket-series/series-stats/9351/lowestEcon")
-    stats['Best Bowling Strike Rate'] = get_data_from_url(
-        "https://www.cricbuzz.com/api/cricket-series/series-stats/9351/lowestSr")
+    for key, value in statsList['bowling'].items():
+        url = statsBaseURL + value
+        if key == 'Best Bowling':
+            best_bowling = get_data_from_url(url)
+            for bb in best_bowling:
+                bb['Vs'] = next(k for k, v in full_name2.items() if v == bb['Vs'])
+            stats["Best Bowling"] = best_bowling
+            continue
+        stats[key] = get_data_from_url(url)
     return {'stats': stats}
 
 @main.route('/battingstats')
