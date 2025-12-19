@@ -70,14 +70,14 @@ teamID = {127612:['DCW','Delhi Capitals Women'],
 clr = {'DCW':{'c1':'#d71921', 'c2':'#2561ae', 'c3':'#282968'},
         'GG':{'c1':'#ffe338', 'c2':'#e27602', 'c3':'#ff6600'},
         'MIW':{'c1':'#004ba0', 'c2':'#0077b6', 'c3':'#d1ab3e'},
-        'RCBW':{'c1':'#2b2a29', 'c2':'#444444', 'c3':'#ec1c24'},
+        'RCBW':{'c1':'#20285d', 'c2':'#444444', 'c3':'#ec1c24'},
         'UPW': {'c1': '#7600bc', 'c2': '#b100cd', 'c3': '#ffff00'},
         'TBA': {'c1': '#FFFFFF', 'c2': '#FFFFFF', 'c3': '#FFFFFF'}}
 
 ptclr = {'DCW':{'c1':'#024c8d', 'c2':'#04046c', 'c3':'#e00034'},
         'GG':{'c1':'#fba146', 'c2':'#e0590b', 'c3':'#f3bc44'},
         'MIW':{'c1':'#0077b6', 'c2':'#004ba0', 'c3':'#aa9174'},
-        'RCBW':{'c1':'#e40719', 'c2':'#7e2a20', 'c3':'#2b2a29'},
+        'RCBW':{'c1':'#e40719', 'c2':'#7e2a20', 'c3':'#20285d'},
         'UPW': {'c1': '#6e30bb', 'c2': '#3c0070', 'c3':'#f4c404'},
         'TBA': {'c1': '#FFFFFF', 'c2': '#FFFFFF', 'c3': '#FFFFFF'}}
 
@@ -85,7 +85,7 @@ sqclr = {
     'DCW': {'c1': 'hsl(346 100% 44%)', 'c2': 'hsl(213 100% 25%)'},
     'GG': {'c1': 'hsl(41 88% 61%)', 'c2': 'hsl(3 69% 53%)'},
     'MIW': {'c1': 'hsl(32 24% 56%)', 'c2': 'hsl(208 100% 31%)'},
-    'RCBW': {'c1': 'hsl(356 99% 45%)', 'c2': 'hsl(0 0% 3%)'},
+    'RCBW': {'c2': 'hsl(356 99% 45%)', 'c1': '#20285d'},
     'UPW': {'c1': 'hsl(338 81% 62%)', 'c2': 'hsl(273 46% 31%)'}
 }
 
@@ -231,6 +231,7 @@ def render_live_URL(tA, tB, mn, dt):
     elif mn in ['Eliminator', 'Final'] and tA != 'TBA' and tB != 'TBA':
         matchNo = mn.lower() + '-'
     else:
+        #matchNo = mn.lower() + "-wpl-2025" + '-'
         matchNo = mn.lower() + "-wpl-2026" + '-'
     dt = dt.strftime("%d-%B-%Y").lower()
     URL = liveURL_Prefix + teamAB + matchNo + dt + liveURL_Suffix
@@ -363,11 +364,13 @@ def displayFR():
             dtt.append('TBA') #Win-Team
             dtt.append('TBA')
             dtt.append('TBA')
+            dtt.append(['TBA','TBA'])
         elif i[10] == 'NA':
             dtt.append('NA')
             dtt.append('NA')
             dtt.append('NA')
             dtt.append(i[7])
+            dtt.append(['NA','NA'])
         else:
             dtt.append(i[10])
             WType = 'wickets' if 'wickets' in i[7] else 'runs'
@@ -375,7 +378,9 @@ def displayFR():
             WBy = re.findall(r'\d+', i[7])[0]
             dtt.append(str(WBy))
             dtt.append(i[7][i[7].index('won'):])
+            dtt.append([i[12]['name'], i[12]['team']])
         dt.append(dtt)
+        print(dtt)
     current_date = datetime.now(tz)
     current_date = current_date.replace(tzinfo=None)
     return render_template('displayFR.html', FR=dt, hint=hint, fn=full_name, current_date=current_date, clr=clr)
@@ -860,6 +865,32 @@ def deletematch():
         FR.A_info, FR.B_info = {'runs': 0, 'overs': 0.0, 'wkts': 0}, {'runs': 0, 'overs': 0.0, 'wkts': 0}
         db.session.commit()
         flash('Match {} result deleted successfully'.format(dmatch), category='success')
+        return redirect(url_for('main.update', key=key))
+    
+@main.route('/updatepotm', methods=['POST'])
+@login_required
+def updatepotm():
+    hint = request.form.get('hint')
+    key = 6
+    if request.method == "POST" and hint == 'before':
+        match = str(request.form.get('potmmatch')).upper()
+        match = int(match) if match.isdigit() else pofs[match]
+        FR = Fixture.query.filter_by(Match_No=str(match)).first()
+        sq = db.session.execute(text('SELECT * FROM squad WHERE "Team" = :team_a OR "Team" = :team_b ORDER BY "Name"'),{'team_a': FR.Team_A, 'team_b': FR.Team_B}).fetchall()
+        sq = [dict(row._mapping) for row in sq]
+        if match not in [i for i in range(1,21)]+list(pofs.values()):
+            flash('Invalid Match number to update potm', category='error')
+            return redirect(url_for('main.update', key=key))
+        return render_template('updatepotm.html', FR=FR, fn=full_name, match=match, sq=sq)
+    if request.method == 'POST' and hint == 'after':
+        match_no = request.form.get('match')
+        potm = request.form.get('potm')
+        potmteam = request.form.get('team')
+        FR = Fixture.query.filter_by(Match_No=match_no).first()
+        FR.POTM = {'name': potm, 'team': potmteam}
+        db.session.commit()
+
+        flash('POTM for match {} updated successfully'.format(match_no), category='success')
         return redirect(url_for('main.update', key=key))
 
 @main.route('/updateplayoffs', methods=['POST'])

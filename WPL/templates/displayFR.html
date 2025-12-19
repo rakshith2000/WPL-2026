@@ -163,9 +163,9 @@
   <div class="timer-card">
     <div class="header" style="{% if i[0] | int(default=None) is not none %} --c: #25478A; {% else %} --c: #401F52; {% endif %}">Match is In-Progress</div>
       <div class="vsblock" style="padding-top: 35px;">
-		<img class="team-image" style="{% if i[3] == 'RCBW' %} --c1: {{ clr[i[3]]['c2'] }}; --c2: {{ clr[i[3]]['c3'] }}; {% elif i[3] == 'GG' %} --c1: {{ clr[i[3]]['c1'] }}; --c2: {{ clr[i[3]]['c3'] }}; {% else %} --c1: {{ clr[i[3]]['c1'] }}; --c2: {{ clr[i[3]]['c2'] }};{% endif %}" src="\static\images\squad_logos\{{ i[3] }}.webp" alt="Team Logo" />
+		<img class="team-image" style="{% if i[3] == 'RCBW' %} --c1: {{ clr[i[3]]['c3'] }}; --c2: {{ clr[i[3]]['c1'] }}; {% elif i[3] == 'GG' %} --c1: {{ clr[i[3]]['c1'] }}; --c2: {{ clr[i[3]]['c3'] }}; {% else %} --c1: {{ clr[i[3]]['c1'] }}; --c2: {{ clr[i[3]]['c2'] }};{% endif %}" src="\static\images\squad_logos\{{ i[3] }}.webp" alt="Team Logo" />
 		<img class="vs-image" src="\static\images\vs.png" alt="Team Logo" />
-		<img class="team-image" style="{% if i[4] == 'RCBW' %} --c1: {{ clr[i[4]]['c2'] }}; --c2: {{ clr[i[4]]['c3'] }}; {% elif i[4] == 'GG' %} --c1: {{ clr[i[4]]['c1'] }}; --c2: {{ clr[i[4]]['c3'] }}; {% else %} --c1: {{ clr[i[4]]['c1'] }}; --c2: {{ clr[i[4]]['c2'] }};{% endif %}" src="\static\images\squad_logos\{{ i[4] }}.webp" alt="Team Logo" />
+		<img class="team-image" style="{% if i[4] == 'RCBW' %} --c1: {{ clr[i[4]]['c3'] }}; --c2: {{ clr[i[4]]['c1'] }}; {% elif i[4] == 'GG' %} --c1: {{ clr[i[4]]['c1'] }}; --c2: {{ clr[i[4]]['c3'] }}; {% else %} --c1: {{ clr[i[4]]['c1'] }}; --c2: {{ clr[i[4]]['c2'] }};{% endif %}" src="\static\images\squad_logos\{{ i[4] }}.webp" alt="Team Logo" />
 </div>
   </div>
 </div></a>
@@ -265,12 +265,29 @@
       {% endif %}
       </div>
   <div class="timer-card">
-    <div class="header" style="{% if i[0] | int(default=None) is not none %} --c: #25478A; {% else %} --c: #401F52; {% endif %}">Match completed</div>
-      <div class="vsblock" style="padding-top: 35px;">
-		<img class="team-image" style="{% if i[3] == 'RCBW' %} --c1: {{ clr[i[3]]['c2'] }}; --c2: {{ clr[i[3]]['c3'] }}; {% elif i[3] == 'GG' %} --c1: {{ clr[i[3]]['c1'] }}; --c2: {{ clr[i[3]]['c3'] }}; {% else %} --c1: {{ clr[i[3]]['c1'] }}; --c2: {{ clr[i[3]]['c2'] }};{% endif %}" src="\static\images\squad_logos\{{ i[3] }}.webp" alt="Team Logo" />
-		<img class="vs-image" src="\static\images\vs.png" alt="Team Logo" />
-		<img class="team-image" style="{% if i[4] == 'RCBW' %} --c1: {{ clr[i[4]]['c2'] }}; --c2: {{ clr[i[4]]['c3'] }}; {% elif i[4] == 'GG' %} --c1: {{ clr[i[4]]['c1'] }}; --c2: {{ clr[i[4]]['c3'] }}; {% else %} --c1: {{ clr[i[4]]['c1'] }}; --c2: {{ clr[i[4]]['c2'] }};{% endif %}" src="\static\images\squad_logos\{{ i[4] }}.webp" alt="Team Logo" />
-</div>
+    {% if i[7] == "NA" %}
+    <div class="header" style="{% if i[0] | int(default=None) is not none %} --c: #25478A; {% else %} --c: #401F52; {% endif %}">Match Abandoned</div>
+    <div class="vsblock" style="padding-top: 35px;">
+		  <img class="team-image" style="{% if i[3] == 'RCBW' %} --c1: {{ clr[i[3]]['c3'] }}; --c2: {{ clr[i[3]]['c1'] }}; {% elif i[3] == 'GG' %} --c1: {{ clr[i[3]]['c1'] }}; --c2: {{ clr[i[3]]['c3'] }}; {% else %} --c1: {{ clr[i[3]]['c1'] }}; --c2: {{ clr[i[3]]['c2'] }};{% endif %}" src="\static\images\squad_logos\{{ i[3] }}.webp" alt="Team Logo" />
+		  <img class="vs-image" src="\static\images\vs.png" alt="Team Logo" />
+		  <img class="team-image" style="{% if i[4] == 'RCBW' %} --c1: {{ clr[i[4]]['c3'] }}; --c2: {{ clr[i[4]]['c1'] }}; {% elif i[4] == 'GG' %} --c1: {{ clr[i[4]]['c1'] }}; --c2: {{ clr[i[4]]['c3'] }}; {% else %} --c1: {{ clr[i[4]]['c1'] }}; --c2: {{ clr[i[4]]['c2'] }};{% endif %}" src="\static\images\squad_logos\{{ i[4] }}.webp" alt="Team Logo" />
+    </div>
+    {% else %}
+    <div class="header" style="{% if i[0] | int(default=None) is not none %} --c: #25478A; {% else %} --c: #401F52; {% endif %}">Player of the match</div>
+    <div class="potm-content">
+                <div class="potm-image text-blue" style="{% if i[11][1] == 'RCBW' %} --c1: {{ clr[i[11][1]]['c3'] }}; --c2: {{ clr[i[11][1]]['c1'] }}; {% elif i[11][1] == 'GG' %} --c1: {{ clr[i[11][1]]['c1'] }}; --c2: {{ clr[i[11][1]]['c3'] }}; {% else %} --c1: {{ clr[i[11][1]]['c1'] }}; --c2: {{ clr[i[11][1]]['c2'] }};{% endif %}">
+                    <img src="/static/images/squads/{{ i[11][1] }}/{{ i[11][0].replace(' ', '-') }}.png" alt="{{ i[11][0] }}">
+                </div>
+                <div class="potm-details">
+                    <div class="potm-name">{{ i[11][0] }}</div>
+                    <div class="potm-team fw-bold">
+                        <img src="/static/images/squad_logos/{{ i[11][1] }}.webp" alt="Team Logo" class="team-logo2">
+                        {{ fn[i[11][1]] }}
+                    </div>
+                </div>
+
+            </div>
+    {% endif %}
   </div>
 </div></a>
 {% endif %}
