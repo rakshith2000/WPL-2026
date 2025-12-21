@@ -184,11 +184,6 @@ def get_data_from_url(url):
     else:
         return None
     
-def get_innings_data(matID):
-    inn1 = requests.get(f"https://apiv2.cricket.com.au/web/views/comments?fixtureId={matID}&inningNumber=1&commentType=&overLimit=51&jsconfig=eccn%3Atrue&format=json", verify=False).json()
-    inn2 = requests.get(f"https://apiv2.cricket.com.au/web/views/comments?fixtureId={matID}&inningNumber=2&commentType=&overLimit=51&jsconfig=eccn%3Atrue&format=json", verify=False).json()
-    return inn1, inn2
-
 def oversAdd(a, b):
     A, B = round(int(a)*6 + (a-int(a))*10, 0), round(int(b)*6 + (b-int(b))*10, 2)
     S = int(A) + int(B)
@@ -203,6 +198,267 @@ def oversSub(a, b):
 
 def ovToPer(n):
     return (int(n)+((n-int(n))*10)/6)
+
+def upPTNormal(team, teamScore, teamScoreOpp, match, win_team):
+    teamScore['overs'] = 20 if teamScore['wkts'] == 10 else teamScore['overs']
+    teamScoreOpp['overs'] = 20 if teamScoreOpp['wkts'] == 10 else teamScoreOpp['overs']
+    teamPT = db.session.execute(text('SELECT team_name, "P", "W", "L", "Points", "For", "Against", "Win_List" FROM pointstable WHERE team_name = :team_name'),{'team_name': str(team)}).fetchall()
+    for i in teamPT:
+        if i[0] == win_team:
+            P, W, L, Points = 1 + i[1], 1 + i[2], 0 + i[3], 2 + i[4]
+            wl = eval(i[7])
+            wl[int(match)] = 'W'
+            wl = dict(sorted(wl.items()))
+        else:
+            P, W, L, Points = 1 + i[1], 0 + i[2], 1 + i[3], 0 + i[4]
+            wl = eval(i[7])
+            wl[int(match)] = 'L'
+            wl = dict(sorted(wl.items()))
+        For = {'runs': i[5]['runs'] + teamScore['runs'], 'overs': oversAdd(i[5]['overs'], teamScore['overs'])}
+        Against = {'runs': i[6]['runs'] + teamScoreOpp['runs'], 'overs': oversAdd(i[6]['overs'], teamScoreOpp['overs'])}
+        NRR = round((For['runs'] / ovToPer(For['overs']) - Against['runs'] / ovToPer(Against['overs'])), 3)
+        PT = Pointstable.query.filter_by(team_name=str(i[0])).first()
+        PT.P, PT.W, PT.L, PT.Points, PT.NRR, PT.Win_List, PT.For, PT.Against = P, W, L, Points, NRR, str(wl), For, Against
+    db.session.commit()
+
+def upPTSuperOver(team, teamScore, teamScoreOpp, match, so_win_team):
+    teamScore['overs'] = 20 if teamScore['wkts'] == 10 else teamScore['overs']
+    teamScoreOpp['overs'] = 20 if teamScoreOpp['wkts'] == 10 else teamScoreOpp['overs']
+    teamPT = db.session.execute(text('SELECT team_name, "P", "W", "L", "Points", "For", "Against", "Win_List" FROM pointstable WHERE team_name = :team_name'),{'team_name': str(team)}).fetchall()
+    for i in teamPT:
+        if i[0] == so_win_team:
+            P, W, L, Points = 1 + i[1], 1 + i[2], 0 + i[3], 2 + i[4]
+            wl = eval(i[7])
+            wl[int(match)] = 'W'
+            wl = dict(sorted(wl.items()))
+        else:
+            P, W, L, Points = 1 + i[1], 0 + i[2], 1 + i[3], 0 + i[4]
+            wl = eval(i[7])
+            wl[int(match)] = 'L'
+            wl = dict(sorted(wl.items()))
+        For = {'runs': i[5]['runs'] + teamScore['runs'], 'overs': oversAdd(i[5]['overs'], teamScore['overs'])}
+        Against = {'runs': i[6]['runs'] + teamScoreOpp['runs'], 'overs': oversAdd(i[6]['overs'], teamScoreOpp['overs'])}
+        NRR = round((For['runs'] / ovToPer(For['overs']) - Against['runs'] / ovToPer(Against['overs'])), 3)
+        PT = Pointstable.query.filter_by(team_name=str(i[0])).first()
+        PT.P, PT.W, PT.L, PT.Points, PT.NRR, PT.Win_List, PT.For, PT.Against = P, W, L, Points, NRR, str(wl), For, Against
+    db.session.commit()
+
+def upPTAbandoned(team, match, toss_status):
+    teamPT = db.session.execute(text('SELECT team_name, "P", "NR", "Points", "Win_List" FROM pointstable WHERE team_name = :team_name'),{'team_name': str(team)}).fetchall()
+    for i in teamPT:
+        P, NR, Points = 1 + i[1], 1 + i[2], 1 + i[3]
+        wl = eval(i[4])
+        wl[int(match)] = 'D'
+        wl = dict(sorted(wl.items()))
+        PT = Pointstable.query.filter_by(team_name=str(i[0])).first()
+        PT.P, PT.NR, PT.Points, PT.Win_List = P, NR, Points, str(wl)
+    db.session.commit()
+
+def upPTDLS(team, teamScore, teamScoreOpp, match, win_team):
+    teamScore['oversDLS'] = teamScore['revOvers'] if teamScore['wkts'] == 10 else teamScore['oversDLS']
+    teamScoreOpp['oversDLS'] = teamScoreOpp['revOvers'] if teamScoreOpp['wkts'] == 10 else teamScoreOpp['oversDLS']
+    teamPT = db.session.execute(text('SELECT team_name, "P", "W", "L", "Points", "For", "Against", "Win_List" FROM pointstable WHERE team_name = :team_name'),{'team_name': str(team)}).fetchall()
+    for i in teamPT:
+        if i[0] == win_team:
+            P, W, L, Points = 1 + i[1], 1 + i[2], 0 + i[3], 2 + i[4]
+            wl = eval(i[7])
+            wl[int(match)] = 'W'
+            wl = dict(sorted(wl.items()))
+        else:
+            P, W, L, Points = 1 + i[1], 0 + i[2], 1 + i[3], 0 + i[4]
+            wl = eval(i[7])
+            wl[int(match)] = 'L'
+            wl = dict(sorted(wl.items()))
+        For = {'runs': i[5]['runs'] + teamScore['runsDLS'], 'overs': oversAdd(i[5]['overs'], teamScore['oversDLS'])}
+        Against = {'runs': i[6]['runs'] + teamScoreOpp['runsDLS'], 'overs': oversAdd(i[6]['overs'], teamScoreOpp['oversDLS'])}
+        NRR = round((For['runs'] / ovToPer(For['overs']) - Against['runs'] / ovToPer(Against['overs'])), 3)
+        PT = Pointstable.query.filter_by(team_name=str(i[0])).first()
+        PT.P, PT.W, PT.L, PT.Points, PT.NRR, PT.Win_List, PT.For, PT.Against = P, W, L, Points, NRR, str(wl), For, Against
+    db.session.commit()
+
+def delPTNormal(team, teamScore, teamScoreOpp, match, win_team):
+    teamScore['overs'] = 20 if teamScore['wkts'] == 10 else teamScore['overs']
+    teamScoreOpp['overs'] = 20 if teamScoreOpp['wkts'] == 10 else teamScoreOpp['overs']
+    teamPT = db.session.execute(text('SELECT team_name, "P", "W", "L", "Points", "For", "Against", "Win_List" FROM pointstable WHERE team_name = :team_name'),{'team_name': str(team)}).fetchall()
+    for i in teamPT:
+        if i[0] == win_team:
+            P, W, L, Points = -1 + i[1], -1 + i[2], 0 + i[3], -2 + i[4]
+            wl = eval(i[7])
+            del wl[int(match)]
+            wl = dict(sorted(wl.items()))
+        else:
+            P, W, L, Points = -1 + i[1], 0 + i[2], -1 + i[3], 0 + i[4]
+            wl = eval(i[7])
+            del wl[int(match)]
+            wl = dict(sorted(wl.items()))
+        For = {'runs': i[5]['runs'] - teamScore['runs'], 'overs': oversSub(i[5]['overs'], teamScore['overs'])}
+        Against = {'runs': i[6]['runs'] - teamScoreOpp['runs'], 'overs': oversSub(i[6]['overs'], teamScoreOpp['overs'])}
+        if ovToPer(For['overs']) == 0 or ovToPer(Against['overs']) == 0:
+            NRR = 0.0
+        else:
+            NRR = round((For['runs'] / ovToPer(For['overs']) - Against['runs'] / ovToPer(Against['overs'])), 3)
+        PT = Pointstable.query.filter_by(team_name=str(i[0])).first()
+        PT.P, PT.W, PT.L, PT.Points, PT.NRR, PT.Win_List, PT.For, PT.Against = P, W, L, Points, NRR, str(wl), For, Against
+    db.session.commit()
+
+def delPTSuperOver(team, teamScore, teamScoreOpp, match, so_win_team):
+    teamScore['overs'] = 20 if teamScore['wkts'] == 10 else teamScore['overs']
+    teamScoreOpp['overs'] = 20 if teamScoreOpp['wkts'] == 10 else teamScoreOpp['overs']
+    teamPT = db.session.execute(text('SELECT team_name, "P", "W", "L", "Points", "For", "Against", "Win_List" FROM pointstable WHERE team_name = :team_name'),{'team_name': str(team)}).fetchall()
+    for i in teamPT:
+        if i[0] == so_win_team:
+            P, W, L, Points = -1 + i[1], -1 + i[2], 0 + i[3], -2 + i[4]
+            wl = eval(i[7])
+            del wl[int(match)]
+            wl = dict(sorted(wl.items()))
+        else:
+            P, W, L, Points = -1 + i[1], 0 + i[2], -1 + i[3], 0 + i[4]
+            wl = eval(i[7])
+            del wl[int(match)]
+            wl = dict(sorted(wl.items()))
+        For = {'runs': i[5]['runs'] - teamScore['runs'], 'overs': oversSub(i[5]['overs'], teamScore['overs'])}
+        Against = {'runs': i[6]['runs'] - teamScoreOpp['runs'], 'overs': oversSub(i[6]['overs'], teamScoreOpp['overs'])}
+        if ovToPer(For['overs']) == 0 or ovToPer(Against['overs']) == 0:
+            NRR = 0.0
+        else:
+            NRR = round((For['runs'] / ovToPer(For['overs']) - Against['runs'] / ovToPer(Against['overs'])), 3)
+        PT = Pointstable.query.filter_by(team_name=str(i[0])).first()
+        PT.P, PT.W, PT.L, PT.Points, PT.NRR, PT.Win_List, PT.For, PT.Against = P, W, L, Points, NRR, str(wl), For, Against
+    db.session.commit()
+
+def delPTAbandoned(team, match):
+    teamPT = db.session.execute(text('SELECT team_name, "P", "NR", "Points", "Win_List" FROM pointstable WHERE team_name = :team_name'),{'team_name': str(team)}).fetchall()
+    for i in teamPT:
+        P, NR, Points = -1 + i[1], -1 + i[2], -1 + i[3]
+        wl = eval(i[4])
+        del wl[int(match)]
+        wl = dict(sorted(wl.items()))
+        PT = Pointstable.query.filter_by(team_name=str(i[0])).first()
+        PT.P, PT.NR, PT.Points, PT.Win_List = P, NR, Points, str(wl)
+    db.session.commit()
+
+def delPTDLS(team, teamScore, teamScoreOpp, match, win_team):
+    teamScore['oversDLS'] = teamScore['revOvers'] if teamScore['wkts'] == 10 else teamScore['oversDLS']
+    teamScoreOpp['oversDLS'] = teamScoreOpp['revOvers'] if teamScoreOpp['wkts'] == 10 else teamScoreOpp['oversDLS']
+    teamPT = db.session.execute(text('SELECT team_name, "P", "W", "L", "Points", "For", "Against", "Win_List" FROM pointstable WHERE team_name = :team_name'),{'team_name': str(team)}).fetchall()
+    for i in teamPT:
+        if i[0] == win_team:
+            P, W, L, Points = -1 + i[1], -1 + i[2], 0 + i[3], -2 + i[4]
+            wl = eval(i[7])
+            del wl[int(match)]
+            wl = dict(sorted(wl.items()))
+        else:
+            P, W, L, Points = -1 + i[1], 0 + i[2], -1 + i[3], 0 + i[4]
+            wl = eval(i[7])
+            del wl[int(match)]
+            wl = dict(sorted(wl.items()))
+        For = {'runs': i[5]['runs'] - teamScore['runsDLS'], 'overs': oversSub(i[5]['overs'], teamScore['oversDLS'])}
+        Against = {'runs': i[6]['runs'] - teamScoreOpp['runsDLS'], 'overs': oversSub(i[6]['overs'], teamScoreOpp['oversDLS'])}
+        if ovToPer(For['overs']) == 0 or ovToPer(Against['overs']) == 0:
+            NRR = 0.0
+        else:
+            NRR = round((For['runs'] / ovToPer(For['overs']) - Against['runs'] / ovToPer(Against['overs'])), 3)
+        PT = Pointstable.query.filter_by(team_name=str(i[0])).first()
+        PT.P, PT.W, PT.L, PT.Points, PT.NRR, PT.Win_List, PT.For, PT.Against = P, W, L, Points, NRR, str(wl), For, Against
+    db.session.commit()
+    
+def upMatchNormal(data):
+    FR = Fixture.query.filter_by(Match_No=str(data['match'])).first()
+    a, b = FR.Team_A, FR.Team_B
+    FR.Result = '{} won by {} {}'.format(full_name2[data['result']['win_team']], data['result']['win_by'], data['result']['win_type'])
+    FR.Win_T = data['result']['win_team']
+    FR.A_info, FR.B_info = {'runs':data['team_A']['runs'], 'overs':data['team_A']['overs'], 'wkts':data['team_A']['wkts']}, {'runs':data['team_B']['runs'], 'overs':data['team_B']['overs'], 'wkts':data['team_B']['wkts']}
+    db.session.commit()
+    if data['match'].isdigit():
+        upPTNormal(a, data['team_A'], data['team_B'], data['match'], data['result']['win_team'])
+        upPTNormal(b, data['team_B'], data['team_A'], data['match'], data['result']['win_team'])
+
+def upMatchSuperOver(data):
+    FR = Fixture.query.filter_by(Match_No=str(data['match'])).first()
+    a, b = FR.Team_A, FR.Team_B
+    FR.Result = '{} won Super over by {} {}'.format(full_name2[data['result']['so_win_team']], data['result']['so_win_by'], data['result']['so_win_type'])
+    FR.Win_T = data['result']['so_win_team']
+    FR.A_info, FR.B_info = {'runs':data['team_A']['runs'], 'overs':data['team_A']['overs'], 'wkts':data['team_A']['wkts'], 'runsSO':data['team_A']['runsSO'], 'oversSO':data['team_A']['oversSO'], 'wktsSO':data['team_A']['wktsSO']}, {'runs':data['team_B']['runs'], 'overs':data['team_B']['overs'], 'wkts':data['team_B']['wkts'], 'runsSO':data['team_B']['runsSO'], 'oversSO':data['team_B']['oversSO'], 'wktsSO':data['team_B']['wktsSO']}
+    db.session.commit()
+    if data['match'].isdigit():
+        upPTSuperOver(a, data['team_A'], data['team_B'], data['match'], data['result']['so_win_team'])
+        upPTSuperOver(b, data['team_B'], data['team_A'], data['match'], data['result']['so_win_team'])
+
+def upMatchAbandoned(data):
+    FR = Fixture.query.filter_by(Match_No=str(data['match'])).first()
+    a, b = FR.Team_A, FR.Team_B
+    FR.Result = 'No result (Match abandoned due to {} - without toss)'.format(data['reason']) if data['toss_status'] == 'without_toss' else 'No result (Match abandoned due to {})'.format(data['reason'])
+    FR.Win_T = "NA"
+    FR.A_info = {'runs':0, 'overs':0.0, 'wkts':0} if data['toss_status'] == 'without_toss' else data['team_A']
+    FR.B_info = {'runs':0, 'overs':0.0, 'wkts':0} if data['toss_status'] == 'without_toss' else data['team_B']
+    db.session.commit()
+    if data['match'].isdigit():
+        upPTAbandoned(a, data['match'], data['toss_status'])
+        upPTAbandoned(b, data['match'], data['toss_status'])
+
+def upMatchDLS(data):
+    FR = Fixture.query.filter_by(Match_No=str(data['match'])).first()
+    a, b = FR.Team_A, FR.Team_B
+    FR.Result = '{} won by {} {} (DLS method - Target {} in {} Ovrs)'.format(full_name2[data['result']['win_team']], data['result']['win_by'], data['result']['win_type'], data['result']['dls_target'], data['result']['dls_overs'])
+    FR.Win_T = data['result']['win_team']
+    FR.A_info, FR.B_info = data['team_A'], data['team_B']
+    db.session.commit()
+    if data['match'].isdigit():
+        upPTDLS(a, data['team_A'], data['team_B'], data['match'], data['result']['win_team'])
+        upPTDLS(b, data['team_B'], data['team_A'], data['match'], data['result']['win_team'])
+
+def delMatchNormal(data):
+    FR = Fixture.query.filter_by(Match_No=str(data['match'])).first()
+    if data['match'].isdigit():
+        a, b = FR.Team_A, FR.Team_B
+        delPTNormal(a, FR.A_info, FR.B_info, data['match'], FR.Win_T)
+        delPTNormal(b, FR.B_info, FR.A_info, data['match'], FR.Win_T)
+    FR.Result = None
+    FR.Win_T = None
+    FR.A_info = {'runs':0, 'overs':0.0, 'wkts':0}
+    FR.B_info = {'runs':0, 'overs':0.0, 'wkts':0}
+    db.session.commit()
+
+def delMatchSuperOver(data):
+    FR = Fixture.query.filter_by(Match_No=str(data['match'])).first()
+    if data['match'].isdigit():
+        a, b = FR.Team_A, FR.Team_B
+        delPTSuperOver(a, FR.A_info, FR.B_info, data['match'], FR.Win_T)
+        delPTSuperOver(b, FR.B_info, FR.A_info, data['match'], FR.Win_T)
+    FR.Result = None
+    FR.Win_T = None
+    FR.A_info = {'runs':0, 'overs':0.0, 'wkts':0}
+    FR.B_info = {'runs':0, 'overs':0.0, 'wkts':0}
+    db.session.commit()
+
+def delMatchAbandoned(data):
+    FR = Fixture.query.filter_by(Match_No=str(data['match'])).first()
+    if data['match'].isdigit():
+        a, b = FR.Team_A, FR.Team_B
+        delPTAbandoned(a, data['match'])
+        delPTAbandoned(b, data['match'])
+    FR.Result = None
+    FR.Win_T = None
+    FR.A_info = {'runs':0, 'overs':0.0, 'wkts':0}
+    FR.B_info = {'runs':0, 'overs':0.0, 'wkts':0}
+    db.session.commit()
+
+def delMatchDLS(data):
+    FR = Fixture.query.filter_by(Match_No=str(data['match'])).first()
+    if data['match'].isdigit():
+        a, b = FR.Team_A, FR.Team_B
+        delPTDLS(a, FR.A_info, FR.B_info, data['match'], FR.Win_T)
+        delPTDLS(b, FR.B_info, FR.A_info, data['match'], FR.Win_T)
+    FR.Result = None
+    FR.Win_T = None
+    FR.A_info = {'runs':0, 'overs':0.0, 'wkts':0}
+    FR.B_info = {'runs':0, 'overs':0.0, 'wkts':0}
+    db.session.commit()
+
+def get_innings_data(matID):
+    inn1 = requests.get(f"https://apiv2.cricket.com.au/web/views/comments?fixtureId={matID}&inningNumber=1&commentType=&overLimit=51&jsconfig=eccn%3Atrue&format=json", verify=False).json()
+    inn2 = requests.get(f"https://apiv2.cricket.com.au/web/views/comments?fixtureId={matID}&inningNumber=2&commentType=&overLimit=51&jsconfig=eccn%3Atrue&format=json", verify=False).json()
+    return inn1, inn2
 
 def concat_DT(D, T):
     dttm = D.strftime('%Y-%m-%d')+' '+ \
@@ -235,8 +491,6 @@ def render_live_URL(tA, tB, mn, dt):
         matchNo = mn.lower() + "-wpl-2026" + '-'
     dt = dt.strftime("%d-%B-%Y").lower()
     URL = liveURL_Prefix + teamAB + matchNo + dt + liveURL_Suffix
-
-    print(URL)
     return URL
 
 def calculate_age(dob, current_date):
@@ -378,9 +632,11 @@ def displayFR():
             WBy = re.findall(r'\d+', i[7])[0]
             dtt.append(str(WBy))
             dtt.append(i[7][i[7].index('won'):])
-            dtt.append([i[12]['name'], i[12]['team']])
+            if i[12] is not None:
+                dtt.append([i[12]['name'], i[12]['team']])
+            else:
+                dtt.append(['NA','NA'])
         dt.append(dtt)
-        print(dtt)
     current_date = datetime.now(tz)
     current_date = current_date.replace(tzinfo=None)
     return render_template('displayFR.html', FR=dt, hint=hint, fn=full_name, current_date=current_date, clr=clr)
@@ -698,6 +954,7 @@ def update():
 def updatematch():
     hint = request.form.get('hint')
     key = 1
+    # Before: To render Update Input Web page
     if request.method == "POST" and hint == 'before':
         match = str(request.form.get('match')).upper()
         match = int(match) if match.isdigit() else pofs[match]
@@ -712,67 +969,43 @@ def updatematch():
             flash('Teams are not updated for Playoff Match {} to update its result'.format(match), category='warning')
             return redirect(url_for('main.update', key=key))
         return render_template('updatematch.html', FR=FR, fn=full_name, match=match)
+    
+    # After: To update Match Result to Database
     if request.method == 'POST' and hint == 'after':
-        A = [int(request.form['runsA']), float(request.form['oversA']), int(request.form['wktsA'])]
-        B = [int(request.form['runsB']), float(request.form['oversB']), int(request.form['wktsB'])]
-        wt, win_type, win_by = str(request.form['wt']).upper(), str(request.form['win_type']), str(request.form['win_by'])
-        result = '{} won by {} {}'.format(full_name[wt], win_by, win_type)
-        match_no = request.form['match']
-        FR = Fixture.query.filter_by(Match_No=str(match_no)).first()
-        a, b = FR.Team_A,  FR.Team_B
-        FR.Result = result
-        FR.Win_T = wt
-        FR.A_info, FR.B_info = {'runs':A[0], 'overs':A[1], 'wkts':A[2]}, {'runs':B[0], 'overs':B[1], 'wkts':B[2]}
-        db.session.commit()
-        if match_no.isdigit():
-            A[1] = 20 if A[2] == 10 else A[1]
-            B[1] = 20 if B[2] == 10 else B[1]
-            dataA = db.session.execute(text('SELECT team_name, "P", "W", "L", "Points", "For", "Against", "Win_List" FROM pointstable WHERE team_name = :team_name'),{'team_name': str(a)}).fetchall()
-            for i in dataA:
-                if i[0] == wt:
-                    P, W, L, Points = 1 + i[1], 1 + i[2], 0 + i[3], i[4] + 2
-                    wl = eval(i[7])
-                    wl[int(match_no)] = 'W'
-                    wl = dict(sorted(wl.items()))
-                else:
-                    P, W, L, Points = 1 + i[1], 0 + i[2], 1 + i[3], i[4] + 0
-                    wl = eval(i[7])
-                    wl[int(match_no)] = 'L'
-                    wl = dict(sorted(wl.items()))
-                forRuns = i[5]['runs'] + A[0]
-                forOvers = oversAdd(i[5]['overs'], A[1])
-                againstRuns = i[6]['runs'] + B[0]
-                againstOvers = oversAdd(i[6]['overs'], B[1])
-                NRR = round((forRuns / ovToPer(forOvers) - againstRuns / ovToPer(againstOvers)), 3)
-            PT = Pointstable.query.filter_by(team_name=str(a)).first()
-            PT.P, PT.W, PT.L, PT.Points, PT.NRR, PT.Win_List = P, W, L, Points, NRR, str(wl)
-            PT.For = {"runs": forRuns, "overs": forOvers}
-            PT.Against = {"runs": againstRuns, "overs": againstOvers}
-            db.session.commit()
-
-            dataB = db.session.execute(text('SELECT team_name, "P", "W", "L", "Points", "For", "Against", "Win_List" FROM pointstable WHERE team_name = :team_name'),{'team_name': str(b)}).fetchall()
-            for i in dataB:
-                if i[0] == wt:
-                    P, W, L, Points = 1 + i[1], 1 + i[2], 0 + i[3], i[4] + 2
-                    wl = eval(i[7])
-                    wl[int(match_no)] = 'W'
-                    wl = dict(sorted(wl.items()))
-                else:
-                    P, W, L, Points = 1 + i[1], 0 + i[2], 1 + i[3], i[4] + 0
-                    wl = eval(i[7])
-                    wl[int(match_no)] = 'L'
-                    wl = dict(sorted(wl.items()))
-                forRuns = i[5]['runs'] + B[0]
-                forOvers = oversAdd(i[5]['overs'], B[1])
-                againstRuns = i[6]['runs'] + A[0]
-                againstOvers = oversAdd(i[6]['overs'], A[1])
-                NRR = round((forRuns / ovToPer(forOvers) - againstRuns / ovToPer(againstOvers)), 3)
-            PT = Pointstable.query.filter_by(team_name=str(b)).first()
-            PT.P, PT.W, PT.L, PT.Points, PT.NRR, PT.Win_List = P, W, L, Points, NRR, str(wl)
-            PT.For = {"runs": forRuns, "overs": forOvers}
-            PT.Against = {"runs": againstRuns, "overs": againstOvers}
-            db.session.commit()
-        flash('Match {} result updated successfully'.format(match_no), category='success')
+        matchStatus = request.form.get('match_status')
+        if matchStatus == 'completed':
+            data = {}
+            data['team_A'] = {'runs': int(request.form['runsA']), 'overs': float(request.form['oversA']), 'wkts': int(request.form['wktsA'])}
+            data['team_B'] = {'runs': int(request.form['runsB']), 'overs': float(request.form['oversB']), 'wkts': int(request.form['wktsB'])}
+            data['match'] = request.form['match']
+            data['result'] = {'win_team': request.form['wt'], 'win_type': request.form['win_type'], 'win_by': request.form['win_by']}
+            upMatchNormal(data)
+        elif matchStatus == 'tied':
+            data = {}
+            data['team_A'] = {'runs': int(request.form['tied_runsA']), 'overs': float(request.form['tied_oversA']), 'wkts': int(request.form['tied_wktsA']), 'runsSO': int(request.form['superover_runsA']), 'oversSO': float(request.form['superover_oversA']), 'wktsSO': int(request.form['superover_wktsA'])}
+            data['team_B'] = {'runs': int(request.form['tied_runsB']), 'overs': float(request.form['tied_oversB']), 'wkts': int(request.form['tied_wktsB']), 'runsSO': int(request.form['superover_runsB']), 'oversSO': float(request.form['superover_oversB']), 'wktsSO': int(request.form['superover_wktsB'])}
+            data['match'] = request.form['match']
+            data['result'] = {'so_win_team': request.form['superover_winner'], 'so_win_type': request.form['superover_win_type'], 'so_win_by': request.form['superover_win_by']}
+            upMatchSuperOver(data)
+        elif matchStatus == 'abandoned':
+            data = {}
+            data['match'] = request.form['match']
+            data['toss_status'] = request.form['abandon_toss_status']
+            data['reason'] = request.form['abandon_reason']
+            if data['toss_status'] == 'with_toss':
+                data['team_A'] = {'runs': int(request.form['abandon_runsA']), 'overs': float(request.form['abandon_oversA']), 'wkts': int(request.form['abandon_wktsA'])}
+                data['team_B'] = {'runs': int(request.form['abandon_runsB']), 'overs': float(request.form['abandon_oversB']), 'wkts': int(request.form['abandon_wktsB'])}
+            upMatchAbandoned(data)
+        elif matchStatus == 'interrupted_dls':
+            data = {}
+            data['team_A'] = {'runs': int(request.form['runsA']), 'overs': float(request.form['oversA']), 'wkts': int(request.form['wktsA']), 'runsDLS': int(request.form['dls_runsA']), 'oversDLS': float(request.form['dls_oversA']), 'revTarget': int(request.form['dls_target']), 'revOvers': float(request.form['dls_overs'])}
+            data['team_B'] = {'runs': int(request.form['runsB']), 'overs': float(request.form['oversB']), 'wkts': int(request.form['wktsB']), 'runsDLS': int(request.form['dls_runsB']), 'oversDLS': float(request.form['dls_oversB']), 'revTarget': int(request.form['dls_target']), 'revOvers': float(request.form['dls_overs'])}
+            data['dls_reason'] = request.form['dls_reason']
+            data['match'] = request.form['match']
+            data['result'] = {'win_team': request.form['wt'], 'win_type': request.form['win_type'], 'win_by': request.form['win_by'], 'dls_target': int(request.form['dls_target']), 'dls_overs': float(request.form['dls_overs'])}
+            upMatchDLS(data)
+        
+        flash('Match {} result updated successfully'.format(data['match']), category='success')
         return redirect(url_for('main.update', key=key))
 
 @main.route('/deletematch', methods=['POST'])
@@ -780,6 +1013,7 @@ def updatematch():
 def deletematch():
     hint = request.form.get('hint')
     key = 2
+    # Before: To render Delete Input Web page
     if request.method == "POST" and hint == 'before':
         dmatch = str(request.form.get('dmatch')).upper()
         dmatch = int(dmatch) if dmatch.isdigit() else pofs[dmatch]
@@ -791,79 +1025,28 @@ def deletematch():
             flash('Result for Match {} is not yet updated to delete'.format(dmatch), category='warning')
             return redirect(url_for('main.update', key=key))
         return render_template('deletematch.html', FR=FR, fn=full_name, dmatch=dmatch)
+    
+    # After: To delete Match Result from Database
     if request.method == "POST" and hint == 'after':
         dmatch = request.form.get('dmatch')
-        if dmatch.isdigit():
-            FR = db.session.execute(text('SELECT "Team_A", "Team_B", "A_info", "B_info", "Win_T" FROM fixture WHERE "Match_No" = :match_no'),{'match_no': dmatch}).fetchall()
-            for i in FR:
-                A = list(i[2].values())
-                B = list(i[3].values())
-                #A = [int(A[0]), float(A[1]), int(A[2])]
-                #B = [int(B[0]), float(B[1]), int(B[2])]
-                wt = i[4]
-                a, b = i[0], i[1]
-            A[1] = 20 if A[2] == 10 else A[1]
-            B[1] = 20 if B[2] == 10 else B[1]
+        result = db.session.execute(text('SELECT "Result" FROM fixture WHERE "Match_No" = :match_no'),{'match_no': dmatch}).fetchall()
+        if "Super over" not in result[0][0] and "Match abandoned" not in result[0][0] and "DLS" not in result[0][0]:
+            data = {}
+            data['match'] = dmatch
+            delMatchNormal(data)
+        elif "Super over" in result[0][0]:
+            data = {}
+            data['match'] = dmatch
+            delMatchSuperOver(data)
+        elif "Match abandoned" in result[0][0]:
+            data = {}
+            data['match'] = dmatch
+            delMatchAbandoned(data)
+        elif "DLS" in result[0][0]:
+            data = {}
+            data['match'] = dmatch
+            delMatchDLS(data)
 
-            dataA = db.session.execute(text('SELECT team_name, "P", "W", "L", "Points", "For", "Against", "Win_List" FROM pointstable WHERE team_name = :team_name'),{'team_name': str(a)}).fetchall()
-
-            for i in dataA:
-                if i[0] == wt:
-                    P, W, L, Points = i[1] - 1, i[2] - 1, i[3] - 0, i[4] - 2
-                    wl = eval(i[7])
-                    del wl[int(dmatch)]
-                    wl = dict(sorted(wl.items()))
-                else:
-                    P, W, L, Points = i[1] - 1, i[2] - 0, i[3] - 1, i[4] - 0
-                    wl = eval(i[7])
-                    del wl[int(dmatch)]
-                    wl = dict(sorted(wl.items()))
-                forRuns = i[5]['runs'] - A[0]
-                forOvers = oversSub(i[5]['overs'], A[1])
-                againstRuns = i[6]['runs'] - B[0]
-                againstOvers = oversSub(i[6]['overs'], B[1])
-                if ovToPer(forOvers) == 0 or ovToPer(againstOvers) == 0:
-                    NRR = 0.0
-                else:
-                    NRR = round((forRuns / ovToPer(forOvers) - againstRuns / ovToPer(againstOvers)), 3)
-            PT = Pointstable.query.filter_by(team_name=str(a)).first()
-            PT.P, PT.W, PT.L, PT.Points, PT.NRR, PT.Win_List = P, W, L, Points, NRR, str(wl)
-            PT.For = {"runs": forRuns, "overs": forOvers}
-            PT.Against = {"runs": againstRuns, "overs": againstOvers}
-            db.session.commit()
-
-
-            dataB = db.session.execute(text('SELECT team_name, "P", "W", "L", "Points", "For", "Against", "Win_List" FROM pointstable WHERE team_name = :team_name'),{'team_name': str(b)}).fetchall()
-            for i in dataB:
-                if i[0] == wt:
-                    P, W, L, Points = i[1] - 1, i[2] - 1, i[3] - 0, i[4] - 2
-                    wl = eval(i[7])
-                    del wl[int(dmatch)]
-                    wl = dict(sorted(wl.items()))
-                else:
-                    P, W, L, Points = i[1] - 1, i[2] - 0, i[3] - 1, i[4] - 0
-                    wl = eval(i[7])
-                    del wl[int(dmatch)]
-                    wl = dict(sorted(wl.items()))
-                forRuns = i[5]['runs'] - B[0]
-                forOvers = oversSub(i[5]['overs'], B[1])
-                againstRuns = i[6]['runs'] - A[0]
-                againstOvers = oversSub(i[6]['overs'], A[1])
-                if ovToPer(forOvers) == 0 or ovToPer(againstOvers) == 0:
-                    NRR = 0.0
-                else:
-                    NRR = round((forRuns / ovToPer(forOvers) - againstRuns / ovToPer(againstOvers)), 3)
-            PT = Pointstable.query.filter_by(team_name=str(b)).first()
-            PT.P, PT.W, PT.L, PT.Points, PT.NRR, PT.Win_List = P, W, L, Points, NRR, str(wl)
-            PT.For = {"runs": forRuns, "overs": forOvers}
-            PT.Against = {"runs": againstRuns, "overs": againstOvers}
-            db.session.commit()
-
-        FR = Fixture.query.filter_by(Match_No=dmatch).first()
-        FR.Result = None
-        FR.Win_T = None
-        FR.A_info, FR.B_info = {'runs': 0, 'overs': 0.0, 'wkts': 0}, {'runs': 0, 'overs': 0.0, 'wkts': 0}
-        db.session.commit()
         flash('Match {} result deleted successfully'.format(dmatch), category='success')
         return redirect(url_for('main.update', key=key))
     
