@@ -444,6 +444,15 @@ h1 {
       margin-right: 4px;
     }
 
+    .overs-so-font {
+      font-weight: normal;
+    }
+
+    .so-border {
+      border-bottom: #ccc dashed 1px;
+      width: 30px;
+    }
+
 @media (max-width: 840px) {
       .timer-card {
         display: none;

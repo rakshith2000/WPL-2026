@@ -893,6 +893,7 @@ def todayMatch():
                 dtt.append('NA')
                 dtt.append('NA')
                 dtt.append(i[7])
+                dtt.append(['NA', 'NA'])
             else:
                 dtt.append(i[10])
                 WType = 'wickets' if 'wickets' in i[7] else 'runs'
@@ -900,6 +901,10 @@ def todayMatch():
                 WBy = re.findall(r'\d+', i[7])[0]
                 dtt.append(str(WBy))
                 dtt.append(i[7][i[7].index('won'):])
+                if i[12] is not None:
+                    dtt.append([i[12]['name'], i[12]['team']])
+                else:
+                    dtt.append(['NA','NA'])
             dt.append(dtt)
         current_date = datetime.now(tz)
         current_date = current_date.replace(tzinfo=None)

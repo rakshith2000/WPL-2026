@@ -202,14 +202,8 @@
           {% endif %}
         {% else %}
         <div class="score-board">
-          <div class="score-new {% if TA == i[7] and i[0] | int(default=None) is none %}playoff-win{% elif TA == i[7] %}score-win{% endif %}">{{ TA_S['runsSO'] }}{{ "" if TA_S['wktsSO'] == 10 else '/' ~ TA_S['wktsSO'] }}</div>
-          <div class="overs {% if TA == i[7] %}overs-win{% endif %}">({{ TA_S['oversSO'] }})</div>
-        </div>
-        <div class="super-over-label">|
-        </div>
-        <div class="score-board">
-          <div class="score-new">{{ TA_S['runs'] }}{{ "" if TA_S['wkts'] == 10 else '/' ~ TA_S['wkts'] }}</div>
-          <div class="overs">({{ TA_S['overs'] }})</div>
+          <div class="score-new">{{ TA_S['runs'] }}{{ "" if TA_S['wkts'] == 10 else '/' ~ TA_S['wkts'] }}&nbsp;<span class="overs overs-so-font">({{ TA_S['overs'] }})</span></div>
+          <div class="score-new {% if TA == i[7] and i[0] | int(default=None) is none %}playoff-win{% elif TA == i[7] %}score-win{% endif %}">{{ TA_S['runsSO'] }}{{ "" if TA_S['wktsSO'] == 10 else '/' ~ TA_S['wktsSO'] }}&nbsp;<span class="overs overs-so-font {% if TA == i[7] %}overs-win{% endif %}">({{ TA_S['oversSO'] }})</span></div>
         </div>
         {% endif %}
         <div class="team-logo">
@@ -242,14 +236,8 @@
           {% endif %}
         {% else %}
         <div class="score-board">
-          <div class="score-new">{{ TB_S['runs'] }}{{ "" if TB_S['wkts'] == 10 else '/' ~ TB_S['wkts'] }}</div>
-          <div class="overs">({{ TB_S['overs'] }})</div>
-        </div>
-        <div class="super-over-label">|
-        </div>
-        <div class="score-board">
-          <div class="score-new {% if TB == i[7] and i[0] | int(default=None) is none %}playoff-win{% elif TB == i[7] %}score-win{% endif %}">{{ TB_S['runsSO'] }}{{ "" if TB_S['wktsSO'] == 10 else '/' ~ TB_S['wktsSO'] }}</div>
-          <div class="overs {% if TB == i[7] %}overs-win{% endif %}">({{ TB_S['oversSO'] }})</div>
+          <div class="score-new">{{ TB_S['runs'] }}{{ "" if TB_S['wkts'] == 10 else '/' ~ TB_S['wkts'] }}&nbsp;<span class="overs overs-so-font">({{ TB_S['overs'] }})</span></div>
+          <div class="score-new {% if TB == i[7] and i[0] | int(default=None) is none %}playoff-win{% elif TB == i[7] %}score-win{% endif %}">{{ TB_S['runsSO'] }}{{ "" if TB_S['wktsSO'] == 10 else '/' ~ TB_S['wktsSO'] }}&nbsp;<span class="overs overs-so-font {% if TB == i[7] %}overs-win{% endif %}">({{ TB_S['oversSO'] }})</span></div>
         </div>
         {% endif %}
       </div>
