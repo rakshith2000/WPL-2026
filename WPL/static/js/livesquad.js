@@ -209,6 +209,7 @@ window.addEventListener('statsReady', () => {
                                             <div class="squad-image">
                                                 <img src="${dt3.player_images[player.sk_slug]}" alt="${player.name}" onerror="this.onerror=null;this.src='/static/images/Default.png';">
                                             </div>
+                                            </a>
                                         </div>
                                     </div>`;
             });
