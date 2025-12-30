@@ -1,23 +1,23 @@
-Match No,Date,Time,Team A,Team B,Venue,Player_ID
-1,09-01-2026,19.30.00,MIW,RCBW,"Dr DY Patil Sports Academy, Navi Mumbai",
-2,10-01-2026,15.30.00,UPW,GG,"Dr DY Patil Sports Academy, Navi Mumbai",
-3,10-01-2026,19.30.00,MIW,DCW,"Dr DY Patil Sports Academy, Navi Mumbai",
-4,11-01-2026,19.30.00,DCW,GG,"Dr DY Patil Sports Academy, Navi Mumbai",
-5,12-01-2026,19.30.00,RCBW,UPW,"Dr DY Patil Sports Academy, Navi Mumbai",
-6,13-01-2026,19.30.00,MIW,GG,"Dr DY Patil Sports Academy, Navi Mumbai",
-7,14-01-2026,19.30.00,UPW,DCW,"Dr DY Patil Sports Academy, Navi Mumbai",
-8,15-01-2026,19.30.00,MIW,UPW,"Dr DY Patil Sports Academy, Navi Mumbai",
-9,16-01-2026,19.30.00,RCBW,GG,"Dr DY Patil Sports Academy, Navi Mumbai",
-10,17-01-2026,15.30.00,UPW,MIW,"Dr DY Patil Sports Academy, Navi Mumbai",
-11,17-01-2026,19.30.00,DCW,RCBW,"Dr DY Patil Sports Academy, Navi Mumbai",
-12,19-01-2026,19.30.00,GG,RCBW,"BCA Stadium, Vadodara",
-13,20-01-2026,19.30.00,DCW,MIW,"BCA Stadium, Vadodara",
-14,22-01-2026,19.30.00,GG,UPW,"BCA Stadium, Vadodara",
-15,24-01-2026,19.30.00,RCBW,DCW,"BCA Stadium, Vadodara",
-16,26-01-2026,19.30.00,RCBW,MIW,"BCA Stadium, Vadodara",
-17,27-01-2026,19.30.00,GG,DCW,"BCA Stadium, Vadodara",
-18,29-01-2026,19.30.00,UPW,RCBW,"BCA Stadium, Vadodara",
-19,30-01-2026,19.30.00,GG,MIW,"BCA Stadium, Vadodara",
-20,01-02-2026,19.30.00,DCW,UPW,"BCA Stadium, Vadodara",
-Eliminator,03-02-2026,19.30.00,TBA,TBA,"BCA Stadium, Vadodara",
-Final,05-02-2026,19.30.00,TBA,TBA,"BCA Stadium, Vadodara",
+Match No,Date,Time,Team A,Team B,Venue,Match_ID
+1,09-01-2026,19.30.00,MIW,RCBW,"Dr DY Patil Sports Academy, Navi Mumbai",39599
+2,10-01-2026,15.30.00,UPW,GG,"Dr DY Patil Sports Academy, Navi Mumbai",39600
+3,10-01-2026,19.30.00,MIW,DCW,"Dr DY Patil Sports Academy, Navi Mumbai",39601
+4,11-01-2026,19.30.00,DCW,GG,"Dr DY Patil Sports Academy, Navi Mumbai",39602
+5,12-01-2026,19.30.00,RCBW,UPW,"Dr DY Patil Sports Academy, Navi Mumbai",39603
+6,13-01-2026,19.30.00,MIW,GG,"Dr DY Patil Sports Academy, Navi Mumbai",39604
+7,14-01-2026,19.30.00,UPW,DCW,"Dr DY Patil Sports Academy, Navi Mumbai",39605
+8,15-01-2026,19.30.00,MIW,UPW,"Dr DY Patil Sports Academy, Navi Mumbai",39606
+9,16-01-2026,19.30.00,RCBW,GG,"Dr DY Patil Sports Academy, Navi Mumbai",39607
+10,17-01-2026,15.30.00,UPW,MIW,"Dr DY Patil Sports Academy, Navi Mumbai",39608
+11,17-01-2026,19.30.00,DCW,RCBW,"Dr DY Patil Sports Academy, Navi Mumbai",39609
+12,19-01-2026,19.30.00,GG,RCBW,"BCA Stadium, Vadodara",39610
+13,20-01-2026,19.30.00,DCW,MIW,"BCA Stadium, Vadodara",39611
+14,22-01-2026,19.30.00,GG,UPW,"BCA Stadium, Vadodara",39612
+15,24-01-2026,19.30.00,RCBW,DCW,"BCA Stadium, Vadodara",39613
+16,26-01-2026,19.30.00,RCBW,MIW,"BCA Stadium, Vadodara",39614
+17,27-01-2026,19.30.00,GG,DCW,"BCA Stadium, Vadodara",39615
+18,29-01-2026,19.30.00,UPW,RCBW,"BCA Stadium, Vadodara",39616
+19,30-01-2026,19.30.00,GG,MIW,"BCA Stadium, Vadodara",39617
+20,01-02-2026,19.30.00,DCW,UPW,"BCA Stadium, Vadodara",39618
+Eliminator,03-02-2026,19.30.00,TBA,TBA,"BCA Stadium, Vadodara",39619
+Final,05-02-2026,19.30.00,TBA,TBA,"BCA Stadium, Vadodara",39620
