@@ -32,6 +32,34 @@ function getBallScore(ball) {
     }
 }
 
+function getScoreStyle(score) {
+    if (score.startsWith('W')) {
+        return 'filled wicket';
+    } else if (score.includes('4')) {
+        return 'filled four';
+    } else if (score.includes('6')) {
+        return 'filled six';
+    } else if (score === 'x') {
+        return 'filled empty';
+    } else {
+        return 'filled';
+    }
+}
+
+function getLiveOversBallScore(score) {
+        if (score.includes('wd') || score.includes('nb')) {
+            const match = score.match(/^(\d+)([a-zA-Z]+)$/);
+            if (!match) return score;
+            let num = parseInt(match[1], 10) - 1;
+            let text = match[2];
+
+            return num >= 1 ? `${num}${text}` : text;
+        }
+        else {
+            return score;
+        }
+}
+
 function getBallBgColor(score) {
     score = String(score);
     if (score.startsWith('Wd') || score.startsWith('B') || score.startsWith('L') || score.startsWith('N')) {
@@ -162,7 +190,7 @@ window.addEventListener('statsReady', () => {
 		     <div class="col-md-8">
 			  <div class="live_2_inner_left">
 			    <b class="text-white" style="font-size: 20px">${dt1[0].Team_A} vs ${dt1[0].Team_B}</b>
-				<span class="d-block font_14 text-white">${dt2[0]}, ${dt2[1]}, ${dt2[2]}, TATA Women's Premier League 2026</span>
+				<span class="d-block font_14 text-white">${dt2[0]}, ${dt2[1]}, ${dt2[2]}</span>
 			  </div>
 			 </div>
              </div>`;
@@ -244,6 +272,27 @@ window.addEventListener('statsReady', () => {
 
     // --------------- Match Live Section --------------------
     
+    // Live Overs Bar
+    if (dt3.overs_timeline_v2 && dt3.overs_timeline_v2.length > 0) {
+        liveHTML += `<div class="overs overs-section box-shadow-4 rounded_10 mt-3">
+            <div class="overs-bar">`;
+            dt3.overs_timeline_v2.reverse().forEach(over => {
+                liveHTML += `<div class="over-group">
+                    <span class="over-label no-wrap">Over ${over.over.split('.')[0]}</span>
+                    <div class="over-balls">`;
+                    over.summary.forEach(ball => {
+                        let ballScore = getLiveOversBallScore(ball);
+                        liveHTML += `<div class="over-ball ${getScoreStyle(ballScore)}" style="${ballScore.length >= 3 ? 'width: 30px;' : ''}">${ballScore}</div>`;
+                    });
+                liveHTML += `</div>
+                <span class="over-total no-wrap">=&nbsp;${over.runs}</span>
+                </div>`;
+            });
+
+        liveHTML += `</div>
+                    </div>`;
+    }
+
     // Win Probability Bar
     if (
         !dt3.info.toLowerCase().includes('won') &&
@@ -253,12 +302,12 @@ window.addEventListener('statsReady', () => {
         Object.keys(dt3.team_win_probability).length !== 0
     ) {
         liveHTML += `
-        <div class="live_4 box-shadow-4 rounded_10 bg-white mt-3 pt-3 pb-3">
+        <div class="live_4 box-shadow-4 rounded_10 bg-white mt-3 pt-2 pb-1">
             <div class="container1">
                 <div class="label-container">
-                    <img src="/static/images/squad_logos/${dt3.score_strip[0].short_name}.webp" width="40px" height="40px">
+                    <img src="/static/images/squad_logos/${dt3.score_strip[0].short_name}.webp" width="32px" height="32px">
                     <span><b>Win Probability %</b></span>
-                    <img src="/static/images/squad_logos/${dt3.score_strip[1].short_name}.webp" width="40px" height="40px">
+                    <img src="/static/images/squad_logos/${dt3.score_strip[1].short_name}.webp" width="32px" height="32px">
                 </div>
                 <div class="progress-bar">
                     <div class="l-bar" style="--c: ${clr[dt3.score_strip[0].short_name].c1}; width: ${Math.round(parseFloat(dt3.team_win_probability[dt3.score_strip[0].short_name]))}%"></div>
@@ -282,6 +331,8 @@ window.addEventListener('statsReady', () => {
             c1 = clr2[team].c3; c2 = clr2[team].c1; }
         else if (team === 'GG') {
             c1 = clr2[team].c1; c2 = clr2[team].c3; }
+        else if (team === 'NA') {
+            c1 = "#fff"; c2 = "#fff"; }
         else {
             c1 = clr2[team].c1; c2 = clr2[team].c2; }
 
@@ -289,12 +340,12 @@ window.addEventListener('statsReady', () => {
         <div class="score_2_inner box-shadow-4 rounded_10 bg-white mt-3">
             <b class="bg-blue-grad font_18 d-block px-3 text-white text-center pt-2 pb-2 rounded_top">Player of the Match</b>
             <div class="potm-content">
-                <a href="/team-${encodeURIComponent(team)}/squad_details/${encodeURIComponent(name)}">
+                <a href="/team-${encodeURIComponent(team)}/squad_details/${encodeURIComponent(name)}" class="${team === 'NA' ? 'disabled' : ''}">
                 <div class="potm-image" style="--c1: ${c1}; --c2: ${c2};">
                     <img src="${dt3.player_images[dt3.player_of_match.player_slug]}" alt="${name}" onerror="this.onerror=null;this.src='/static/images/squads/${team}/${name.replace(/ /g, "-")}.png';">
                 </div></a>
                 <div class="potm-details">
-                    <div class="potm-name"><a href="/team-${encodeURIComponent(team)}/squad_details/${encodeURIComponent(name)}">${name}</a></div>
+                    <div class="potm-name"><a href="/team-${encodeURIComponent(team)}/squad_details/${encodeURIComponent(name)}" class="${team === 'NA' ? 'disabled' : ''}">${name}</a></div>
                     <div class="potm-team fw-bold">
                         <img src="/static/images/squad_logos/${team}.webp" alt="Team Logo" class="team-logo">
                         ${fn[team]}
@@ -326,6 +377,8 @@ window.addEventListener('statsReady', () => {
             c1 = clr2[team].c3; c2 = clr2[team].c1; }
         else if (team === 'GG') {
             c1 = clr2[team].c1; c2 = clr2[team].c3; }
+        else if (team === 'NA') {
+            c1 = "#fff"; c2 = "#fff"; }
         else {
             c1 = clr2[team].c1; c2 = clr2[team].c2; }
 
@@ -333,12 +386,12 @@ window.addEventListener('statsReady', () => {
         <div class="score_2_inner box-shadow-4 rounded_10 bg-white mt-3 mb-3">
             <b class="bg-blue-grad font_18 d-block px-3 text-white text-center pt-2 pb-2 rounded_top">Player of the Series</b>
             <div class="potm-content">
-                <a href="/team-${encodeURIComponent(team)}/squad_details/${encodeURIComponent(name)}">
+                <a href="/team-${encodeURIComponent(team)}/squad_details/${encodeURIComponent(name)}" class="${team === 'NA' ? 'disabled' : ''}">
                 <div class="potm-image text-blue" style="--c1: ${c1}; --c2: ${c2};">
                     <img src="${dt3.player_images[dt3.player_of_series.player_slug]}" alt="${name}" onerror="this.onerror=null;this.src='/static/images/squads/${team}/${name.replace(/ /g, "-")}.png';">
                 </div></a>
                 <div class="potm-details">
-                    <div class="potm-name"><a href="/team-${encodeURIComponent(team)}/squad_details/${encodeURIComponent(name)}">${name}</a></div>
+                    <div class="potm-name"><a href="/team-${encodeURIComponent(team)}/squad_details/${encodeURIComponent(name)}" class="${team === 'NA' ? 'disabled' : ''}">${name}</a></div>
                     <div class="potm-team fw-bold">
                         <img src="/static/images/squad_logos/${team}.webp" alt="Team Logo" class="team-logo">
                         ${fn[team]}
@@ -375,7 +428,7 @@ window.addEventListener('statsReady', () => {
             let name = dt3.now_batting.b1.name;
             let team = dt3.now_batting.b1.team;
             liveHTML += `<tr>
-                <td class="text-blue" style="text-wrap: nowrap;"><b><a href="/team-${encodeURIComponent(team)}/squad_details/${encodeURIComponent(name)}">${name}</a>&nbsp;<img src="/static/images/Bat.png" width="15px" height="15px"></b></td>
+                <td class="text-blue pl-2" style="text-wrap: nowrap;"><img src="${dt3.player_images[dt3.now_batting.b1.slug]}" width="20px" height="20px" alt="${name}" onerror="this.onerror=null;this.src='/static/images/Default.png';">&nbsp;<b><a href="/team-${encodeURIComponent(team)}/squad_details/${encodeURIComponent(name)}" class="${team === 'NA' ? 'disabled' : ''}">${name}</a>&nbsp;<img src="/static/images/Bat.svg" width="18px" height="18px"></b></td>
                 <td class="px-2 fw-bold">${dt3.now_batting.b1.stats.runs}</td>
                 <td class="px-2">${dt3.now_batting.b1.stats.balls}</td>
                 <td class="px-2">${dt3.now_batting.b1.stats.fours}</td>
@@ -387,7 +440,7 @@ window.addEventListener('statsReady', () => {
             let name = dt3.now_batting.b2.name;
             let team = dt3.now_batting.b2.team;
             liveHTML += `<tr>
-                <td class="text-blue" style="text-wrap: nowrap;"><b><a href="/team-${encodeURIComponent(team)}/squad_details/${encodeURIComponent(name)}">${name}</a></b></td>
+                <td class="text-blue pl-2" style="text-wrap: nowrap;"><img src="${dt3.player_images[dt3.now_batting.b2.slug]}" width="20px" height="20px" alt="${name}" onerror="this.onerror=null;this.src='/static/images/Default.png';">&nbsp;<b><a href="/team-${encodeURIComponent(team)}/squad_details/${encodeURIComponent(name)}" class="${team === 'NA' ? 'disabled' : ''}">${name}</a></b></td>
                 <td class="px-2 fw-bold">${dt3.now_batting.b2.stats.runs}</td>
                 <td class="px-2">${dt3.now_batting.b2.stats.balls}</td>
                 <td class="px-2">${dt3.now_batting.b2.stats.fours}</td>
@@ -407,7 +460,7 @@ window.addEventListener('statsReady', () => {
             let name = dt3.now_bowling.b1.name;
             let team = dt3.now_bowling.b1.team;
             liveHTML += `<tr>
-                <td class="text-blue" style="text-wrap: nowrap;"><b><a href="/team-${encodeURIComponent(team)}/squad_details/${encodeURIComponent(name)}">${name}</a>&nbsp;<img src="/static/images/ball.png" width="12px" height="12px" onerror="this.onerror=null; this.src='/static/images/ball.png'"></b></td>
+                <td class="text-blue pl-2" style="text-wrap: nowrap;"><img src="${dt3.player_images[dt3.now_bowling.b1.slug]}" width="20px" height="20px" alt="${name}" onerror="this.onerror=null;this.src='/static/images/Default.png';">&nbsp;<b><a href="/team-${encodeURIComponent(team)}/squad_details/${encodeURIComponent(name)}" class="${team === 'NA' ? 'disabled' : ''}">${name}</a>&nbsp;<img src="/static/images/Ball.svg" width="14px" height="14px" onerror="this.onerror=null; this.src='/static/images/ball.svg'"></b></td>
                 <td class="px-2">${dt3.now_bowling.b1.stats.overs}</td>
                 <td class="px-2">${dt3.now_bowling.b1.stats.maiden_overs}</td>
                 <td class="px-2">${dt3.now_bowling.b1.stats.runs}</td>
@@ -419,7 +472,7 @@ window.addEventListener('statsReady', () => {
             let name = dt3.now_bowling.b2.name;
             let team = dt3.now_bowling.b2.team;
             liveHTML += `<tr>
-                <td class="text-blue" style="text-wrap: nowrap;"><b><a href="/team-${encodeURIComponent(team)}/squad_details/${encodeURIComponent(name)}">${name}</a></b></td>
+                <td class="text-blue pl-2" style="text-wrap: nowrap;"><img src="${dt3.player_images[dt3.now_bowling.b2.slug]}" width="20px" height="20px" alt="${name}" onerror="this.src='/static/images/Default.png';">&nbsp;<b><a href="/team-${encodeURIComponent(team)}/squad_details/${encodeURIComponent(name)}" class="${team === 'NA' ? 'disabled' : ''}">${name}</a></b></td>
                 <td class="px-2">${dt3.now_bowling.b2.stats.overs}</td>
                 <td class="px-2">${dt3.now_bowling.b2.stats.maiden_overs}</td>
                 <td class="px-2">${dt3.now_bowling.b2.stats.runs}</td>
@@ -525,6 +578,7 @@ window.addEventListener('statsReady', () => {
     liveHTML += `</div></div>`;
     liveHTML += `</div>`;
     liveContainer.innerHTML = liveHTML;
+    
 
     // Restore previously active tab after HTML update
     if (activeTabHref) {
@@ -575,6 +629,52 @@ window.addEventListener('statsReady', () => {
     document.querySelectorAll(".clockdiv").forEach(function(clockElement) {
   createTimer(clockElement); // This will start the timer instantly
 });
+});
+
+// --- Overs Bar Scroll and Fade Logic ---
+function scrollOversBarToEnd(smooth = true) {
+    const oversBar = document.querySelector('.overs-bar');
+    if (oversBar) {
+        oversBar.scrollTo({ left: oversBar.scrollWidth, behavior: smooth ? 'smooth' : 'auto' });
+    }
+}
+
+function updateOversBarFade() {
+    const oversSection = document.querySelector('.overs-section');
+    const oversBar = document.querySelector('.overs-bar');
+    if (!oversSection || !oversBar) return;
+    const scrollLeft = oversBar.scrollLeft;
+    const maxScroll = oversBar.scrollWidth - oversBar.clientWidth;
+    if (scrollLeft <= 0) {
+        oversSection.classList.add('at-start');
+    } else {
+        oversSection.classList.remove('at-start');
+    }
+    if (scrollLeft >= maxScroll - 1) {
+        oversSection.classList.add('at-end');
+    } else {
+        oversSection.classList.remove('at-end');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    scrollOversBarToEnd(false); // On initial load, jump to end
+    updateOversBarFade();
+    const oversBar = document.querySelector('.overs-bar');
+    if (oversBar) {
+        oversBar.addEventListener('scroll', updateOversBarFade);
+        window.addEventListener('resize', updateOversBarFade);
+    }
+});
+
+window.addEventListener('statsReady', () => {
+    scrollOversBarToEnd(false); // On refresh, smooth scroll to end
+    updateOversBarFade();
+    const oversBar = document.querySelector('.overs-bar');
+    if (oversBar) {
+        oversBar.addEventListener('scroll', updateOversBarFade);
+        window.addEventListener('resize', updateOversBarFade);
+    }
 });
 
 // Add Move to Top button logic

@@ -159,6 +159,8 @@ window.addEventListener('statsReady', () => {
             c1 = clr2[team].c3; c2 = clr2[team].c1; }
         else if (team === 'GG') {
             c1 = clr2[team].c1; c2 = clr2[team].c3; }
+        else if (team === 'NA') {
+            c1 = "#fff"; c2 = "#fff"; }
         else {
             c1 = clr2[team].c1; c2 = clr2[team].c2; }
 
@@ -166,12 +168,12 @@ window.addEventListener('statsReady', () => {
         <div class="score_2_inner box-shadow-4 rounded_10 bg-white mt-3">
             <b class="bg-blue-grad font_18 d-block px-3 text-white text-center pt-2 pb-2 rounded_top">Player of the Match</b>
             <div class="potm-content">
-                <a href="/team-${encodeURIComponent(team)}/squad_details/${encodeURIComponent(name)}">
+                <a href="/team-${encodeURIComponent(team)}/squad_details/${encodeURIComponent(name)}" class="${team === 'NA' ? 'disabled' : ''}">
                 <div class="potm-image" style="--c1: ${c1}; --c2: ${c2};">
                     <img src="${dt3.player_images[dt3.player_of_match.player_slug]}" alt="${name}" onerror="this.onerror=null;this.src='/static/images/squads/${team}/${name.replace(/ /g, "-")}.png';">
                 </div></a>
                 <div class="potm-details">
-                    <div class="potm-name"><a href="/team-${encodeURIComponent(team)}/squad_details/${encodeURIComponent(name)}">${name}</a></div>
+                    <div class="potm-name"><a href="/team-${encodeURIComponent(team)}/squad_details/${encodeURIComponent(name)}" class="${team === 'NA' ? 'disabled' : ''}">${name}</a></div>
                     <div class="potm-team fw-bold">
                         <img src="/static/images/squad_logos/${team}.webp" alt="Team Logo" class="team-logo">
                         ${fn[team]}
@@ -203,6 +205,8 @@ window.addEventListener('statsReady', () => {
             c1 = clr2[team].c3; c2 = clr2[team].c1; }
         else if (team === 'GG') {
             c1 = clr2[team].c1; c2 = clr2[team].c3; }
+        else if (team === 'NA') {
+            c1 = "#fff"; c2 = "#fff"; }
         else {
             c1 = clr2[team].c1; c2 = clr2[team].c2; }
 
@@ -210,12 +214,12 @@ window.addEventListener('statsReady', () => {
         <div class="score_2_inner box-shadow-4 rounded_10 bg-white mt-3 mb-3">
             <b class="bg-blue-grad font_18 d-block px-3 text-white text-center pt-2 pb-2 rounded_top">Player of the Series</b>
             <div class="potm-content">
-                <a href="/team-${encodeURIComponent(team)}/squad_details/${encodeURIComponent(name)}">
+                <a href="/team-${encodeURIComponent(team)}/squad_details/${encodeURIComponent(name)}" class="${team === 'NA' ? 'disabled' : ''}">
                 <div class="potm-image text-blue" style="--c1: ${c1}; --c2: ${c2};">
                     <img src="${dt3.player_images[dt3.player_of_series.player_slug]}" alt="${name}" onerror="this.onerror=null;this.src='/static/images/squads/${team}/${name.replace(/ /g, "-")}.png';">
                 </div></a>
                 <div class="potm-details">
-                    <div class="potm-name"><a href="/team-${encodeURIComponent(team)}/squad_details/${encodeURIComponent(name)}">${name}</a></div>
+                    <div class="potm-name"><a href="/team-${encodeURIComponent(team)}/squad_details/${encodeURIComponent(name)}" class="${team === 'NA' ? 'disabled' : ''}">${name}</a></div>
                     <div class="potm-team fw-bold">
                         <img src="/static/images/squad_logos/${team}.webp" alt="Team Logo" class="team-logo">
                         ${fn[team]}
@@ -276,7 +280,7 @@ window.addEventListener('statsReady', () => {
             let imagePath = dt3.player_images[batsmen.slug];
             liveHTML += `<tr class="border-0">
                 <td class="pb-0 text-blue" style="text-wrap: nowrap;">
-                    <b><a href="/team-${encodeURIComponent(team)}/squad_details/${encodeURIComponent(name)}">${name}</a>${batsmen.is_captain ? '&nbsp;<span class="text-muted">(C)</span>' : ''}</b>
+                    <b><a href="/team-${encodeURIComponent(team)}/squad_details/${encodeURIComponent(name)}" class="${team === 'NA' ? 'disabled' : ''}">${name}</a>${batsmen.is_captain ? '&nbsp;<span class="text-muted">(C)</span>' : ''}</b>
                 </td>
                 <td class="px-0 pb-0"><b>${batsmen.runs}</b></td>
                 <td class="px-0 pb-0">${batsmen.balls}</td>
@@ -302,7 +306,7 @@ window.addEventListener('statsReady', () => {
         i.not_batted.forEach((nb, nbIdx) => {
             const name = nb.name;
             const team = nb.team;
-            liveHTML += `<a href="/team-${encodeURIComponent(team)}/squad_details/${encodeURIComponent(name)}"><span class="text-blue">${name}</span></a>${nbIdx < i.not_batted.length - 1 ? ', ' : ''}`;
+            liveHTML += `<a href="/team-${encodeURIComponent(team)}/squad_details/${encodeURIComponent(name)}" class="${team === 'NA' ? 'disabled' : ''}"><span class="text-blue">${name}</span></a>${nbIdx < i.not_batted.length - 1 ? ', ' : ''}`;
         });
         liveHTML += `</td></tr>`;
 
@@ -338,7 +342,7 @@ window.addEventListener('statsReady', () => {
             const team = bowler.team;
             const name = bowler.name;
             liveHTML += `<tr class="border-top">
-                <td class="text-blue" style="text-wrap: nowrap;"><b><a href="/team-${encodeURIComponent(team)}/squad_details/${encodeURIComponent(name)}">${name}</a></b></td>
+                <td class="text-blue" style="text-wrap: nowrap;"><b><a href="/team-${encodeURIComponent(team)}/squad_details/${encodeURIComponent(name)}" class="${team === 'NA' ? 'disabled' : ''}">${name}</a></b></td>
                 <td class="px-2">${bowler.overs}</td>
                 <td class="px-2">${bowler.maiden_overs}</td>
                 <td class="px-2">${bowler.runs}</td>
@@ -365,7 +369,7 @@ window.addEventListener('statsReady', () => {
             const score = wicket.score;
             const over = wicket.over;
             liveHTML += `<tr class="border-top">
-                <td class="text-blue" style="text-wrap: nowrap;"><b><a href="/team-${encodeURIComponent(team)}/squad_details/${encodeURIComponent(name)}">${name}</a></b></td>
+                <td class="text-blue" style="text-wrap: nowrap;"><b><a href="/team-${encodeURIComponent(team)}/squad_details/${encodeURIComponent(name)}" class="${team === 'NA' ? 'disabled' : ''}">${name}</a></b></td>
                 <td class="px-0 fw-bold">${score}</td>
                 <td class="px-0">${over}</td>
             </tr>`;
