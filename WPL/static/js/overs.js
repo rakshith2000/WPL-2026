@@ -154,7 +154,7 @@ window.addEventListener('statsReady', () => {
 		     <div class="col-md-8">
 			  <div class="live_2_inner_left">
 			    <b class="text-white" style="font-size: 20px">${dt1[0].Team_A} vs ${dt1[0].Team_B}</b>
-				<span class="d-block font_14 text-white">${dt2[0]}, ${dt2[1]}, ${dt2[2]}, TATA Women's Premier League 2026</span>
+				<span class="d-block font_14 text-white">${dt2[0]}, ${dt2[1]}, ${dt2[2]}</span>
 			  </div>
 			 </div>
              </div>`;
