@@ -38,6 +38,14 @@ champions = {
     'GG':    []
 }
 
+teams_data = {
+    'DCW': {'Captain': 'Jemimah Rodrigues', 'Coach': 'Jonathan Batty', 'Owner': 'JSW GMR Pvt Ltd'},
+    'GG': {'Captain': 'Ashleigh Gardner', 'Coach': 'Michael Klinger', 'Owner': 'Adani Sportsline Pvt Ltd'},
+    'MIW': {'Captain': 'Harmanpreet Kaur', 'Coach': 'Lisa Keightley', 'Owner': 'Indiawin Sports Pvt Ltd'},
+    'RCBW': {'Captain': 'Smriti Mandhana', 'Coach': 'Malolan Rangarajan', 'Owner': 'Royal Challengers Sports Pvt Ltd'},
+    'UPW': {'Captain': 'Deepti Sharma', 'Coach': 'Abhishek Nayar', 'Owner': 'Capri Global Holdings Pvt Ltd'}
+}
+
 full_name = {'DCW':'Delhi Capitals',
              'GG':'Gujarat Giants',
              'MIW':'Mumbai Indians',
@@ -648,7 +656,7 @@ def teams():
 @main.route('/teams/<team>')
 def squad(team):
     sq = Squad.query.filter_by(Team=team).order_by(Squad.Player_ID).all()
-    return render_template('squad.html', team=team, sq=sq, fn=full_name[team], clr=clr[team], sqclr=sqclr[team])
+    return render_template('squad.html', team=team, sq=sq, fn=full_name[team], clr=clr[team], sqclr=sqclr[team], team_dt=teams_data[team], champions=champions)
 
 @main.route('/team-<team>/squad_details/<name>')
 def squad_details(team, name):
