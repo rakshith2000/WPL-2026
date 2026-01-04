@@ -100,23 +100,26 @@ body::-webkit-scrollbar-thumb:hover { background-color: #f7b733; }
 
 .watermark {
   position: absolute;
-  top: 0;
+  top: -25px;
   left: 0;
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
+  line-height: 0.7;
   justify-content: center;
   align-items: center;
   pointer-events: none;
   z-index: 1;
 }
 .watermark span {
-  font-size: 1.8rem;
+  font-size: 4.5rem;
+  font-weight: 800;
   font-weight: bold;
-  color: rgba(255,255,255,0.05);
+  color: rgba(0,0,0,0.07);
   white-space: nowrap;
-  transform: rotate(-10deg);
+  transform: rotate(-5deg);
+  text-transform: uppercase;
   margin: 5px 0;
 }
 
@@ -267,17 +270,6 @@ body::-webkit-scrollbar-thumb:hover { background-color: #f7b733; }
     {% for i in fn.keys() %}
     {% if i != 'TBA' %}
     <div class="flex-item">
-      <div class="watermark">
-        <span>{{ fn[i] }}</span>
-        <span>{{ fn[i] }}</span>
-        <span>{{ fn[i] }}</span>
-        <span>{{ fn[i] }}</span>
-        <span>{{ fn[i] }}</span>
-        <span>{{ fn[i] }}</span>
-        <span>{{ fn[i] }}</span>
-        <span>{{ fn[i] }}</span>
-        <span>{{ fn[i] }}</span>
-      </div>
       <a href="{{ url_for('main.squad', team=i) }}">
         {% if champions[i] %}
         <div class="grad-card card-flip" style="--c1: {{ sqclr[i]['c1'] }}; --c2: {{ sqclr[i]['c2'] }}">
@@ -285,6 +277,11 @@ body::-webkit-scrollbar-thumb:hover { background-color: #f7b733; }
             <!-- FRONT FACE: your unchanged content -->
             <div class="card-face card-front">
               <div class="card-content">
+                <div class="watermark">
+              {% for j in range(4) %}
+              <span>{{ fn[i] }}</span>
+              {% endfor %}
+              </div>
                 <img class="team-players" src="/static/images/team_players/{{ i }}.webp" alt="Team Logo" />
               </div>
               <div class="card-footer">
@@ -294,8 +291,13 @@ body::-webkit-scrollbar-thumb:hover { background-color: #f7b733; }
             </div>
 
             <!-- BACK FACE: trophy and champion years, with all spacing and alignment -->
-            <div class="card-face card-back">
+            <div class="card-face card-back" style="justify-content: center;">
               <div class="card-content">
+                <div class="watermark">
+                {% for j in range(12) %}
+                <span>{{ fn[i] }}</span>
+                {% endfor %}
+                </div>
                 <img src="/static/images/trophy.webp" alt="Trophy" />
               </div>
               <div class="card-footer" style="width: 90%; margin: 0 auto;">
@@ -317,13 +319,18 @@ body::-webkit-scrollbar-thumb:hover { background-color: #f7b733; }
         <div class="grad-card" style="--c1: {{ sqclr[i]['c1'] }}; --c2: {{ sqclr[i]['c2'] }}">
           <!-- Content Block Space for Middle -->
           <div class="card-content">
+            <div class="watermark">
+            {% for j in range(4) %}
+            <span>{{ fn[i] }}</span>
+            {% endfor %}
+            </div>
             <img class="team-players" src="/static/images/team_players/{{ i }}.webp" alt="Team Logo" />
           </div>
 
           <!-- Footer for Logo and Name -->
           <div class="card-footer">
             <img class="team-image" style="--c1: {{ sqclr[i]['c1'] }}; --c2: {{ sqclr[i]['c2'] }};" src="/static/images/squad_logos/{{ i }}.webp" alt="Team Logo" />
-            <div class="team-name" style="--clr: {{ sqclr[i]['c2'] }};"><span style="font-size: 25px; font-weight: 800;">{{ fn[i].split(' ')[:-1] | join(' ') | upper }}</span><span style="font-size: 45px; font-weight: 800;">{{ fn[i].split(' ')[-1] | upper }}</span></div>
+            <div class="team-name" style="--clr: {{ sqclr[i]['c2'] }};"><span style="font-size: 25px; font-weight: 900;">{{ fn[i].split(' ')[:-1] | join(' ') | upper }}</span><span style="font-size: 45px; font-weight: 900;">{{ fn[i].split(' ')[-1] | upper }}</span></div>
           </div>
 
         </div>
