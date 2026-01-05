@@ -30,6 +30,18 @@ statsList = {
     "bowling": {"Most Wickets": "mostWickets", "Best Bowling Average": "lowestAvg", "Best Bowling": "bestBowlingInnings", "Most 5 Wickets Haul": "mostFiveWickets", "Best Economy": "lowestEcon", "Best Bowling Strike Rate": "lowestSr"}
 }
 
+stats_headers = {
+    'BF': ['Mats', 'Inns', 'N/O', 'Runs', 'HS', '100s', '50s', '4s', '6s', 'Avg', 'SR', 'CT', 'ST', 'SN', 'Tid', 'Ducks', 'R/O', 'ID', 'Team'],
+    'BW': ['Inns', 'Overs', 'Mdns', 'Runs', 'Wkts', 'BBI', '3W', '5W', 'Avg', 'Econ', 'SR', 'SN', 'Tid', 'Mats', 'ID', 'Team']
+}
+
+stats_index = {
+    "overall": ['apiData', 'profile', 'data', 1, 'overall'],
+    "batting_fielding": ['Batting & Fielding'],
+    "bowling": ['Bowling'],
+    "yearly": ['apiData', 'profile', 'data', 3, 'year', 'WPL']
+}
+
 champions = {
     'MIW':   ['2023', '2025'],
     'UPW':   [],
@@ -43,7 +55,7 @@ teams_data = {
     'GG': {'Captain': 'Ashleigh Gardner', 'Coach': 'Michael Klinger', 'Owner': 'Adani Sportsline Pvt Ltd'},
     'MIW': {'Captain': 'Harmanpreet Kaur', 'Coach': 'Lisa Keightley', 'Owner': 'Indiawin Sports Pvt Ltd'},
     'RCBW': {'Captain': 'Smriti Mandhana', 'Coach': 'Malolan Rangarajan', 'Owner': 'Royal Challengers Sports Pvt Ltd'},
-    'UPW': {'Captain': 'Deepti Sharma', 'Coach': 'Abhishek Nayar', 'Owner': 'Capri Global Holdings Pvt Ltd'}
+    'UPW': {'Captain': 'Meg Lanning', 'Coach': 'Abhishek Nayar', 'Owner': 'Capri Global Holdings Pvt Ltd'}
 }
 
 full_name = {'DCW':'Delhi Capitals',
@@ -106,6 +118,66 @@ def serialize(obj):
         return obj.isoformat()
     else:
         return obj
+    
+def get_nested_value(data, key_path):
+    value = data
+    try:
+        for key in key_path:
+            value = value[key]
+    except:
+        return None
+    return value
+
+def get_player_stats(URL):
+    try:
+        res = requests.get(URL, verify=False)
+        match = re.search(r'window.playerStatsWidgetData\s*=\s*(\{.*?\});', res.text, re.DOTALL)
+        if match:
+            js_obj = match.group(1)
+            # Convert JS object to JSON (if needed, fix any JS-specific syntax)
+            try:
+                data = json.loads(js_obj)
+            except Exception as e:
+                # If there are issues, try to fix common JS-to-JSON issues
+                js_obj_fixed = js_obj.replace("'", '"')
+                data = json.loads(js_obj_fixed)
+    except Exception as e:
+        data = None
+
+    stats = {'Overall': {}}
+    if data is not None:
+        # Overall Stats
+        stat_types = [
+            ('Batting & Fielding', stats_index['overall'] + stats_index['batting_fielding'] + ['WPL'], stats_headers['BF']),
+            ('Bowling', stats_index['overall'] + stats_index['bowling'] + ['WPL'], stats_headers['BW'])
+        ]
+        for key, path, header in stat_types:
+            try:
+                value = get_nested_value(data, path)
+                if key == 'Bowling':
+                    value[-5:-5] = ['-', '-']
+                stats['Overall'][key] = {h: v for h, v in zip(header, value[:-2])} if value else None
+            except Exception as e:
+                stats['Overall'][key] = None
+
+        # Yearly Stats
+        years_data = get_nested_value(data, stats_index['yearly'] + ['Batting & Fielding'])
+        years = list(years_data.keys()) if years_data else []
+        for year in sorted([x for x in years if x != 'Desc']):
+            stats[year] = {}
+            stat_types = [
+                ('Batting & Fielding', stats_index['yearly'] + stats_index['batting_fielding'] + [year], stats_headers['BF']),
+                ('Bowling', stats_index['yearly'] + stats_index['bowling'] + [year], stats_headers['BW'])
+            ]
+            for key, path, header in stat_types:
+                try:
+                    value = get_nested_value(data, path)
+                    stats[year][key] = {h: v for h, v in zip(header, value[:-2])} if value else None
+                except Exception as e:
+                    stats[year][key] = None
+    else:
+        stats['Overall'] = None
+    return stats
 
 def normalize_name(name):
     """Normalize names for better matching"""
@@ -664,7 +736,7 @@ def squad_details(team, name):
     current_date = datetime.now(tz)
     current_date = current_date.replace(tzinfo=None)
     age = calculate_age(sq.DOB, current_date)
-    return render_template('squad_details.html', sq=sq, clr=clr[team], team=team, age=age, sqclr=sqclr[team])
+    return render_template('squad_details.html', sq=sq, clr=clr[team], team=team, age=age, sqclr=sqclr[team], stats=get_player_stats(sq.Player_URL))
 
 def get_matchInfo(match):
     MatchDT = db.session.execute(text('SELECT * FROM Fixture WHERE "Match_No" = :matchno'), {'matchno': match}).fetchall()
