@@ -3,6 +3,47 @@ const liveContainer = document.getElementById('liveContainer');
 let firstLoad = true;
 let refreshInterval = null;
 
+function parseOvers(oversStr) {
+  // Converts "3.2" to balls: 3*6 + 2 = 20
+  const [whole, part] = oversStr.split('.').map(Number);
+  return whole * 6 + (isNaN(part) ? 0 : part);
+}
+
+function getTopBatters(batting) {
+    const allBatting = batting[0].batting.concat(batting[1].batting);
+    return allBatting.slice().sort((a, b) => {
+        const runsA = Number(a.runs);
+        const runsB = Number(b.runs);
+        const ballsA = Number(a.balls);
+        const ballsB = Number(b.balls);
+
+    if (runsA !== runsB) {
+      return runsB - runsA; // Descending runs
+    }
+    return ballsA - ballsB; // Ascending balls
+  });
+}
+
+function getTopBowlers(bowling) {
+    const allBowling = bowling[0].bowling.concat(bowling[1].bowling);
+    return allBowling.slice().sort((a, b) => {
+        const wicketsA = Number(a.wickets);
+        const wicketsB = Number(b.wickets);
+        const runsA = Number(a.runs);
+        const runsB = Number(b.runs);
+        const ballsA = parseOvers(a.overs);
+        const ballsB = parseOvers(b.overs);
+
+    if (wicketsA !== wicketsB) {
+      return wicketsB - wicketsA; // Descending wickets
+    }
+    if (runsA !== runsB) {
+      return runsA - runsB; // Ascending runs
+    }
+    return ballsA - ballsB; // Ascending balls
+  });
+}
+
 function fetchAndRender(showSpinner = false) {
     if (showSpinner) {
         liveContainer.innerHTML = `<div id="loadingSpinner" style="text-align:center; padding:40px 0;">
@@ -229,6 +270,56 @@ window.addEventListener('statsReady', () => {
         </div>
         `;
        }
+    }
+
+    //Top performers section
+    if (dt3.info && dt3.info.toLowerCase().includes('won')) {
+        let topBatters = getTopBatters(dt3.innings).slice(0, 2);
+        let topBowlers = getTopBowlers(dt3.innings).slice(0, 2);
+
+        liveHTML += `
+        <div class="score_2_inner box-shadow-4 rounded_10 bg-white mt-3 mb-3">
+        <b class="bg-blue-grad font_18 d-block px-3 text-white text-center pt-2 pb-2 rounded_top">Top Performers</b>
+            <div class="tp-innings-info">
+                <div class="tp-player-details batter">
+                    <div class="tp-head">Batters</div>
+                    <div class="tp-body">
+                        <div class="tp-player-data">
+                            ${topBatters.map(b => `
+                                <div class="tp-player-info">
+                                    <div class="tp-player-thumbnail">
+                                        <img src="/static/images/squads/${b.team}/${b.name.replace(/ /g, "-")}.png" alt="${b.name}" class="image">
+                                    </div>
+                                    <div class="tp-player-info-content">
+                                        <div class="tp-player-name"><a href="/team-${encodeURIComponent(b.team)}/squad_details/${encodeURIComponent(b.name)}">${b.name}</a></div>
+                                        <div class="tp-player-score"><span class="runs">${b.runs}${b.out_str === 'Not out' ? '*' : ''}</span><span>&nbsp;(${b.balls})</span></div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+                <div class="tp-player-details bowler">
+                    <div class="tp-head">Bowlers</div>
+                    <div class="tp-body">
+                        <div class="tp-player-data">
+                            ${topBowlers.map(b => `
+                                <div class="tp-player-info">
+                                    <div class="tp-player-thumbnail">
+                                        <img src="/static/images/squads/${b.team}/${b.name.replace(/ /g, "-")}.png" alt="${b.name}" class="image">
+                                    </div>
+                                    <div class="tp-player-info-content">
+                                        <div class="tp-player-name"><a href="/team-${encodeURIComponent(b.team)}/squad_details/${encodeURIComponent(b.name)}">${b.name}</a></div>
+                                        <div class="tp-player-score"><span class="runs">${b.wickets}/${b.runs}</span><span>&nbsp;(${b.overs})</span></div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        `;
     }
 
     //Innings Tabs Buttons
