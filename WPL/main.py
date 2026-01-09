@@ -23,7 +23,7 @@ pofs = {'E':'Eliminator', 'F':'Final'}
 liveURL_Prefix = "https://cmc2.sportskeeda.com/live-cricket-score/"
 liveURL_Suffix = "/ajax"
 
-statsBaseURL = "https://www.cricbuzz.com/api/cricket-series/series-stats/9351/"
+statsBaseURL = "https://www.cricbuzz.com/api/cricket-series/series-stats/11275/"
 
 statsList = {
     "batting": {"Most Runs": "mostRuns", "Highest Scores": "highestScore", "Best Batting Average": "highestAvg", "Best Batting Strike Rate":"highestSr", "Most Hundreds": "mostHundreds", "Most Fifties": "mostFifties", "Most Fours": "mostFours", "Most Sixes": "mostSixes", "Most Nineties": "mostNineties"},
@@ -56,6 +56,14 @@ teams_data = {
     'MIW': {'Captain': 'Harmanpreet Kaur', 'Coach': 'Lisa Keightley', 'Owner': 'Indiawin Sports Pvt Ltd'},
     'RCBW': {'Captain': 'Smriti Mandhana', 'Coach': 'Malolan Rangarajan', 'Owner': 'Royal Challengers Sports Pvt Ltd'},
     'UPW': {'Captain': 'Meg Lanning', 'Coach': 'Abhishek Nayar', 'Owner': 'Capri Global Holdings Pvt Ltd'}
+}
+
+win_prob = {
+    'MUM-W': 'MIW',
+    'DEL-W': 'DCW',
+    'RCB-W': 'RCBW',
+    'UP-W': 'UPW',
+    'GUJ-W': 'GG'
 }
 
 full_name = {'DCW':'Delhi Capitals',
@@ -814,7 +822,7 @@ def get_liveScore(match):
     current_date = datetime.now(tz)
     current_date = current_date.replace(tzinfo=None)
     MatchDT = [dict(row._mapping) for row in MatchDT]
-    return serialize({'match': match, 'cd': current_date, 'dt1': MatchDT, 'dt2': MatchDT2, 'dt3': MatchLDT, 'tid': teamID, 'dttm': dttm, 'clr': ptclr, 'clr2': clr, 'inn1': Inn1, 'inn2': Inn2, 'fn': full_name})
+    return serialize({'match': match, 'cd': current_date, 'dt1': MatchDT, 'dt2': MatchDT2, 'dt3': MatchLDT, 'tid': teamID, 'dttm': dttm, 'clr': ptclr, 'clr2': clr, 'inn1': Inn1, 'inn2': Inn2, 'fn': full_name, 'winprob': win_prob})
 
 @main.route('/match-<match>/liveScore')
 def liveScore(match):

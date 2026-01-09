@@ -5,6 +5,7 @@
 
 <link rel="stylesheet" href="{{ url_for('static', filename='extended_beauty.css') }}" />
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bottom-nav.css') }}">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
     /* Body and Page Background */
@@ -56,22 +57,6 @@
         font-weight: bold;
         cursor: pointer;
         transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    }
-
-    .form-img.blink {
-    animation: blink 1.5s infinite;
-    }
-
-    @keyframes blink {
-    0% {
-      transform: scale(0.9);
-    }
-    50% {
-      transform: scale(1.2);
-    }
-    100% {
-      transform: scale(0.9);
-    }
     }
 
     .modern-button:hover {
@@ -206,6 +191,43 @@
         </main>
     </center>
 </div>
+<nav class="bottom-nav">
+    <div class="bottom-nav-item">
+        <a href="{{ url_for('main.displayFR') }}">
+      <span class="material-icons">event</span>
+      <span class="bottom-nav-label">MATCHES</span>
+      </a>
+    </div>
+    <div class="bottom-nav-item">
+        <a href="{{ url_for('main.teams') }}">
+      <span class="material-icons">groups</span>
+      <span class="bottom-nav-label">TEAMS</span>
+      </a>
+    </div>
+    <div class="bottom-nav-item spacer"></div>
+    <div class="bottom-nav-item live">
+        <a href="{{ url_for('main.todayMatch') }}">
+      <div class="live-circle"></div>
+      <div class="live-content">
+        <span class="material-icons zoomInOut">play_arrow</span>
+        <span class="bottom-nav-label">LIVE</span>
+      </div>
+      </a>
+    </div>
+    <div class="bottom-nav-item spacer"></div>
+    <div class="bottom-nav-item active">
+      <a href="{{ url_for('main.displayPT') }}">
+      <span class="material-icons">table_chart</span>
+      <span class="bottom-nav-label">PTS TABLE</span>
+      </a>
+    </div>
+    <div class="bottom-nav-item">
+      <a href="{{ url_for('main.battingstats') }}">
+      <span class="material-icons">bar_chart</span>
+      <span class="bottom-nav-label">STATS</span>
+      </a>
+    </div>
+  </nav>
 
 <script>
     function updateTeamNames() {

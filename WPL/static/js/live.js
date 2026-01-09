@@ -147,6 +147,7 @@ fetch(`/api/match-${match}/liveScore`)
         window.clr2 = data.clr2;
         window.inn1 = data.inn1;
         window.inn2 = data.inn2;
+        window.winprob = data.winprob;
         window.dispatchEvent(new Event('statsReady')); // Notify that data is ready
 
         // Check condition for auto-refresh
@@ -305,17 +306,17 @@ window.addEventListener('statsReady', () => {
         <div class="live_4 box-shadow-4 rounded_10 bg-white mt-3 pt-2 pb-1">
             <div class="container1">
                 <div class="label-container">
-                    <img src="/static/images/squad_logos/${dt3.score_strip[0].short_name}.webp" width="32px" height="32px">
+                    <img src="/static/images/squad_logos/${winprob[dt3.score_strip[0].short_name]}.webp" width="32px" height="32px">
                     <span><b>Win Probability %</b></span>
-                    <img src="/static/images/squad_logos/${dt3.score_strip[1].short_name}.webp" width="32px" height="32px">
+                    <img src="/static/images/squad_logos/${winprob[dt3.score_strip[1].short_name]}.webp" width="32px" height="32px">
                 </div>
                 <div class="progress-bar">
-                    <div class="l-bar" style="--c: ${clr[dt3.score_strip[0].short_name].c1}; width: ${Math.round(parseFloat(dt3.team_win_probability[dt3.score_strip[0].short_name]))}%"></div>
-                    <div class="r-bar" style="--c: ${clr[dt3.score_strip[1].short_name].c1}; width: ${Math.round(parseFloat(dt3.team_win_probability[dt3.score_strip[1].short_name]))}%"></div>
+                    <div class="l-bar" style="--c: ${clr[winprob[dt3.score_strip[0].short_name]].c1}; width: ${Math.round(parseFloat(dt3.team_win_probability[dt3.score_strip[0].short_name]))}%"></div>
+                    <div class="r-bar" style="--c: ${clr[winprob[dt3.score_strip[1].short_name]].c1}; width: ${Math.round(parseFloat(dt3.team_win_probability[dt3.score_strip[1].short_name]))}%"></div>
                 </div>
                 <div class="text-container">
-                    <span style="color: ${clr[dt3.score_strip[0].short_name].c1};"><b>${Math.round(parseFloat(dt3.team_win_probability[dt3.score_strip[0].short_name]))}%</b></span>
-                    <span style="color: ${clr[dt3.score_strip[1].short_name].c1};"><b>${Math.round(parseFloat(dt3.team_win_probability[dt3.score_strip[1].short_name]))}%</b></span>
+                    <span style="color: ${clr[winprob[dt3.score_strip[0].short_name]].c1};"><b>${Math.round(parseFloat(dt3.team_win_probability[dt3.score_strip[0].short_name]))}%</b></span>
+                    <span style="color: ${clr[winprob[dt3.score_strip[1].short_name]].c1};"><b>${Math.round(parseFloat(dt3.team_win_probability[dt3.score_strip[1].short_name]))}%</b></span>
                 </div>
             </div>
         </div>`;
