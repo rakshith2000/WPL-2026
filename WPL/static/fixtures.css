@@ -1,5 +1,5 @@
 body {
-    background: linear-gradient(90deg, #00b9de, #009fbe)!important;
+    background: linear-gradient(90deg, hsl(324 100% 46%), #009fbe)!important;
     background-size: cover;
     background-attachment: fixed;
     font-family: 'Exo 2', sans-serif;

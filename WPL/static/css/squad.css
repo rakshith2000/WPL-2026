@@ -232,7 +232,7 @@
         .team-logo {
             width: 110px;
             height: 110px;
-            background: url("/static/images/orange-full-circle.svg") center / cover no-repeat;
+            background: url("/static/images/white-full-circle.svg") center / cover no-repeat;
             background-size: 120px 120px;
             background-color: #fff;
             border-radius: 50%;
