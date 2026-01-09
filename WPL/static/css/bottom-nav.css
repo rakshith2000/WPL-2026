@@ -96,13 +96,13 @@
     .bottom-nav-item.live .bottom-nav-label {
       color: inherit;
       font-size: 13px;
-      font-weight: 500;
+      font-weight: 700;
       margin-top: 6px;
     }
     .bottom-nav-label {
       margin-top: 2px;
       font-size: 12px;
-      font-weight: 500;
+      font-weight: 700;
       letter-spacing: 0.5px;
     }
     /* Add spacing for nav items next to LIVE */

@@ -504,3 +504,9 @@ h1 {
     font-size: 20px;
   }
 }
+
+@media (max-width: 451px) {
+  .floating-move-top-btn {
+    bottom: 60px;
+  }
+}
