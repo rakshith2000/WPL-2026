@@ -63,7 +63,7 @@ win_prob = {
     'DEL-W': 'DCW',
     'RCB-W': 'RCBW',
     'UP-W': 'UPW',
-    'GUJ-W': 'GG'
+    'GJ-W': 'GG'
 }
 
 full_name = {'DCW':'Delhi Capitals',
