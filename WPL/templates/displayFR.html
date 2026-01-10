@@ -294,17 +294,18 @@
 {% endif %}
 {% endfor %}
 </center>
+<div class="extra-padding"></div>
 <nav class="bottom-nav">
     <div class="bottom-nav-item active">
         <a href="{{ url_for('main.displayFR') }}">
-      <span class="material-icons">event</span>
+      <span class="material-icons-round">event</span>
       <span class="bottom-nav-label">MATCHES</span>
       </a>
     </div>
     <div class="bottom-nav-item">
-        <a href="{{ url_for('main.teams') }}">
-      <span class="material-icons">groups</span>
-      <span class="bottom-nav-label">TEAMS</span>
+        <a href="{{ url_for('main.displayPT') }}">
+      <span class="material-icons-round">table_chart</span>
+      <span class="bottom-nav-label">PTS TABLE</span>
       </a>
     </div>
     <div class="bottom-nav-item spacer"></div>
@@ -312,21 +313,21 @@
         <a href="{{ url_for('main.todayMatch') }}">
       <div class="live-circle"></div>
       <div class="live-content">
-        <span class="material-icons zoomInOut">play_arrow</span>
+        <span class="material-icons-round zoomInOut">play_arrow</span>
         <span class="bottom-nav-label">LIVE</span>
       </div>
       </a>
     </div>
     <div class="bottom-nav-item spacer"></div>
     <div class="bottom-nav-item">
-      <a href="{{ url_for('main.displayPT') }}">
-      <span class="material-icons">table_chart</span>
-      <span class="bottom-nav-label">PTS TABLE</span>
+      <a href="{{ url_for('main.teams') }}">
+      <span class="material-icons-round">groups</span>
+      <span class="bottom-nav-label">TEAMS</span>
       </a>
     </div>
     <div class="bottom-nav-item">
       <a href="{{ url_for('main.battingstats') }}">
-      <span class="material-icons">bar_chart</span>
+      <span class="material-icons-round">bar_chart</span>
       <span class="bottom-nav-label">STATS</span>
       </a>
     </div>

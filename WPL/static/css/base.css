@@ -193,3 +193,13 @@
         text-decoration: none !important;
         outline: none;
       }
+
+      .extra-padding {
+        padding-bottom: 0px!important;
+      }
+
+      @media (max-width: 451px) {
+        .extra-padding {
+          padding-bottom: 70px!important;
+        }
+      }

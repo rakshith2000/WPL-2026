@@ -258,7 +258,7 @@ body::-webkit-scrollbar-thumb:hover { background-color: #f7b733; }
 </style>
 
 <!-- Background Section -->
-<div style="background-image: url('/static/images/banner_bg.jpg'); background-size: cover; background-attachment: fixed;">
+<div class="extra-padding" style="background-size: cover; background-attachment: fixed;">
   <center>
     <div>
         <span style="font-size: 36px; font-weight: bold; font-family: 'Exo 2', sans-serif; text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);">
@@ -345,14 +345,14 @@ body::-webkit-scrollbar-thumb:hover { background-color: #f7b733; }
 <nav class="bottom-nav">
     <div class="bottom-nav-item">
         <a href="{{ url_for('main.displayFR') }}">
-      <span class="material-icons">event</span>
+      <span class="material-icons-round">event</span>
       <span class="bottom-nav-label">MATCHES</span>
       </a>
     </div>
-    <div class="bottom-nav-item active">
-        <a href="{{ url_for('main.teams') }}">
-      <span class="material-icons">groups</span>
-      <span class="bottom-nav-label">TEAMS</span>
+    <div class="bottom-nav-item">
+        <a href="{{ url_for('main.displayPT') }}">
+      <span class="material-icons-round">table_chart</span>
+      <span class="bottom-nav-label">PTS TABLE</span>
       </a>
     </div>
     <div class="bottom-nav-item spacer"></div>
@@ -360,21 +360,21 @@ body::-webkit-scrollbar-thumb:hover { background-color: #f7b733; }
         <a href="{{ url_for('main.todayMatch') }}">
       <div class="live-circle"></div>
       <div class="live-content">
-        <span class="material-icons zoomInOut">play_arrow</span>
+        <span class="material-icons-round zoomInOut">play_arrow</span>
         <span class="bottom-nav-label">LIVE</span>
       </div>
       </a>
     </div>
     <div class="bottom-nav-item spacer"></div>
-    <div class="bottom-nav-item">
-      <a href="{{ url_for('main.displayPT') }}">
-      <span class="material-icons">table_chart</span>
-      <span class="bottom-nav-label">PTS TABLE</span>
+    <div class="bottom-nav-item active">
+      <a href="{{ url_for('main.teams') }}">
+      <span class="material-icons-round">groups</span>
+      <span class="bottom-nav-label">TEAMS</span>
       </a>
     </div>
     <div class="bottom-nav-item">
       <a href="{{ url_for('main.battingstats') }}">
-      <span class="material-icons">bar_chart</span>
+      <span class="material-icons-round">bar_chart</span>
       <span class="bottom-nav-label">STATS</span>
       </a>
     </div>
