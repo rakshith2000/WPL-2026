@@ -59,8 +59,8 @@ teams_data = {
 }
 
 win_prob = {
-    'MUM-W': 'MIW',
-    'DEL-W': 'DCW',
+    'MI-W': 'MIW',
+    'DC-W': 'DCW',
     'RCB-W': 'RCBW',
     'UP-W': 'UPW',
     'GJ-W': 'GG'
