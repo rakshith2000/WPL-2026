@@ -154,6 +154,7 @@ def get_player_stats(URL):
 
     stats = {'Overall': {}}
     if data is not None:
+        Debut = data['bio']['iplDebut']
         # Overall Stats
         stat_types = [
             ('Batting & Fielding', stats_index['overall'] + stats_index['batting_fielding'] + ['WPL'], stats_headers['BF']),
@@ -185,7 +186,8 @@ def get_player_stats(URL):
                     stats[year][key] = None
     else:
         stats['Overall'] = None
-    return stats
+        Debut = "-"
+    return stats, Debut
 
 def normalize_name(name):
     """Normalize names for better matching"""
@@ -744,7 +746,8 @@ def squad_details(team, name):
     current_date = datetime.now(tz)
     current_date = current_date.replace(tzinfo=None)
     age = calculate_age(sq.DOB, current_date)
-    return render_template('squad_details.html', sq=sq, clr=clr[team], team=team, age=age, sqclr=sqclr[team], stats=get_player_stats(sq.Player_URL))
+    stats, debut = get_player_stats(sq.Player_URL)
+    return render_template('squad_details.html', sq=sq, clr=clr[team], team=team, age=age, sqclr=sqclr[team], stats=stats, debut=debut)
 
 def get_matchInfo(match):
     MatchDT = db.session.execute(text('SELECT * FROM Fixture WHERE "Match_No" = :matchno'), {'matchno': match}).fetchall()

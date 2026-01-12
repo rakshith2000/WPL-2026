@@ -461,7 +461,7 @@ window.addEventListener('statsReady', () => {
             let name = dt3.now_bowling.b1.name;
             let team = dt3.now_bowling.b1.team;
             liveHTML += `<tr>
-                <td class="text-blue pl-2" style="text-wrap: nowrap;"><img src="${dt3.player_images[dt3.now_bowling.b1.slug]}" width="20px" height="20px" alt="${name}" onerror="this.onerror=null;this.src='/static/images/Default.png';">&nbsp;<b><a href="/team-${encodeURIComponent(team)}/squad_details/${encodeURIComponent(name)}" class="${team === 'NA' ? 'disabled' : ''}">${name}</a>&nbsp;<img src="/static/images/Ball.svg" width="14px" height="14px" onerror="this.onerror=null; this.src='/static/images/ball.svg'"></b></td>
+                <td class="text-blue pl-2" style="text-wrap: nowrap;"><img src="${dt3.player_images[dt3.now_bowling.b1.slug]}" width="20px" height="20px" alt="${name}" onerror="this.onerror=null;this.src='/static/images/Default.png';">&nbsp;<b><a href="/team-${encodeURIComponent(team)}/squad_details/${encodeURIComponent(name)}" class="${team === 'NA' ? 'disabled' : ''}">${name}</a>&nbsp;<img src="/static/images/ball.svg" width="14px" height="14px" onerror="this.onerror=null; this.src='/static/images/ball.svg'"></b></td>
                 <td class="px-2">${dt3.now_bowling.b1.stats.overs}</td>
                 <td class="px-2">${dt3.now_bowling.b1.stats.maiden_overs}</td>
                 <td class="px-2">${dt3.now_bowling.b1.stats.runs}</td>
