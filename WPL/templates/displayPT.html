@@ -206,6 +206,10 @@
                             {% endfor %}
                         </td>
                         <td class="text-center" >{{ PT[11][i] }}</td>
+                        {% if PT[13][i] | int >= 70 %}{% set qualclr = "lightgreen" %}{% elif PT[13][i] | int >= 40 %}{% set qualclr = "orange" %}{% else %}{% set qualclr = "#ff4d4d" %}{% endif %}
+                        <td class="text-center" style="background-color: #444!important; color: {{ qualclr }};"><b>{{ PT[13][i] }} %</b></td>
+                        {% if PT[14][i] | int >= 70 %}{% set qualclr = "lightgreen" %}{% elif PT[14][i] | int >= 40 %}{% set qualclr = "orange" %}{% else %}{% set qualclr = "#ff4d4d" %}{% endif %}
+                        <td class="text-center" style="color: {{ qualclr }};"><b>{{ PT[14][i] }} %</b></td>
                     </tr>
                     {% endfor %}
                 </tbody>

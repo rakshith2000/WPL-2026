@@ -11,6 +11,8 @@ import requests, warnings
 from bs4 import BeautifulSoup
 from fuzzywuzzy import fuzz, process
 from urllib.request import Request, urlopen
+import random
+from collections import defaultdict
 
 warnings.filterwarnings("ignore")
 
@@ -19,6 +21,14 @@ main = Blueprint('main', __name__)
 tz = pytz.timezone('Asia/Kolkata')
 
 pofs = {'E':'Eliminator', 'F':'Final'}
+
+SIMULATIONS = 100_000
+
+# Outcome probabilities (adjust if needed)
+PROB_WIN = 0.45
+PROB_LOSS = 0.45
+PROB_NR = 0.10
+NRR_SWINGS = [0.05, 0.15, 0.30]  # small, medium, big wins
 
 liveURL_Prefix = "https://cmc2.sportskeeda.com/live-cricket-score/"
 liveURL_Suffix = "/ajax"
@@ -116,6 +126,53 @@ sqclr = {
     'RCBW': {'c2': 'hsl(356 99% 45%)', 'c1': '#20285d'},
     'UPW': {'c2': 'hsl(262, 49%, 34%)', 'c1': 'hsl(47, 99%, 52%)'}
 }
+
+def get_top3_playoffs(teams, remaining_matches):
+    results = defaultdict(lambda: {"top3": 0, "top1": 0, "elim": 0})
+    for _ in range(SIMULATIONS):
+        sim = {t: {"points": v["points"], "nrr": v["nrr"]} for t, v in teams.items()}
+
+        for t1, t2 in remaining_matches:
+            r = random.random()
+
+            if r < PROB_WIN:
+                sim[t1]["points"] += 2
+                swing = random.choice(NRR_SWINGS)
+                sim[t1]["nrr"] += swing
+                sim[t2]["nrr"] -= swing
+
+            elif r < PROB_WIN + PROB_LOSS:
+                sim[t2]["points"] += 2
+                swing = random.choice(NRR_SWINGS)
+                sim[t2]["nrr"] += swing
+                sim[t1]["nrr"] -= swing
+
+            else:  # No Result
+                sim[t1]["points"] += 1
+                sim[t2]["points"] += 1
+                # NRR unchanged
+
+        # Final ranking
+        ranking = sorted(
+            sim.items(),
+            key=lambda x: (x[1]["points"], x[1]["nrr"]),
+            reverse=True
+        )
+
+        for i, (team, _) in enumerate(ranking):
+            if i < 3:
+                results[team]["top3"] += 1
+            if i == 0:
+                results[team]["top1"] += 1
+            if i in (1, 2):
+                results[team]["elim"] += 1
+
+    # Convert counts to probabilities
+    top3_predict = {}
+    for team in teams:
+        top3_predict[team] = {'top3':round(results[team]['top3'] / SIMULATIONS * 100, 1), 'top1':round(results[team]['top1'] / SIMULATIONS * 100, 1)}
+
+    return top3_predict
 
 def serialize(obj):
     if isinstance(obj, dict):
@@ -646,8 +703,11 @@ def index():
 @main.route('/pointstable')
 def displayPT():
     dataPT = Pointstable.query.order_by(Pointstable.Points.desc(),Pointstable.NRR.desc(),Pointstable.id.asc()).all()
-    dt = [['#', '', 'Team', 'P', 'W', 'L', 'NR', 'Pts', 'NRR', 'Last 5', 'Next'], [i for i in range(1,11)],\
-         [], [], [], [], [], [], [], [], [], [], []]
+    dt = [['#', '', 'Team', 'P', 'W', 'L', 'NR', 'Pts', 'NRR', 'Last 5', 'Next', 'Qual %', 'Top 1'], [i for i in range(1,11)],\
+         [], [], [], [], [], [], [], [], [], [], [], [], []]
+    teams_t3 = {tm.team_name : {'points': tm.Points, 'nrr': tm.NRR} for tm in dataPT}
+    remaining_matches = db.session.query(Fixture.Team_A, Fixture.Team_B).filter(Fixture.Result == None).filter(Fixture.Match_No != 'Eliminator').filter(Fixture.Match_No != 'Final').order_by(Fixture.id).all()
+    top_3 = get_top3_playoffs(teams_t3, remaining_matches)
     teams_ABV = []
     for i in dataPT:
         img = "/static/images/{}.png".format(i.team_name)
@@ -678,6 +738,8 @@ def displayPT():
         dt[10].append(wl)
         dt[11].append(nm)
         dt[12].append(i.qed)
+        dt[13].append(top_3[i.team_name]['top3'])
+        dt[14].append(top_3[i.team_name]['top1'])
     return render_template('displayPT.html', PT=dt, TABV=teams_ABV, clr=ptclr)
 
 @main.route('/fixtures')
