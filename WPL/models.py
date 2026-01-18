@@ -23,6 +23,8 @@ class Pointstable(db.Model):
     Against = db.Column(db.JSON)
     Win_List = db.Column(db.String)
     qed = db.Column(db.String)
+    Qual = db.Column(db.Float)
+    Top1 = db.Column(db.Float)
 
 class Fixture(db.Model):
     id = db.Column(db.Integer, primary_key=True)

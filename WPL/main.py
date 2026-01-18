@@ -174,6 +174,16 @@ def get_top3_playoffs(teams, remaining_matches):
 
     return top3_predict
 
+def refresh_qualification():
+    dataPT = Pointstable.query.order_by(Pointstable.Points.desc(),Pointstable.NRR.desc(),Pointstable.id.asc()).all()
+    teams_t3 = {tm.team_name : {'points': tm.Points, 'nrr': tm.NRR} for tm in dataPT}
+    remaining_matches = db.session.query(Fixture.Team_A, Fixture.Team_B).filter(Fixture.Result == None).filter(Fixture.Match_No != 'Eliminator').filter(Fixture.Match_No != 'Final').order_by(Fixture.id).all()
+    top_3 = get_top3_playoffs(teams_t3, remaining_matches)
+    for tm in dataPT:
+        tm.Qual = top_3[tm.team_name]['top3']
+        tm.Top1 = top_3[tm.team_name]['top1']
+    db.session.commit()
+
 def serialize(obj):
     if isinstance(obj, dict):
         return {k: serialize(v) for k, v in obj.items()}
@@ -705,9 +715,6 @@ def displayPT():
     dataPT = Pointstable.query.order_by(Pointstable.Points.desc(),Pointstable.NRR.desc(),Pointstable.id.asc()).all()
     dt = [['#', '', 'Team', 'P', 'W', 'L', 'NR', 'Pts', 'NRR', 'Last 5', 'Next', 'Qual %', 'Top 1'], [i for i in range(1,11)],\
          [], [], [], [], [], [], [], [], [], [], [], [], []]
-    teams_t3 = {tm.team_name : {'points': tm.Points, 'nrr': tm.NRR} for tm in dataPT}
-    remaining_matches = db.session.query(Fixture.Team_A, Fixture.Team_B).filter(Fixture.Result == None).filter(Fixture.Match_No != 'Eliminator').filter(Fixture.Match_No != 'Final').order_by(Fixture.id).all()
-    top_3 = get_top3_playoffs(teams_t3, remaining_matches)
     teams_ABV = []
     for i in dataPT:
         img = "/static/images/{}.png".format(i.team_name)
@@ -738,8 +745,8 @@ def displayPT():
         dt[10].append(wl)
         dt[11].append(nm)
         dt[12].append(i.qed)
-        dt[13].append(top_3[i.team_name]['top3'])
-        dt[14].append(top_3[i.team_name]['top1'])
+        dt[13].append(i.Qual)
+        dt[14].append(i.Top1)
     return render_template('displayPT.html', PT=dt, TABV=teams_ABV, clr=ptclr)
 
 @main.route('/fixtures')
@@ -1163,7 +1170,8 @@ def updatematch():
             data['result'] = {'win_team': request.form['wt'], 'win_type': request.form['win_type'], 'win_by': request.form['win_by'], 'dls_target': int(request.form['dls_target']), 'dls_overs': float(request.form['dls_overs'])}
             upMatchDLS(data)
         
-        flash('Match {} result updated successfully'.format(data['match']), category='success')
+        refresh_qualification()
+        flash('Match {} result updated successfully'.format(data['match']), category='success') 
         return redirect(url_for('main.update', key=key))
 
 @main.route('/deletematch', methods=['POST'])
@@ -1204,7 +1212,8 @@ def deletematch():
             data = {}
             data['match'] = dmatch
             delMatchDLS(data)
-
+        
+        refresh_qualification()
         flash('Match {} result deleted successfully'.format(dmatch), category='success')
         return redirect(url_for('main.update', key=key))
     
