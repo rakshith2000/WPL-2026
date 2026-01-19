@@ -34,6 +34,7 @@ def create_app():
     app.register_blueprint(api_blueprint)
 
     from . import models
+    from .main import refresh_qualification
     scheduler = APScheduler()
     scheduler.init_app(app)
     scheduler.start()
@@ -49,6 +50,16 @@ def create_app():
     #
     with app.app_context():
         db.create_all()
+
+
+    @scheduler.task('interval', id='qualification_task', hours=1, misfire_grace_time=120)
+    def update_qualification():
+        with app.app_context():
+            try:
+                refresh_qualification()
+                print("Qualification percentages updated.")
+            except Exception as e:
+                print(f"Error updating qualifications: {e}")
 
     return app
 
