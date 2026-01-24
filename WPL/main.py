@@ -826,7 +826,7 @@ def teams():
 
 @main.route('/teams/<team>')
 def squad(team):
-    sq = Squad.query.filter_by(Team=team).order_by(Squad.Player_ID).all()
+    sq = Squad.query.filter_by(Team=team).order_by(Squad.Name).all()
     return render_template('squad.html', team=team, sq=sq, fn=full_name[team], clr=clr[team], sqclr=sqclr[team], team_dt=teams_data[team], champions=champions)
 
 @main.route('/team-<team>/squad_details/<name>')
