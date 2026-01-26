@@ -206,6 +206,7 @@
                             {% endfor %}
                         </td>
                         <td class="text-center" >{{ PT[11][i] }}</td>
+                        <td class="text-center" >{{ ((PT[5][i] + 0.5 * PT[7][i]) / PT[4][i] * 100 )|round(2) }} %</td>
                         {% if PT[13][i] | int >= 70 %}{% set qualclr = "lightgreen" %}{% elif PT[13][i] | int >= 40 %}{% set qualclr = "orange" %}{% else %}{% set qualclr = "#ff4d4d" %}{% endif %}
                         <td class="text-center" style="background-color: #444!important; color: {{ qualclr }};"><b>{{ PT[13][i] }} %</b></td>
                         {% if PT[14][i] | int >= 70 %}{% set qualclr = "lightgreen" %}{% elif PT[14][i] | int >= 40 %}{% set qualclr = "orange" %}{% else %}{% set qualclr = "#ff4d4d" %}{% endif %}

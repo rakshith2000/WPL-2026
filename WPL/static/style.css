@@ -276,11 +276,11 @@ tr td:not(:nth-child(2)) {
     background: linear-gradient(180deg, var(--c1), var(--c2));
 }
 
-tr td:nth-child(12) {
+tr td:nth-child(13) {
     background: linear-gradient(180deg, #444, #2b2a29);
 }
 
-tr td:nth-child(13) {
+tr td:nth-child(14) {
     background: linear-gradient(180deg, #444, #2b2a29);
 }
 
