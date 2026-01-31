@@ -2,12 +2,16 @@ from . import db
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
+import uuid
 
 class User(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     email = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(100))
     name = db.Column(db.String(100))
+    webauthn_credential_id = db.Column(db.LargeBinary)
+    webauthn_public_key = db.Column(db.LargeBinary)
+    webauthn_sign_count = db.Column(db.Integer, default=0)
 
 class Pointstable(db.Model):
     id = db.Column(db.Integer, primary_key=True)

@@ -67,6 +67,7 @@
           <a href="{{ url_for('auth.login') }}" class="outline-btn outline-btn--white">Login</a>
           {% endif %}
           {% if current_user.is_authenticated %}
+          <button onclick="registerBiometric()" type="button" class="outline-btn outline-btn--gray">Register Bio</button>
           <a href="{{ url_for('main.update') }}" class="outline-btn outline-btn--accent">Update/Delete</a>
           <a href="{{ url_for('auth.logout') }}" class="outline-btn outline-btn--danger">Log Out</a>
           {% endif %}
@@ -80,5 +81,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9JoBS8Nf5CFcSZ6p4UcCozDz2bK5u2v9KgN3" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="{{ url_for('static', filename='js/base.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/webauthn.js') }}"></script>
   </body>
 </html>

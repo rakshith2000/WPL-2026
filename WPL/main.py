@@ -692,10 +692,13 @@ def calculate_age(dob, current_date):
 @main.route('/')
 def index():
     if db.session.execute(text('select count(*) from user')).scalar() == 0:
-        user = User(email='adminwpl2026@gmail.com', \
-                    password=generate_password_hash('*************', method='pbkdf2:sha256', salt_length=8), \
-                    name='AdminWPL2026')
-        db.session.add(user)
+        users = {'Admin WPL2026 Laptop':{'email':'adminwpl2026laptop@gmail.com', 'password':'**********'},
+                 'Admin WPL2026 Phone':{'email':'adminwpl2026phone@gmail.com', 'password':'**********'}}
+        for username, user_info in users.items():
+            user = User(email=user_info['email'], \
+                        password=generate_password_hash(user_info['password'], method='pbkdf2:sha256', salt_length=8), \
+                        name=username)
+            db.session.add(user)
         db.session.commit()
     if db.session.execute(text('select count(*) from pointstable')).scalar() == 0:
         teams = ['DCW', 'GG', 'MIW', 'RCBW', 'UPW']
