@@ -79,7 +79,13 @@
       </div>
     </div>
       <!-- Result -->
+      {% if current_date.date() == i[1].date() %}
+      <div class="result" style="color: #dc6604">Starts Today &bull; {{ i[1].strftime('%I:%M %p') }} IST</div>
+       {% elif i[1].date() == (current_date | add_days(1)).date() %}
+       <div class="result" style="color: #dc6604">Starts Tomorrow &bull; {{ i[1].strftime('%I:%M %p') }} IST</div>
+       {% else %}
       <div class="result" style="color: #dc6604">Starts {{ i[1].strftime('%a, %d %b') }} &bull; {{ i[1].strftime('%I:%M %p') }} IST</div>
+      {% endif %}
   </div>
 
   <div class="timer-card border">

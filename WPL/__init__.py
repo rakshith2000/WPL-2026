@@ -4,11 +4,17 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from werkzeug.security import generate_password_hash, check_password_hash
 import os, requests, uuid
+from datetime import datetime, timedelta
+
+def add_days(value, days):
+    return value + timedelta(days=days)
 
 db = SQLAlchemy()
 
 def create_app():
     app = Flask(__name__)
+
+    app.jinja_env.filters['add_days'] = add_days
 
     app.config['SECRET_KEY'] = 'secret-key'
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL') #'sqlite:///WPL.sqlite'
