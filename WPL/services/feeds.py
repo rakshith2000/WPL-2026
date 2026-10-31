@@ -4,7 +4,7 @@ from sqlalchemy.sql import text
 
 from .. import db
 from ..config import (full_name2, liveURL_Prefix, liveURL_Suffix, liveURL_Slug,
-                      liveURL_Swaps, statsURL)
+                      liveURL_Swaps)
 from .players import find_player
 
 def render_live_URL(tA, tB, mn, dt):
@@ -73,28 +73,6 @@ def get_innings_data(matID, count=2):
             print(f"Error fetching innings {inn} for fixture {matID}: {e}")
             innings.append(None)
     return innings
-
-def get_stats_feed(token):
-    """One cricbuzz leaderboard, as the header row and the value rows it sends.
-
-    Cricbuzz answers with {'t20StatsList': {'headers': [...], 'values': [{'values': [...]}]}}
-    where every row leads with a rank the headers do not name, so the first
-    value is dropped and the rest line up with the headers one for one.
-
-    Returns (headers, rows) with rows as plain lists, or (None, None) when the
-    feed is unreachable - which is a different thing from a leaderboard that is
-    genuinely empty, and the caller keeps whatever it already had.
-    """
-    try:
-        response = requests.get(statsURL + token, verify=False, timeout=20)
-        if response.status_code != 200:
-            return None, None
-        payload = response.json()
-        block = payload['t20StatsList']
-        return list(block['headers']), [list(row['values'][1:]) for row in block['values']]
-    except Exception as e:
-        print(f"Error fetching stats feed {token}: {e}")
-        return None, None
 
 def get_data_from_url(url):
     response = requests.get(url, verify=False)

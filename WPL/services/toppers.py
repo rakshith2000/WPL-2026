@@ -1,100 +1,42 @@
 """The stats leaderboards: refreshing them from the feed, and reading them back.
 
-Same table and same shape as the IPL app - one Toppers row per leaderboard,
-holding a list of rows under keys like StrikerName / TeamCode / TotalRuns - but
-the source underneath is not the same, and that is what this module is for.
+Same table, same feed and same categories as the IPL app. A leaderboard is one
+Toppers row holding a list of the feed's own rows, keyed the way the feed keys
+them - StrikerName, BowlerName, TeamCode, TotalRuns - so the home-page toppers
+carousel, the two leaderboard pages and the awards page read one vocabulary
+across both leagues.
 
-The IPL publishes a feed of named fields. Cricbuzz, which is where the WPL
-numbers come from, publishes a header row and bare positional values, with its
-own spellings ("Mat", "4s", "BBI") and its own idea of which columns a given
-leaderboard carries. Folding one into the other here - rather than teaching the
-pages two vocabularies - is what lets the home-page toppers carousel, the
-batting and bowling leaderboards and the awards page stay as they are.
+The feed answers JSONP rather than JSON: a callback wrapper around a single
+object whose one value is the row list. Unwrapping that is the first thing
+below. Player names come back in the feed's own spelling, so each row's name is
+resolved against the Squad table, which also supplies the crest the row wears.
 
-The header -> field map lives in config.json under stats_map, because header
-spellings are the part most likely to drift. A header nothing matches is kept
-under its own name rather than dropped, so a column cricbuzz adds mid-season
-shows up as itself instead of disappearing.
+One category is ours rather than the feed's: Most POTM, counted from the player
+of the match stored on each result. seed_toppers() seeds it alongside the rest.
+
+`json` here is flask.json, as it was when this lived in main.py - keep it that
+way, the error handling below depends on which module the name comes from.
 """
-import json
-import re
+import requests
+from flask import json
 from sqlalchemy.sql import text
 from sqlalchemy.orm.attributes import flag_modified
 from collections import Counter
 
 from .. import db
 from ..models import Squad, Toppers
-from ..config import statsList, statsMap, full_name, full_name2, SEASON_YEAR
+from ..config import statsList, statsURL, COMPETITION_ID, SEASON_YEAR
 from ..utils.formatting import serialize
 from .players import find_player
 from .player_stats import get_player_stats
-from .feeds import get_stats_feed
-
-# Team long name -> our abbreviation, for the "Vs" column. Both spellings are
-# accepted because cricbuzz is not consistent about the Women suffix between
-# leaderboards.
-_ABV_OF = {}
-for _map in (full_name2, full_name):
-    for _abv, _name in _map.items():
-        _ABV_OF.setdefault(_name, _abv)
-
-_KEY_RE = re.compile(r'[^a-z0-9/]+')
-
-
-def _header_key(header):
-    """A header as stats_map keys it: lowercased, punctuation and spaces gone.
-
-    "N/O" keeps its slash because that is how the map spells it; everything
-    else collapses, so "Best Bowling", "best-bowling" and "BestBowling" are one
-    key.
-    """
-    return _KEY_RE.sub('', str(header or '').strip().lower())
-
-
-def _normalise(headers, rows, group, squad):
-    """Cricbuzz's header row + value rows -> rows in the IPL feed's shape.
-
-    The player column is whichever one the map names as the player, and it is
-    also what the team is resolved from: cricbuzz gives a name and no team, so
-    find_player() against the Squad table supplies both our spelling of the name
-    and the crest the row should wear. A name that cannot be resolved keeps
-    cricbuzz's spelling and reads as "NA" for the team, which is a far smaller
-    error than pinning a leaderboard place on the wrong player.
-    """
-    spec = statsMap.get(group) or {}
-    fields = spec.get('fields') or {}
-    player_key = spec.get('player') or 'PlayerName'
-    team_key = spec.get('team') or 'TeamCode'
-
-    names = []
-    for head in headers:
-        key = _header_key(head)
-        names.append(fields.get(key, str(head or '').strip()))
-
-    out = []
-    for values in rows:
-        row = {}
-        for name, value in zip(names, values):
-            row[name] = value
-        if player_key in row:
-            player = find_player(row[player_key], squad)
-            row[player_key] = player[2] if player is not None else row[player_key]
-            row[team_key] = player[3] if player is not None else 'NA'
-        # "Vs" arrives as the opposition's full name; everything downstream
-        # draws a crest from it, so it has to be an abbreviation.
-        against = row.get('AgaintsTeamCode')
-        if against:
-            row['AgaintsTeamCode'] = _ABV_OF.get(str(against).strip(), against)
-        out.append(row)
-    return out
 
 
 def update_potm():
     """Most player-of-the-match awards, counted off the fixtures.
 
-    Nothing publishes this, so it is built here from the POTM stored on each
-    result and then enriched from the player's own season record - which is
-    what the ties are broken on when two players are level on awards.
+    Nothing publishes this, so it is built from the POTM stored on each result
+    and then enriched from the player's own season record - which is what the
+    ties are broken on when two players are level on awards.
     """
     potms = (db.session.execute(text('SELECT "POTM" FROM Fixture WHERE "POTM" IS NOT NULL')).fetchall())
     counts = Counter([(p[0]['name'], p[0]['team']) for p in potms])
@@ -128,36 +70,49 @@ def update_toppers():
 
     A leaderboard the feed cannot answer for keeps whatever it already had,
     with the player names re-resolved against the squad in case the squad has
-    moved on - the same failure path the IPL app takes. A leaderboard the feed
-    answers for with nothing is cleared, because that is a real answer.
+    moved on. That matters more than usual right now: the feed host is down,
+    so this is the path every category takes.
     """
     SquadFull = (db.session.execute(text('SELECT * FROM Squad')).fetchall())
     update_potm()
     for stats_type, stats in statsList.items():
         for stat_name, token in stats.items():
-            tp = Toppers.query.filter_by(category=stat_name).first()
-            if tp is None:
-                continue
             try:
-                headers, rows = get_stats_feed(token)
-                if headers is None:
-                    raise RuntimeError('feed unavailable')
-                tp.stats = _normalise(headers, rows, stats_type, SquadFull) if rows else None
+                # The two awards are filed under the season year; everything
+                # else under the season's competition id.
+                prefix = SEASON_YEAR if stats_type == "awards" else COMPETITION_ID
+                url = statsURL + f"{prefix}-{token}.js"
+                response = requests.get(url, verify=False)
+                data = response.text
+                data = data.split('(', 1)[1].strip(');')
+                data = next(iter((json.loads(data)).values()))
+                tp = Toppers.query.filter_by(category=stat_name).first()
+                if data and isinstance(data, list) and len(data) > 0:
+                    if stat_name not in ["Fair Play Award"]:
+                        for row in data:
+                            playerKey = 'StrikerName' if stats_type == "batting_stats" else 'BowlerName' if stats_type == "bowling_stats" else 'PlayerName'
+                            player = find_player(row[playerKey], SquadFull, team=row.get('TeamCode'))
+                            row[playerKey] = player[2] if player is not None else row[playerKey]
+                            row['TeamCode'] = player[3] if player is not None else row['TeamCode']
+                    tp.stats = data
+                else:
+                    tp.stats = None
                 db.session.commit()
             except Exception as e:
                 print(f"Error updating toppers for {stat_name}: {e}")
-                print(f"Mapping Player Name for existing for {stat_name} if any (Failure case)")
-                if tp.stats:
-                    player_key = (statsMap.get(stats_type) or {}).get('player')
-                    team_key = (statsMap.get(stats_type) or {}).get('team') or 'TeamCode'
+                print(f"Mapping Player Name for exisiting for {stat_name} if any (Failure case)")
+                tp = Toppers.query.filter_by(category=stat_name).first()
+                if tp and tp.stats and stat_name != "Fair Play Award":
+                    playerKey = ("StrikerName" if stats_type == "batting_stats" else "BowlerName" if stats_type == "bowling_stats" else "PlayerName")
                     for row in tp.stats:
-                        player_name = row.get(player_key) if player_key else None
+                        player_name = row.get(playerKey)
                         if not player_name:
                             continue
-                        player = find_player(player_name, SquadFull, team=row.get(team_key))
+                        player = find_player(player_name, SquadFull, team=row.get("TeamCode"))
+
                         if player:
-                            row[player_key] = player[2]
-                            row[team_key] = player[3]
+                            row[playerKey] = player[2]
+                            row["TeamCode"] = player[3]
 
                     flag_modified(tp, "stats")
                     db.session.commit()

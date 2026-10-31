@@ -26,10 +26,10 @@
     return { k: k, l: l, t: t || l, type: type || 'num' };
   }
 
-  /* The field names are the ones services/toppers.py folds the cricbuzz feed
-     into — see config.json's stats_map, which is where a header spelling gets
-     fixed when cricbuzz changes one. */
+  /* The feed's own field names - same feed and same names as the IPL's, so a
+     column spec reads identically in both apps. */
   var VS = col('AgaintsTeamCode', 'Vs', 'Opposition', 'team');
+  var VENUE = col('VenueName', 'Venue', 'Venue', 'text');
 
   /* batting */
   var M = col('Matches', 'M', 'Matches');
@@ -41,22 +41,22 @@
   var SR = col('StrikeRate', 'SR', 'Strike rate');
   var C100 = col('Centuries', '100s', 'Hundreds');
   var C50 = col('FiftyPlusRuns', '50s', 'Fifties');
-  var C90 = col('Nineties', '90s', 'Scores in the nineties');
   var FOUR = col('Fours', '4s', 'Fours');
   var SIX = col('Sixes', '6s', 'Sixes');
   var BF = col('Balls', 'BF', 'Balls faced');
 
   /* bowling */
   var OV = col('OversBowled', 'O', 'Overs bowled');
-  var RC = col('RunsConceded', 'R', 'Runs conceded');
-  var MDN = col('Maidens', 'Mdns', 'Maiden overs');
+  var RC = col('TotalRunsConceded', 'R', 'Runs conceded');
   var WKT = col('Wickets', 'W', 'Wickets');
   var BBI = col('BBIW', 'BBI', 'Best bowling in an innings', 'bbi');
   var BAVG = col('BowlingAverage', 'Avg', 'Bowling average');
   var ECO = col('EconomyRate', 'Eco', 'Economy rate');
-  var BSR = col('StrikeRate', 'SR', 'Bowling strike rate');
-  var W3 = col('ThreeWickets', '3W', 'Three-wicket hauls');
+  var BSR = col('BowlingSR', 'SR', 'Bowling strike rate');
+  var W4 = col('FourWickets', '4W', 'Four-wicket hauls');
   var W5 = col('FiveWickets', '5W', 'Five-wicket hauls');
+  var IRUNS = col('InningsRuns', 'R', 'Runs conceded');
+  var IWKT = col('InningsWickets', 'W', 'Wickets');
 
   /* Player-name and team-code fields differ per feed; `subject: 'team'` means
      the rows are franchises, so there is no player profile to link to. */
@@ -68,54 +68,81 @@
 
   /* ========================================================== categories */
 
-  /* Order matters: it is the order of the page's menu, and it has to match the
+  /* Order matters: it is the order of the page menu, and it has to match the
      categories config.json's stats_list seeds into the Toppers table - an id
      here with no row there is a leaderboard that will always be empty.
 
-     Shorter than the IPL's list, because cricbuzz publishes fewer boards for
-     the WPL: there are no per-innings leaderboards, no dot balls, no fastest
-     fifties, no MVP index and no fair-play table. Three it does have that the
-     IPL list does not are here instead - scores in the nineties, five-wicket
-     hauls, and Most POTM, which is counted from our own results rather than
-     fetched. */
+     The IPL's list, unchanged, because it is the same feed. The one addition
+     is Most POTM, which is counted from our own results rather than fetched. */
   var CATS = {
     batting: [
       bat({ id: 'Most Runs', unit: 'Runs', blurb: 'Who has scored the most this season',
             cols: [RUNS, M, INN, NO, HS, AVG, SR, C100, C50, FOUR, SIX] }),
-      bat({ id: 'Highest Scores', unit: 'Runs', innings: true, blurb: 'The biggest individual innings',
-            cols: [RUNS, BF, SR, FOUR, SIX, VS] }),
-      bat({ id: 'Best Batting Averages', unit: 'Avg', blurb: 'Runs per dismissal, across the season',
-            cols: [AVG, M, INN, NO, RUNS, HS, SR, C100, C50, FOUR, SIX] }),
-      bat({ id: 'Best Strike Rate', unit: 'SR', blurb: 'Runs per hundred balls, across the season',
-            cols: [SR, M, INN, RUNS, HS, AVG, C100, C50, FOUR, SIX] }),
-      bat({ id: 'Most 100s', unit: '100s', blurb: 'Hundreds, the rarest currency in T20',
-            cols: [C100, RUNS, M, INN, NO, HS, AVG, SR, C50, FOUR, SIX] }),
-      bat({ id: 'Most 50s', unit: '50s', blurb: 'The most consistent scorers',
-            cols: [C50, RUNS, M, INN, NO, HS, AVG, SR, C100, FOUR, SIX] }),
-      bat({ id: 'Most 90s', unit: '90s', blurb: 'Nineties — the hundreds that got away',
-            cols: [C90, RUNS, M, INN, HS, AVG, SR, C100, C50] }),
+      bat({ id: 'Most Sixes', unit: 'Sixes', blurb: 'The cleanest strikers of the season',
+            cols: [SIX, M, INN, RUNS, HS, AVG, SR, C100, C50, FOUR] }),
+      bat({ id: 'Most Sixes (Innings)', unit: 'Sixes', innings: true, blurb: 'Most sixes in a single innings',
+            cols: [SIX, RUNS, BF, SR, FOUR, VS, VENUE] }),
       bat({ id: 'Most Fours', unit: 'Fours', blurb: 'Boundary hitters of the season',
             cols: [FOUR, M, INN, RUNS, HS, AVG, SR, C100, C50, SIX] }),
-      bat({ id: 'Most Sixes', unit: 'Sixes', blurb: 'The cleanest strikers of the season',
-            cols: [SIX, M, INN, RUNS, HS, AVG, SR, C100, C50, FOUR] })
+      bat({ id: 'Most Fours (Innings)', unit: 'Fours', innings: true, blurb: 'Most fours in a single innings',
+            cols: [FOUR, RUNS, BF, SR, SIX, VS, VENUE] }),
+      bat({ id: 'Most 50s', unit: '50s', blurb: 'The most consistent scorers',
+            cols: [C50, RUNS, M, INN, NO, HS, AVG, SR, C100, FOUR, SIX] }),
+      bat({ id: 'Most 100s', unit: '100s', blurb: 'Hundreds, the rarest currency in T20',
+            cols: [C100, RUNS, M, INN, NO, HS, AVG, SR, C50, FOUR, SIX] }),
+      bat({ id: 'Fastest 50s', unit: 'Balls', innings: true, asc: true, blurb: 'Fifty off the fewest balls',
+            cols: [BF, SR, VS, VENUE] }),
+      bat({ id: 'Fastest 100s', unit: 'Balls', innings: true, asc: true, blurb: 'Hundred off the fewest balls',
+            cols: [BF, SR, VS, VENUE] }),
+      bat({ id: 'Highest Scores', unit: 'Runs', innings: true, blurb: 'The biggest individual innings',
+            cols: [RUNS, BF, SR, FOUR, SIX, VS, VENUE] }),
+      bat({ id: 'Best Strike Rate', unit: 'SR', blurb: 'Runs per hundred balls, across the season',
+            cols: [SR, M, INN, RUNS, HS, AVG, C100, C50, FOUR, SIX] }),
+      bat({ id: 'Best Strike Rate (Innings)', unit: 'SR', innings: true, blurb: 'The most explosive single innings',
+            cols: [SR, RUNS, BF, FOUR, SIX, VS, VENUE] }),
+      bat({ id: 'Best Batting Averages', unit: 'Avg', blurb: 'Runs per dismissal, across the season',
+            cols: [AVG, M, INN, RUNS, HS, SR, C100, C50, FOUR, SIX] })
     ],
 
     bowling: [
       bowl({ id: 'Most Wickets', unit: 'Wkts', blurb: 'The leading wicket takers',
-             cols: [WKT, M, INN, OV, MDN, RC, BBI, BAVG, ECO, BSR, W5] }),
-      bowl({ id: 'Best Bowling Figures', unit: 'BBI', innings: true, blurb: 'The best spells of the season',
-             cols: [BBI, OV, MDN, RC, ECO, VS] }),
+             cols: [WKT, M, INN, OV, RC, BBI, BAVG, ECO, BSR, W4, W5] }),
+      bowl({ id: 'Most Maidens', unit: 'Mdns', blurb: 'Overs that cost nothing at all',
+             cols: [col('Maidens', 'Mdns', 'Maiden overs'), M, INN, OV, RC, WKT, BAVG, ECO, BSR, W4, W5] }),
+      bowl({ id: 'Most Dot Balls', unit: 'Dots', blurb: 'Pressure, one dot at a time',
+             cols: [col('DotBallsBowled', 'Dots', 'Dot balls'), M, INN, OV, RC, WKT, BAVG, ECO, BSR, W4, W5] }),
+      bowl({ id: 'Most Dot Balls (Innings)', unit: 'Dots', innings: true, blurb: 'Most dot balls in a single spell',
+             cols: [col('DotBallsBowled', 'Dots', 'Dot balls'), OV, IRUNS, IWKT, BSR, VS, VENUE] }),
       bowl({ id: 'Best Bowling Averages', unit: 'Avg', asc: true, blurb: 'Runs conceded per wicket',
-             cols: [BAVG, M, INN, OV, RC, WKT, BBI, ECO, BSR, W5] }),
+             cols: [BAVG, M, INN, OV, RC, WKT, BBI, ECO, BSR, W4, W5] }),
       bowl({ id: 'Best Bowling Economy', unit: 'Eco', asc: true, blurb: 'The most miserly bowlers of the season',
-             cols: [ECO, M, INN, OV, MDN, RC, WKT, BBI, BAVG, BSR] }),
+             cols: [ECO, M, INN, OV, RC, WKT, BBI, BAVG, BSR, W4, W5] }),
+      bowl({ id: 'Best Bowling Economy (Innings)', unit: 'Eco', innings: true, asc: true,
+             blurb: 'The tightest single spells',
+             cols: [ECO, OV, IRUNS, IWKT, BSR, VS, VENUE] }),
       bowl({ id: 'Best Bowling Strike Rate', unit: 'SR', asc: true, blurb: 'Balls per wicket, across the season',
-             cols: [BSR, M, INN, OV, RC, WKT, BBI, BAVG, ECO, W5] }),
-      bowl({ id: 'Most 5 Wicket Hauls', unit: '5W', blurb: 'Five in an innings, the bowler’s hundred',
-             cols: [W5, W3, M, INN, OV, RC, WKT, BBI, BAVG, ECO, BSR] })
+             cols: [BSR, M, INN, OV, RC, WKT, BBI, BAVG, W4, W5] }),
+      bowl({ id: 'Best Bowling Strike Rate (Innings)', unit: 'SR', innings: true, asc: true,
+             blurb: 'Balls per wicket in a single spell',
+             cols: [BSR, OV, IRUNS, IWKT, VS, VENUE] }),
+      bowl({ id: 'Best Bowling Figures', unit: 'BBI', innings: true, blurb: 'The best spells of the season',
+             cols: [BBI, OV, IRUNS, IWKT, SR, VS, VENUE] }),
+      bowl({ id: 'Most Runs Conceded (Innings)', unit: 'Runs', innings: true, blurb: 'The most expensive spells',
+             cols: [IRUNS, OV, IWKT, SR, VS, VENUE] }),
+      bowl({ id: 'Most Hat-tricks', unit: 'Hat-tricks', blurb: 'Three in three',
+             cols: [col('Hattricks', 'Hat-tricks', 'Hat-tricks'), M, INN, OV, RC, WKT, BAVG, ECO, BSR, W4, W5] })
     ],
 
     awards: [
+      { id: 'Most Valuable Players', unit: 'Pts', name: 'PlayerName', team: 'TeamCode',
+        blurb: 'Every contribution with bat, ball and in the field, in one number',
+        cols: [col('IndexValue', 'Pts', 'MVP points'), M, WKT, col('DotBalls', 'Dots', 'Dot balls'),
+               FOUR, SIX, col('caught', 'Ct', 'Catches'), col('RunOut', 'RO', 'Run outs'),
+               col('Stumping', 'St', 'Stumpings')] },
+      { id: 'Fair Play Award', unit: 'Pts', subject: 'team', name: 'TeamFullName', team: 'TeamName',
+        blurb: 'Umpires score both sides after every match',
+        cols: [col('Points', 'Pts', 'Total points'), col('No', 'M', 'Matches rated'),
+               col('AvePoints', 'Avg', 'Average points per match')] },
       { id: 'Most POTM', unit: 'Awards', name: 'name', team: 'team',
         blurb: 'Player of the match, most often',
         cols: [col('potm', 'POTM', 'Player-of-the-match awards'), col('matches', 'M', 'Matches'),
@@ -175,8 +202,8 @@
     var c = CLR[code];
     if (!c) return '--team-a: #502a3f; --team-b: #301323;';
     var a, b;
-    if (code === 'RCBW' || code === 'MIW') { a = c.c3; b = c.c1; }
-    else if (code === 'UPW') { a = c.c2; b = c.c3; }
+    if (code === 'RCBW') { a = c.c3; b = c.c1; }
+    else if (code === 'UPW') { a = c.c1; b = c.c3; }
     else { a = c.c1; b = c.c2; }
     return '--team-a: ' + a + '; --team-b: ' + b + ';';
   }
@@ -260,7 +287,7 @@
         ? '<span class="st-lead__face st-lead__face--crest" style="' + crestGrad(code) + '">' +
           '<img src="' + crestUrl(code) + '" alt="" loading="lazy"></span>'
         : '<span class="st-lead__face" style="' + crestGrad(code) + '">' +
-          '<img src="/static/images/squads/' + encodeURIComponent(code) + '/' +
+          '<img src="/static/images/squads/' + encodeURIComponent(code) + '-MICRO/' +
           encodeURIComponent(name.replace(/ /g, '-')) + '.png" alt="" loading="lazy" onerror="' + FALLBACK + '">' +
           '</span>';
 

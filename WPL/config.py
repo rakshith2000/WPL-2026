@@ -10,11 +10,12 @@ Keys are exposed under the same names the modules already used, so anything
 reading them stays unchanged. The file is read once, at import time; editing
 config.json needs a restart to take effect.
 
-Two team-name maps, because two feeds disagree. Sportskeeda and cricbuzz spell
-a WPL side out in full with the "Women" suffix ("Mumbai Indians Women"); apiv2
-and our own pages use the short form ("Mumbai Indians"). `full_name` is the
+Two team-name maps, because the feeds disagree. Sportskeeda spells a WPL side
+out in full with the "Women" suffix ("Mumbai Indians Women"); apiv2, the stats
+feed and our own pages use the short form ("Mumbai Indians"). `full_name` is the
 short one and is what the templates show; `full_name2` is the long one and is
-what anything building a feed URL or reading a feed's team name has to use.
+what anything building a live-score URL or reading a team name back out of the
+live feed has to use.
 """
 
 import json
@@ -50,8 +51,12 @@ statsURL = _urls['stats']
 playerStatsURL = _urls['player_stats']
 tp_urls = _urls['toppers']
 
+# The number the stats feed files a season's leaderboards under. The IPL app
+# has its own baked into services/toppers.py; here it is config, because it
+# changes every season and it is the only thing a repoint needs.
+COMPETITION_ID = _urls['competition_id']
+
 statsList = CONFIG['stats_list']
-statsMap = CONFIG['stats_map']
 
 playerStats = CONFIG['player_stats']
 ps_headers = playerStats['headers']

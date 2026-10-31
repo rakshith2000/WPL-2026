@@ -3,15 +3,12 @@
 
 {% block head %}
 {{ super() }}
-<title>WPL {{ SEASON }} Awards | Player of the Match Leaders</title>
-<meta name="description" content="WPL {{ SEASON }} awards — the players with the most player-of-the-match awards this season, with their matches, runs and wickets.">
+<title>WPL {{ SEASON }} Awards | MVP, Fair Play &amp; Player of the Match</title>
+<meta name="description" content="WPL {{ SEASON }} award leaderboards — most valuable players, the fair play table and the players with the most player-of-the-match awards.">
 {{ stats_head() }}
 {% endblock %}
 
 {% block content %}
-{#- The WPL has no MVP index and no fair-play table, so this page carries the
-    one award that is ours to count: player of the match, totted up from the
-    results in services/toppers.update_potm(). -#}
-{{ stats_shell('awards', 'Most POTM',
-               'Player of the match, most often', clr) }}
+{{ stats_shell('awards', 'Most Valuable Players',
+               'Every contribution with bat, ball and in the field, in one number', clr) }}
 {% endblock %}

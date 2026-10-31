@@ -17,22 +17,15 @@
 {#  ------------------------------------------------------------------ data #}
 
 {#  Season Toppers, as data. Each entry says where to read the headline number
-    and the supporting stats out of a Toppers row, so one loop renders every
-    award instead of eight near-identical blocks.
+    and the five supporting stats out of the feed's row, so one loop renders
+    every award instead of nine near-identical blocks.
       stats : [visible label, [field, ...]]  — several fields print as "a / b"
       acc   : the card's accent colour, which also tints its tab and dot
 
-    The field names are the ones services/toppers.py folds the cricbuzz feed
-    into — the same names the IPL feed publishes — so this list reads the way
-    its IPL counterpart does. Two awards the IPL has are missing because the
-    WPL has no equivalent: there is no MVP index and no fair-play table. Most
-    POTM takes their place, and it is ours rather than the feed's, which is
-    why its fields are the plain ones update_potm() writes.
-
-    Two of these are single-innings boards rather than season totals - Highest
-    Scores and Best Bowling Figures - so they carry an opposition rather than a
-    match count. Highest Scores reads TotalRuns, not HighestScore: cricbuzz
-    names that column "Runs" and stats_map folds it accordingly. #}
+    The IPL's cards, on the IPL's field names, because it is the same feed.
+    Most POTM is the one addition - it is counted from our own results in
+    services/toppers.update_potm() rather than fetched, which is why its
+    fields are plain lowercase ones rather than the feed's. #}
 {% set TOPPERS = [
     {'cat': 'Most Runs', 'title': 'Orange Cap', 'icon': 'sports_cricket', 'acc': '#ff8a24',
      'name': 'StrikerName', 'code': 'TeamCode', 'val': 'TotalRuns', 'unit': 'Runs',
@@ -44,7 +37,7 @@
      'name': 'BowlerName', 'code': 'TeamCode', 'val': 'Wickets', 'unit': 'Wkts',
      'href': '/bowlingstats?option=Most%20Wickets',
      'stats': [['M', ['Matches']], ['Avg', ['BowlingAverage']], ['Econ', ['EconomyRate']],
-               ['5W', ['FiveWickets']], ['BBI', ['BBIW']]]},
+               ['4W/5W', ['FourWickets', 'FiveWickets']], ['BBI', ['BBIW']]]},
 
     {'cat': 'Best Strike Rate', 'title': 'Super Striker', 'icon': 'bolt', 'acc': '#29c5e8',
      'name': 'StrikerName', 'code': 'TeamCode', 'val': 'StrikeRate', 'unit': 'SR',
@@ -56,7 +49,7 @@
      'name': 'StrikerName', 'code': 'TeamCode', 'val': 'Sixes', 'unit': 'Sixes',
      'href': '/battingstats?option=Most%20Sixes',
      'stats': [['M', ['Matches']], ['Avg', ['BattingAverage']], ['HS', ['HighestScore']],
-               ['SR', ['StrikeRate']], ['4s', ['Fours']]]},
+               ['SR', ['StrikeRate']], ['50s/100s', ['FiftyPlusRuns', 'Centuries']]]},
 
     {'cat': 'Highest Scores', 'title': 'Highest Score', 'icon': 'trending_up', 'acc': '#ffc247',
      'name': 'StrikerName', 'code': 'TeamCode', 'val': 'TotalRuns', 'unit': 'HS',
@@ -64,19 +57,30 @@
      'stats': [['BF', ['Balls']], ['SR', ['StrikeRate']], ['4s', ['Fours']],
                ['6s', ['Sixes']], ['VS', ['AgaintsTeamCode']]]},
 
+    {'cat': 'Most Dot Balls', 'title': 'Green Dot Balls', 'icon': 'radio_button_unchecked', 'acc': '#2ee27a',
+     'name': 'BowlerName', 'code': 'TeamCode', 'val': 'DotBallsBowled', 'unit': 'Dots',
+     'href': '/bowlingstats?option=Most%20Dot%20Balls',
+     'stats': [['M', ['Matches']], ['Ov', ['OversBowled']], ['Wkts', ['Wickets']],
+               ['Econ', ['EconomyRate']], ['4W/5W', ['FourWickets', 'FiveWickets']]]},
+
     {'cat': 'Best Bowling Figures', 'title': 'Best Bowling', 'icon': 'local_fire_department', 'acc': '#f43f5e',
      'name': 'BowlerName', 'code': 'TeamCode', 'val': 'BBIW', 'unit': 'BBI',
      'href': '/bowlingstats?option=Best%20Bowling%20Figures',
-     'stats': [['Ov', ['OversBowled']], ['Mdns', ['Maidens']], ['Runs', ['RunsConceded']],
-               ['Econ', ['EconomyRate']], ['VS', ['AgaintsTeamCode']]]},
+     'stats': [['Wkts', ['InningsWickets']], ['Ov', ['OversBowled']], ['Runs', ['InningsRuns']],
+               ['SR', ['StrikeRate']], ['VS', ['AgaintsTeamCode']]]},
 
-    {'cat': 'Best Bowling Economy', 'title': 'Most Economical', 'icon': 'savings', 'acc': '#2ee27a',
-     'name': 'BowlerName', 'code': 'TeamCode', 'val': 'EconomyRate', 'unit': 'Econ',
-     'href': '/bowlingstats?option=Best%20Bowling%20Economy',
-     'stats': [['M', ['Matches']], ['Ov', ['OversBowled']], ['Wkts', ['Wickets']],
-               ['Avg', ['BowlingAverage']], ['BBI', ['BBIW']]]},
+    {'cat': 'Most Valuable Players', 'title': 'MVP', 'icon': 'workspace_premium', 'acc': '#ff5cf0',
+     'name': 'PlayerName', 'code': 'TeamCode', 'val': 'IndexValue', 'unit': 'Pts',
+     'href': '/awards?option=Most%20Valuable%20Players',
+     'stats': [['M', ['Matches']], ['Wkts', ['Wickets']], ['Dots', ['DotBalls']],
+               ['4s/6s', ['Fours', 'Sixes']], ['Ct/St', ['caught', 'Stumping']]]},
 
-    {'cat': 'Most POTM', 'title': 'Player of the Match', 'icon': 'workspace_premium', 'acc': '#ff5cf0',
+    {'cat': 'Fair Play Award', 'title': 'Fair Play', 'icon': 'handshake', 'acc': '#e0b341',
+     'name': 'TeamFullName', 'code': 'TeamName', 'val': 'Points', 'unit': 'Pts', 'team': true,
+     'href': '/awards?option=Fair%20Play%20Award',
+     'stats': [['Matches', ['No']], ['Average', ['AvePoints']], ['Points', ['Points']]]},
+
+    {'cat': 'Most POTM', 'title': 'Player of the Match', 'icon': 'military_tech', 'acc': '#ff9d3c',
      'name': 'name', 'code': 'team', 'val': 'potm', 'unit': 'Awards',
      'href': '/awards?option=Most%20POTM',
      'stats': [['M', ['matches']], ['Inns', ['innings']], ['Runs', ['runs']],

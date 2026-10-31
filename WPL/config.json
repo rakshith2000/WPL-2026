@@ -6,165 +6,135 @@
     "top_label": "Top 3",
     "home_advantage": false
   },
-
   "playoffs": {
     "E": "Eliminator",
     "F": "Final"
   },
-
   "urls": {
     "live": {
       "prefix": "https://cmc2.sportskeeda.com/live-cricket-score/",
       "suffix": "/ajax",
       "slug": "wpl-2026",
-      "swap_sides": [2, 7, 9, 10, 15, 16, 18]
+      "swap_sides": [
+        2,
+        7,
+        9,
+        10,
+        15,
+        16,
+        18
+      ]
     },
-    "stats": "https://www.cricbuzz.com/api/cricket-series/series-stats/11275/",
-    "player_stats": "",
+    "stats": "https://ipl-stats-sports-mechanic.s3.ap-south-1.amazonaws.com/wpl/feeds/stats/",
+    "player_stats": "https://ipl-stats-sports-mechanic.s3.ap-south-1.amazonaws.com/wpl/feeds/stats/player/",
     "toppers": {
       "orange": "https://www.sportskeeda.com/go/wpl/orange-cap",
       "purple": "https://www.sportskeeda.com/go/wpl/purple-cap"
-    }
+    },
+    "competition_id": "203"
   },
-
   "stats_list": {
     "batting_stats": {
-      "Most Runs": "mostRuns",
-      "Highest Scores": "highestScore",
-      "Best Batting Averages": "highestAvg",
-      "Best Strike Rate": "highestSr",
-      "Most 100s": "mostHundreds",
-      "Most 50s": "mostFifties",
-      "Most 90s": "mostNineties",
-      "Most Fours": "mostFours",
-      "Most Sixes": "mostSixes"
+      "Most Runs": "toprunsscorers",
+      "Most Sixes": "mostsixes",
+      "Most Sixes (Innings)": "mostsixesinnings",
+      "Most Fours": "mostfours",
+      "Most Fours (Innings)": "mostfoursinnings",
+      "Most 50s": "mostfifties",
+      "Most 100s": "mostcenturies",
+      "Fastest 50s": "fastestfifties",
+      "Fastest 100s": "fastestcenturies",
+      "Highest Scores": "highestindividualscorers",
+      "Best Strike Rate": "higheststrikeratetournament",
+      "Best Strike Rate (Innings)": "higheststrikerateinnings",
+      "Best Batting Averages": "highestaverages"
     },
     "bowling_stats": {
-      "Most Wickets": "mostWickets",
-      "Best Bowling Figures": "bestBowlingInnings",
-      "Best Bowling Averages": "lowestAvg",
-      "Best Bowling Economy": "lowestEcon",
-      "Best Bowling Strike Rate": "lowestSr",
-      "Most 5 Wicket Hauls": "mostFiveWickets"
+      "Most Wickets": "mostwickets",
+      "Most Maidens": "mostmaidenoversbowledtournament",
+      "Most Dot Balls": "mostdotballsbowledtournament",
+      "Most Dot Balls (Innings)": "mostdotballsbowledinnings",
+      "Best Bowling Averages": "bestaverages",
+      "Best Bowling Economy": "besteconomyrates",
+      "Best Bowling Economy (Innings)": "besteconomyratesinnings",
+      "Best Bowling Strike Rate": "beststrikeratestournament",
+      "Best Bowling Strike Rate (Innings)": "beststrikeratesinnings",
+      "Best Bowling Figures": "bestbowlingfigures",
+      "Most Runs Conceded (Innings)": "mostrunsconceededinnings",
+      "Most Hat-tricks": "mosthattricks"
     },
-    "awards": {}
-  },
-
-  "stats_map": {
-    "batting_stats": {
-      "player": "StrikerName",
-      "team": "TeamCode",
-      "fields": {
-        "player": "StrikerName",
-        "batter": "StrikerName",
-        "batsman": "StrikerName",
-        "name": "StrikerName",
-        "mat": "Matches",
-        "mats": "Matches",
-        "matches": "Matches",
-        "inn": "Innings",
-        "inns": "Innings",
-        "innings": "Innings",
-        "no": "NotOuts",
-        "n/o": "NotOuts",
-        "notouts": "NotOuts",
-        "r": "TotalRuns",
-        "runs": "TotalRuns",
-        "hs": "HighestScore",
-        "highest": "HighestScore",
-        "avg": "BattingAverage",
-        "average": "BattingAverage",
-        "sr": "StrikeRate",
-        "strikerate": "StrikeRate",
-        "bf": "Balls",
-        "balls": "Balls",
-        "100": "Centuries",
-        "100s": "Centuries",
-        "hundreds": "Centuries",
-        "50": "FiftyPlusRuns",
-        "50s": "FiftyPlusRuns",
-        "fifties": "FiftyPlusRuns",
-        "90s": "Nineties",
-        "nineties": "Nineties",
-        "4s": "Fours",
-        "fours": "Fours",
-        "6s": "Sixes",
-        "sixes": "Sixes",
-        "ct": "Catches",
-        "st": "Stumpings",
-        "vs": "AgaintsTeamCode",
-        "against": "AgaintsTeamCode",
-        "opposition": "AgaintsTeamCode",
-        "ground": "Ground",
-        "venue": "Ground",
-        "matchdate": "MatchDate",
-        "date": "MatchDate"
-      }
-    },
-    "bowling_stats": {
-      "player": "BowlerName",
-      "team": "TeamCode",
-      "fields": {
-        "player": "BowlerName",
-        "bowler": "BowlerName",
-        "name": "BowlerName",
-        "mat": "Matches",
-        "mats": "Matches",
-        "matches": "Matches",
-        "inn": "Innings",
-        "inns": "Innings",
-        "innings": "Innings",
-        "ov": "OversBowled",
-        "overs": "OversBowled",
-        "mdns": "Maidens",
-        "maidens": "Maidens",
-        "r": "RunsConceded",
-        "runs": "RunsConceded",
-        "w": "Wickets",
-        "wkts": "Wickets",
-        "wickets": "Wickets",
-        "bbi": "BBIW",
-        "best": "BBIW",
-        "bestbowling": "BBIW",
-        "avg": "BowlingAverage",
-        "average": "BowlingAverage",
-        "econ": "EconomyRate",
-        "economy": "EconomyRate",
-        "sr": "StrikeRate",
-        "strikerate": "StrikeRate",
-        "3w": "ThreeWickets",
-        "4w": "FourWickets",
-        "5w": "FiveWickets",
-        "5wi": "FiveWickets",
-        "vs": "AgaintsTeamCode",
-        "against": "AgaintsTeamCode",
-        "opposition": "AgaintsTeamCode",
-        "ground": "Ground",
-        "venue": "Ground",
-        "matchdate": "MatchDate",
-        "date": "MatchDate"
-      }
+    "awards": {
+      "Most Valuable Players": "mvpPlayersList",
+      "Fair Play Award": "fairplayList"
     }
   },
-
   "player_stats": {
     "headers": {
-      "batting": ["Matches", "Innings", "NotOuts", "Runs", "HighestScore", "Hundreds",
-                  "Fifties", "Fours", "Sixes", "BattingAvg", "StrikeRate", "Catches",
-                  "Stumpings", "SN", "Tid", "Ducks", "RunOuts", "ID", "TeamName"],
-      "bowling": ["Innings", "Overs", "Maidens", "Runs", "Wickets", "BBM", "ThreeWkts",
-                  "FiveWkts", "Average", "Econ", "StrikeRate", "SN", "Tid", "Matches",
-                  "ID", "TeamName"]
+      "batting": [
+        "Matches",
+        "Innings",
+        "NotOuts",
+        "Runs",
+        "HighestScore",
+        "Hundreds",
+        "Fifties",
+        "Fours",
+        "Sixes",
+        "BattingAvg",
+        "StrikeRate",
+        "Catches",
+        "Stumpings",
+        "SN",
+        "Tid",
+        "Ducks",
+        "RunOuts",
+        "ID",
+        "TeamName"
+      ],
+      "bowling": [
+        "Innings",
+        "Overs",
+        "Maidens",
+        "Runs",
+        "Wickets",
+        "BBM",
+        "ThreeWkts",
+        "FiveWkts",
+        "Average",
+        "Econ",
+        "StrikeRate",
+        "SN",
+        "Tid",
+        "Matches",
+        "ID",
+        "TeamName"
+      ]
     },
     "index": {
-      "overall": ["apiData", "profile", "data", 1, "overall"],
-      "batting_fielding": ["Batting & Fielding"],
-      "bowling": ["Bowling"],
-      "yearly": ["apiData", "profile", "data", 3, "year", "WPL"],
+      "overall": [
+        "apiData",
+        "profile",
+        "data",
+        1,
+        "overall"
+      ],
+      "batting_fielding": [
+        "Batting & Fielding"
+      ],
+      "bowling": [
+        "Bowling"
+      ],
+      "yearly": [
+        "apiData",
+        "profile",
+        "data",
+        3,
+        "year",
+        "WPL"
+      ],
       "league": "WPL"
     }
   },
-
   "teams": {
     "full_name": {
       "DCW": "Delhi Capitals",
@@ -174,7 +144,6 @@
       "UPW": "UP Warriorz",
       "TBA": "TBA"
     },
-
     "full_name2": {
       "DCW": "Delhi Capitals Women",
       "GG": "Gujarat Giants Women",
@@ -183,7 +152,6 @@
       "UPW": "UP Warriorz Women",
       "TBA": "TBA"
     },
-
     "short_name": {
       "DCW": "DEL-W",
       "GG": "GUJ-W",
@@ -192,17 +160,36 @@
       "UPW": "UP-W",
       "TBA": "TBA"
     },
-
     "ids": {
-      "127612": ["DCW", "Delhi Capitals"],
-      "127613": ["GG", "Gujarat Giants"],
-      "127615": ["MIW", "Mumbai Indians"],
-      "127611": ["RCBW", "Royal Challengers Bengaluru"],
-      "127614": ["UPW", "UP Warriorz"],
-      "127770": ["TBA", "TBA"],
-      "127775": ["TBA", "TBA"]
+      "127612": [
+        "DCW",
+        "Delhi Capitals"
+      ],
+      "127613": [
+        "GG",
+        "Gujarat Giants"
+      ],
+      "127615": [
+        "MIW",
+        "Mumbai Indians"
+      ],
+      "127611": [
+        "RCBW",
+        "Royal Challengers Bengaluru"
+      ],
+      "127614": [
+        "UPW",
+        "UP Warriorz"
+      ],
+      "127770": [
+        "TBA",
+        "TBA"
+      ],
+      "127775": [
+        "TBA",
+        "TBA"
+      ]
     },
-
     "win_prob": {
       "DC-W": "DCW",
       "GG-W": "GG",
@@ -212,37 +199,83 @@
       "UPW-W": "UPW",
       "UP-W": "UPW"
     },
-
     "champions": {
       "DCW": [],
       "GG": [],
-      "MIW": ["2023", "2025"],
-      "RCBW": ["2024", "2026"],
+      "MIW": [
+        "2023",
+        "2025"
+      ],
+      "RCBW": [
+        "2024",
+        "2026"
+      ],
       "UPW": []
     },
-
     "info": {
-      "DCW": {"Captain": "Jemimah Rodrigues", "Coach": "Jonathan Batty", "Owner": "JSW GMR Cricket Pvt Ltd", "Venue": "Arun Jaitley Stadium"},
-      "GG": {"Captain": "Ashleigh Gardner", "Coach": "Michael Klinger", "Owner": "Adani Sportsline Pvt Ltd", "Venue": "Narendra Modi Stadium"},
-      "MIW": {"Captain": "Harmanpreet Kaur", "Coach": "Lisa Keightley", "Owner": "Indiawin Sports Pvt Ltd", "Venue": "Wankhede Stadium"},
-      "RCBW": {"Captain": "Smriti Mandhana", "Coach": "Malolan Rangarajan", "Owner": "Royal Challengers Sports Pvt Ltd", "Venue": "M. Chinnaswamy Stadium"},
-      "UPW": {"Captain": "Meg Lanning", "Coach": "Abhishek Nayar", "Owner": "Capri Global Holdings Pvt Ltd", "Venue": "BRSABV Ekana Cricket Stadium"}
+      "DCW": {
+        "Captain": "Jemimah Rodrigues",
+        "Coach": "Jonathan Batty",
+        "Owner": "JSW GMR Cricket Pvt Ltd",
+        "Venue": "Arun Jaitley Stadium"
+      },
+      "GG": {
+        "Captain": "Ashleigh Gardner",
+        "Coach": "Michael Klinger",
+        "Owner": "Adani Sportsline Pvt Ltd",
+        "Venue": "Narendra Modi Stadium"
+      },
+      "MIW": {
+        "Captain": "Harmanpreet Kaur",
+        "Coach": "Lisa Keightley",
+        "Owner": "Indiawin Sports Pvt Ltd",
+        "Venue": "Wankhede Stadium"
+      },
+      "RCBW": {
+        "Captain": "Smriti Mandhana",
+        "Coach": "Malolan Rangarajan",
+        "Owner": "Royal Challengers Sports Pvt Ltd",
+        "Venue": "M. Chinnaswamy Stadium"
+      },
+      "UPW": {
+        "Captain": "Meg Lanning",
+        "Coach": "Abhishek Nayar",
+        "Owner": "Capri Global Holdings Pvt Ltd",
+        "Venue": "BRSABV Ekana Cricket Stadium"
+      }
     },
-
     "social": {
-      "DCW":  {"web": "https://www.delhicapitals.in",      "x": "https://x.com/DelhiCapitals",
-               "ig": "https://www.instagram.com/delhicapitals", "fb": "https://www.facebook.com/DelhiCapitals"},
-      "GG":   {"web": "https://www.gujaratgiants.com",     "x": "https://x.com/GujaratGiants",
-               "ig": "https://www.instagram.com/gujarat_giants", "fb": "https://www.facebook.com/GujaratGiants"},
-      "MIW":  {"web": "https://www.mumbaiindians.com",     "x": "https://x.com/mipaltan",
-               "ig": "https://www.instagram.com/mumbaiindians", "fb": "https://www.facebook.com/mumbaiindians"},
-      "RCBW": {"web": "https://www.royalchallengers.com",  "x": "https://x.com/RCBTweets",
-               "ig": "https://www.instagram.com/royalchallengers.bengaluru",
-               "fb": "https://www.facebook.com/royalchallengers.bengaluru"},
-      "UPW":  {"web": "https://www.upwarriorz.in",         "x": "https://x.com/UPWarriorz",
-               "ig": "https://www.instagram.com/upwarriorz", "fb": "https://www.facebook.com/upwarriorz"}
+      "DCW": {
+        "web": "https://www.delhicapitals.in",
+        "x": "https://x.com/DelhiCapitals",
+        "ig": "https://www.instagram.com/delhicapitals",
+        "fb": "https://www.facebook.com/DelhiCapitals"
+      },
+      "GG": {
+        "web": "https://www.gujaratgiants.com",
+        "x": "https://x.com/GujaratGiants",
+        "ig": "https://www.instagram.com/gujarat_giants",
+        "fb": "https://www.facebook.com/GujaratGiants"
+      },
+      "MIW": {
+        "web": "https://www.mumbaiindians.com",
+        "x": "https://x.com/mipaltan",
+        "ig": "https://www.instagram.com/mumbaiindians",
+        "fb": "https://www.facebook.com/mumbaiindians"
+      },
+      "RCBW": {
+        "web": "https://www.royalchallengers.com",
+        "x": "https://x.com/RCBTweets",
+        "ig": "https://www.instagram.com/royalchallengers.bengaluru",
+        "fb": "https://www.facebook.com/royalchallengers.bengaluru"
+      },
+      "UPW": {
+        "web": "https://www.upwarriorz.in",
+        "x": "https://x.com/UPWarriorz",
+        "ig": "https://www.instagram.com/upwarriorz",
+        "fb": "https://www.facebook.com/upwarriorz"
+      }
     },
-
     "word": {
       "DCW": "Delhi",
       "GG": "Gujarat",
@@ -250,7 +283,6 @@
       "RCBW": "Bengaluru",
       "UPW": "Warriorz"
     },
-
     "accent": {
       "DCW": "#4f8cff",
       "GG": "#f6a21e",
@@ -259,8 +291,7 @@
       "UPW": "#c9a6ff"
     }
   },
-
-  "colors": {
+"colors": {
     "match": {
       "DCW":  {"c1": "#d71921", "c2": "#2561ae", "c3": "#282968"},
       "GG":   {"c1": "#FD6500", "c2": "#FE9D00", "c3": "#ff6600"},
@@ -295,18 +326,18 @@
       "UPW":  {"c1": "hsl(47, 99%, 52%)", "c2": "hsl(262, 49%, 34%)"}
     }
   },
-
   "notes": {
     "season": "WPL 2026: five teams, a single round robin of 20 league matches, then two playoff ties - the Eliminator (2nd v 3rd) and the Final (1st v the Eliminator winner). playoff_spots is what the qualification percentage counts and what the predictor builds its bracket from. home_advantage is off because the whole season is played at two neutral grounds, so the fixture list cannot tell a host from a visitor the way the IPL's can.",
     "playoffs": "Shorthand -> the Match_No the fixture is stored under. There is no Qualifier 1 or 2: the table-topper goes straight to the Final.",
     "urls.live": "Sportskeeda spells teams out in full with the 'Women' suffix, so the live URL is built from teams.full_name2, not full_name. swap_sides lists the league match numbers sportskeeda files under the reverse team order from our fixture sheet; the URL builder flips those two.",
-    "urls.stats": "Cricbuzz series-stats for the season. The series id changes every year - it is the number in the cricbuzz series URL. Each leaderboard is this prefix plus the token from stats_list.",
-    "stats_map": "Cricbuzz sends a header row and bare values; the IPL feed sends named fields. This folds the first into the second so the leaderboards, the home-page toppers carousel and the stats pages all read the same keys they do for the IPL. Keys are the header text lowercased with spaces and dots removed; anything unmatched is carried through under its own name rather than dropped.",
+    "urls.stats": "The stats feed, same host and path shape as the IPL's with wpl/ in place of ipl/. A leaderboard is this prefix plus '<competition_id>-<token>.js'; the two awards are '<season year>-<token>.js' instead, which is the rule the IPL feed follows. NOTE: this S3 bucket currently answers 404 for the IPL path too - it went away when iplt20.com and wplt20.com were rebuilt - so neither app's leaderboards are being fed right now. update_toppers() keeps whatever it already had when the feed cannot be read, so nothing is lost while it is down.",
     "player_stats": "wplt20.com embeds window.playerStatsWidgetData, which is a positional array per season rather than the IPL feed's named fields. headers names those positions and index says where in the payload to find them; services/player_stats.py folds the result into the same shape the IPL feed returns, so one template and one script serve both.",
-    "teams.full_name2": "The 'Women' long form. Sportskeeda's live feed and cricbuzz both use it; apiv2 and our own pages use the short full_name. Anything talking to a feed takes full_name2.",
+    "teams.full_name2": "The 'Women' long form, which sportskeeda's live feed uses. apiv2, the stats feed and our own pages use the short full_name. Anything building a live-score URL or reading a team name back out of the live feed takes full_name2.",
     "teams.info": "Key order is the order calibrate_match_model() fits its ratings in, and the order the /teams squad counts are built in. Venue is the franchise's home ground, which WPL does not actually play at - the season is at neutral grounds - so it is a franchise fact only and never feeds the model.",
     "colors.match": "Brand triple per team, carried over from the WPL app (clr).",
     "colors.points_table": "One readable brand colour per team (ptclr), for the win-probability bars and anything else that needs a single hue. points_table_set keeps the original three-colour WPL ptclr entries.",
-    "colors.squad": "Squad-page gradient pairs, c1 -> c2 (sqclr)."
+    "colors.squad": "Squad-page gradient pairs, c1 -> c2 (sqclr).",
+    "urls.competition_id": "The season's competition id, the number the feed files its leaderboards under - 284 is the IPL's for 2026. CONFIRM THIS BEFORE THE SEASON: it changes every year and the 203 here is a placeholder, not a verified value. It is the only thing that needs changing to repoint every leaderboard, which is why it is config rather than being baked into services/toppers.py the way the IPL's is.",
+    "stats_list": "The IPL's list, unchanged - same categories, same tokens, same order. Key order sets the order the leaderboards are seeded into Toppers, and so the order they appear in the stats pages' menus. 'Most POTM' is seeded alongside these by seed_toppers() and is counted from our own results rather than fetched."
   }
 }
