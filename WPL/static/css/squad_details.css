@@ -3,7 +3,7 @@
       margin: 18px auto;
       background: radial-gradient(circle at center, var(--c1) 0%, var(--c1) 20%, var(--c2) 100%); /* Moved red background here */
       border-radius: 18px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
       padding: 32px 40px 32px 40px;
       display: flex;
       flex-direction: row;
@@ -12,19 +12,20 @@
       position: relative;
     }
     .profile-image {
-      width: 220px;
+      width: 240px;
       height: auto;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: url("/static/images/white-full-circle.svg") center / cover no-repeat;
+      background-position: top center, center !important;
+      background-size: cover, cover!important;
+      background-repeat: no-repeat!important;
       box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+      border-radius: 10px;
     }
     .profile-image img {
-      width: 220px;
+      width: auto;
       height: 320px;
-      object-fit: cover;
-      border-radius: 16px;
       border: 0px solid #fff2;
     }
     .profile-details {
@@ -120,7 +121,7 @@
         justify-content: center;
       }
       .profile-image img {
-        width: 180px;
+        width: auto;
         height: 260px;
       }
       .profile-details {
@@ -166,7 +167,7 @@
   .stats-dropdown-toggle {
     font-family: 'Exo 2', sans-serif!important;
     background-color: #fff;
-    color: #25478A;
+    color: #8a0053;
     padding: 7px 3px;
     border: 0px solid #ffb09e;
     border-radius: 8px;
@@ -192,6 +193,7 @@
     opacity: 0;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+    overflow-y: auto;
   }
 
   .stats-dropdown-menu a {
@@ -208,7 +210,7 @@
   }
 
   .stats-dropdown-menu a.activeD {
-    background-color: #25478A;
+    background-color: #8a0053;
     color: white;
   }
 
@@ -217,8 +219,9 @@
   }
 
   .stats-dropdown.show .stats-dropdown-menu {
-    max-height: 500px;
+    max-height: 220px; /* Make dropdown scrollable if too many items */
     opacity: 1;
+    overflow-y: auto;
     transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
   }
 
@@ -236,7 +239,7 @@
 .vertical-table th, .vertical-table td {
     padding: 6px 8px;
     text-align: center;
-    border-bottom: 1px solid #f0e6f6;
+    border-bottom: 1px solid #f1e6f6;
     font-size: 0.85rem;
 }
 .vertical-table th {
@@ -281,7 +284,7 @@
 .horizontal-table th, .horizontal-table td {
     padding: 6px 8px;
     text-align: center;
-    border-bottom: 1px solid #f0e6f6;
+    border-bottom: 1px solid #f1e6f6;
     font-size: 0.85rem;
 }
 .horizontal-table th {

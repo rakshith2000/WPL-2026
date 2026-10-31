@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% from "macros/stats.html" import stats_shell, stats_head %}
+
+{% block head %}
+{{ super() }}
+<title>WPL {{ SEASON }} Awards | Player of the Match Leaders</title>
+<meta name="description" content="WPL {{ SEASON }} awards — the players with the most player-of-the-match awards this season, with their matches, runs and wickets.">
+{{ stats_head() }}
+{% endblock %}
+
+{% block content %}
+{#- The WPL has no MVP index and no fair-play table, so this page carries the
+    one award that is ours to count: player of the match, totted up from the
+    results in services/toppers.update_potm(). -#}
+{{ stats_shell('awards', 'Most POTM',
+               'Player of the match, most often', clr) }}
+{% endblock %}

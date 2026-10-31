@@ -40,9 +40,9 @@
 }
 
 .player-card {
-    background: linear-gradient(180deg, var(--c1) 0%, var(--c2) 100%);
+    background: linear-gradient(180deg, var(--c1) 65%, var(--c2) 35%);
     border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
     width: 200px;
     display: flex;
     flex-direction: column;
@@ -58,16 +58,30 @@
 }
 
 .player-image {
+    position: relative;
     width: 100%;
+    /* Remove opacity here */
+}
+
+.player-image::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    opacity: .4;
+    z-index: 1;
+    background-size: 100% 90%;
+    border-radius: 10px; /* match your image if needed */
 }
 
 .player-img {
     width: 100%;
-    background: url("/static/images/white-full-circle.svg") center / cover no-repeat;
     height: auto;
     border-radius: 10px;
     object-fit: cover;
     display: block;
+    opacity: 1;
+    position: relative;
+    z-index: 2;
 }
 
 .player-img.placeholder {
@@ -144,7 +158,7 @@
 }
 
 .player-captain {
-    background: #0d4c84;
+    background: #840d59;
     color: #fff;
     font-size: 0.85rem;
     font-weight: 700;
@@ -201,7 +215,7 @@
 }
 
         .squad-header {
-            background: linear-gradient(180deg, var(--c1) 0%, var(--c2) 100%);
+            background:  linear-gradient(180deg, var(--c1) 30%, var(--c2) 90%);
             color: #fff;
             margin-top: 10px;
             border-radius: 10px;
@@ -209,6 +223,7 @@
             padding: 10px 0 10px 0;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
         }
         .squad-header .bg-crowd {
             position: absolute;
@@ -230,11 +245,11 @@
             padding: 0 24px;
         }
         .team-logo {
-            width: 110px;
-            height: 110px;
-            background: url("/static/images/white-full-circle.svg") center / cover no-repeat;
-            background-size: 120px 120px;
-            background-color: #fff;
+            width: 150px;
+            height: 150px;
+            /*background: url("/static/images/rounded_spiral.png") center / cover no-repeat;
+            background-size: 190%;*/
+            background-color: var(--c);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -242,10 +257,11 @@
             box-shadow: 0 2px 12px rgba(0,0,0,0.3);
             margin-right: 32px;
             flex-shrink: 0;
+            overflow: visible;
         }
         .team-logo img {
-            width: 90px;
-            height: 90px;
+            width: 120px;
+            height: 120px;
         }
         .team-info {
             display: flex;

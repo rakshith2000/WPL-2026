@@ -2,13 +2,41 @@
 <html lang="en">
   <head>
     {% block head %}
-    <title>TATA WPL 2026</title>
+    <!--<title>TATA WPL 2026</title>-->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
       rel="shortcut icon"
       type="image/x-icon"
       href="{{ url_for('static', filename= 'images/wpl.ico') }}"
     />
+    <link rel="manifest" href="{{ url_for('static', filename= 'manifest.json') }}" />
+    <!-- matches manifest theme_color, so the Android status bar is brand magenta -->
+    <meta name="theme-color" content="#b8006a" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="WPL 2026" />
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/icons/icon-192.png') }}" />
+    <link href="{{ url_for('static', filename='css/splash.css') }}" rel="stylesheet" />
+    <script>
+      /* Decide before first paint whether this load is an app launch, so the
+         splash is either styled and visible from the very first frame or never
+         rendered at all. Installed app only — in a browser tab the page is
+         what you asked for — and once per session, because this is a
+         multi-page app and a splash between pages would just be in the way. */
+      (function () {
+        try {
+          var installed = (window.matchMedia &&
+                           window.matchMedia('(display-mode: standalone)').matches) ||
+                          window.navigator.standalone === true ||
+                          document.referrer.indexOf('android-app://') === 0;
+          if (installed && !sessionStorage.getItem('wpl.launched')) {
+            sessionStorage.setItem('wpl.launched', '1');
+            document.documentElement.className += ' is-launching';
+          }
+        } catch (e) { /* storage blocked: just skip the splash */ }
+      })();
+    </script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Round">
     <link
@@ -26,11 +54,33 @@
     {% endblock %}
   </head>
 
-  <body>
+  <body class="{% block body_class %}{% endblock %}">
+
+    {#  Launch splash. Inert unless <html> carries .is-launching, which the head
+        script only adds for an installed app on the first page of a session. #}
+    <div class="app-splash" id="appSplash" role="status" aria-label="Loading WPL 2026">
+      <div class="app-splash__aurora"></div>
+      <div class="app-splash__beams"></div>
+      <div class="app-splash__stage">
+        <span class="app-splash__wave"></span>
+        <span class="app-splash__wave"></span>
+        <span class="app-splash__wave"></span>
+        <span class="app-splash__trail"></span>
+        <span class="app-splash__orbit"><i></i></span>
+        <span class="app-splash__tile">
+          <img src="{{ url_for('static', filename='images/icons/wpl.png') }}" alt="" />
+          <span class="app-splash__glare"></span>
+        </span>
+      </div>
+      <div class="app-splash__name">TATA WPL</div>
+      <div class="app-splash__sub">Season 2026</div>
+      <div class="app-splash__bar"><i></i></div>
+    </div>
+
     <nav class="navbar navbar-expand-lg">
       <a class="navbar-brand extra-pr-100 {% block nav_class %}{% endblock %}" href="{{ url_for('main.index') }}">
-        <img src="{{ url_for('static', filename= 'images/WPL-Logo.svg') }}"
-              alt="user photo" width="80" height="40" />
+        <img src="{{ url_for('static', filename= 'images/WPL_Logo.webp') }}"
+              alt="TATA WPL {{ SEASON }}" width="70" height="38" />
       </a>
       <button
         class="navbar-toggler"
@@ -56,7 +106,10 @@
             <a href="{{ url_for('main.teams') }}" class="nav-link">TEAMS</a>
           </li>
           <li class="nav-item">
-            <a href="{{ url_for('main.todayMatch') }}" class="nav-link">LIVE</a>
+            <a href="{{ url_for('main.displayFR', filter='live') }}" class="nav-link nav-link--live">LIVE</a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url_for('main.predictor') }}" class="nav-link">PREDICTOR</a>
           </li>
           <li class="nav-item">
             <a href="{{ url_for('main.battingstats') }}" class="nav-link">STATS</a>
@@ -82,5 +135,49 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="{{ url_for('static', filename='js/base.js') }}"></script>
     <script src="{{ url_for('static', filename='js/webauthn.js') }}"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register("{{ url_for('static', filename='sw.js') }}").then(() => console.log("SW Registered"));
+      }
+    </script>
+
+    <script>
+      /* Dismiss the launch splash. Three ways out, because a splash that
+         outstays the page is worse than no splash at all: when the page has
+         loaded, after a hard 2.8s ceiling whatever happens, and on a tap.
+         The floor stops it flickering past on a warm start — the animation
+         needs about a second to be worth showing. */
+      (function () {
+        var el = document.getElementById('appSplash');
+        if (!el || !document.documentElement.classList.contains('is-launching')) return;
+
+        /* FLOOR outlasts the entry sequence — the badge lands at 1000ms, the
+           wordmark wipes to 1220, the line arrives at 1340 — so the splash is
+           never cut off part-built on a warm start. CEILING is the backstop. */
+        var FLOOR = 1450, CEILING = 3200;
+        var born = Date.now();
+        var gone = false;
+
+        function dismiss(now) {
+          if (gone) return;
+          var wait = now ? 0 : Math.max(0, FLOOR - (Date.now() - born));
+          gone = true;
+          setTimeout(function () {
+            el.classList.add('is-done');
+            /* the gate class is what makes the splash display at all, so it
+               has to outlive the fade — drop it with the node afterwards */
+            setTimeout(function () {
+              document.documentElement.classList.remove('is-launching');
+              if (el.parentNode) el.parentNode.removeChild(el);
+            }, 480);
+          }, wait);
+        }
+
+        if (document.readyState === 'complete') dismiss();
+        else window.addEventListener('load', function () { dismiss(); });
+        setTimeout(function () { dismiss(true); }, CEILING);
+        el.addEventListener('click', function () { dismiss(true); });
+      })();
+    </script>
   </body>
 </html>

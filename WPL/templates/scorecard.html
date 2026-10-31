@@ -12,25 +12,28 @@
 	<link href="{{ url_for('static', filename= 'css/live.css') }}" rel="stylesheet">
    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
    <link href="{{ url_for('static', filename= 'css/flag-icons.css') }}" rel="stylesheet">
-   <script>
+    <script>
   var match = "{{ match }}";
   var source = "{{ source }}";
   var fteam = "{{ fteam }}";
 </script>
     <style>
     body {
-        font-family: 'Exo 2', sans-serif;
-        background: linear-gradient(90deg, hsl(324 100% 46%), #009fbe)!important;
-        background-image: url('/static/images/banner_bg.jpg');
-        background-size: cover;
-        background-attachment: fixed;
+  font-family: 'Exo 2', sans-serif;
+  background: url('/static/images/headers/rounded-bg.png'), linear-gradient(90deg, #62003a, #b8006a);
+  background-size: 100%, cover;
+  background-position: center top 30px, center top;
+  background-repeat: repeat, repeat;
+    }
+    nav.navbar {
+        background-position: left 26px top -40px, center;
     }
     .status{
         display: block;
     }
 
     .table-responsive a{
-        color: #0398dc !important;
+        color: #e0218a !important;
     }
 
     .potm-content {
@@ -42,7 +45,7 @@
         .potm-image {
           width: 90px;
           height: 90px;
-          border-radius: 50%;
+          border-radius: 30%;
           overflow: hidden;
           box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
           border: 0px solid white;
@@ -98,7 +101,7 @@
       background: var(--primary);
       color: white;
       transform: translateY(-3px);
-      box-shadow: 0 5px 15px rgba(58, 134, 255, 0.3);
+      box-shadow: 0 5px 15px rgba(255, 58, 175, 0.3);
     }
 
     .stat-item:hover .stat-value {
@@ -119,8 +122,22 @@
       color: var(--dark);
     }
         .potm-name a{
-        color: #0398dc !important;
+        color: #e0218a !important;
     }
+    .table-responsive::-webkit-scrollbar{
+    width: 5px;
+    height: 5px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb{
+    border-radius: .5rem;
+    background-color: #0004;
+    visibility: hidden;
+}
+
+.table-responsive:hover::-webkit-scrollbar-thumb{ 
+    visibility: visible;
+}
     </style>
 {% endblock %}
 {% block nav_class %}extra-pr-60 pl-40{% endblock %}
@@ -129,14 +146,18 @@
 <div style="padding-top: 55px;"></div>
 <section id="center" class="pt-3 pb-3 center_live">
  <div class="container-xl">
+
    <div class="row schedule2">
     <div class="col-md-9">
 	  <div id="liveContainer" class="live">
 	  </div>
 	</div>
+
    </div>
  </div>
 </section>
+
+
 
 <script src="{{ url_for('static', filename= 'js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ url_for('static', filename= 'js/theme.min.js') }}"></script>
@@ -164,6 +185,7 @@
     })
 })()
 </script>
+
 <!-- Floating Back Button -->
 <style>
 .floating-back-btn {
@@ -172,7 +194,7 @@
   left: 10px;
   z-index: 9999;
   background: #fff;
-  color: #25478A;
+  color: #8a0054;
   border-radius: 50%;
   box-shadow: 0 2px 8px rgba(0,0,0,0.15);
   width: 40px;

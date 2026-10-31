@@ -19,10 +19,13 @@
     <style>
     body {
     	font-family: 'Exo 2', sans-serif;
-        background: linear-gradient(90deg, hsl(324 100% 46%), #009fbe)!important;
-        background-image: url('/static/images/banner_bg.jpg');
-        background-size: cover;
-        background-attachment: fixed;
+  background: url('/static/images/headers/rounded-bg.png'), linear-gradient(90deg, #62003a, #b8006a);
+  background-size: 100%, cover;
+  background-position: center top 30px, center top;
+  background-repeat: repeat, repeat;
+    }
+    nav.navbar {
+        background-position: left 26px top -40px, center;
     }
     .cb-col{
     	display: inline-block;
@@ -41,9 +44,26 @@
     	width: 50%;
     }
     .score_2_inner a{
-        color: #0398dc !important;
+        color: #e0218a !important;
     }
-    .squad-image {
+    .potm-image {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          overflow: hidden;
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+          border: 0px solid white;
+          position: relative;
+          z-index: 1;
+          /*margin-right: 20px;*/
+          transition: transform 0.3s ease;
+        }
+        .potm-image img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+        .squad-image {
           width: 30px;
           height: 30px;
           border-radius: 50%;
@@ -67,7 +87,7 @@
   left: 10px;
   z-index: 9999;
   background: #fff;
-  color: #25478A;
+  color: #8a0054;
   border-radius: 50%;
   box-shadow: 0 2px 8px rgba(0,0,0,0.15);
   width: 40px;
@@ -97,30 +117,6 @@
 {% block nav_class %}extra-pr-60 pl-40{% endblock %}
 
 {% block content %}
-{% macro check_captain(player_name, data) %}
-    {% for player in data %}
-        {% if player[2] | lower == player_name | lower %}
-            {% set captain = player[4] %}
-            {% if captain == 'Y' %}
-                <span class="text-muted">(C)</span>
-            {% endif %}
-        {% endif %}
-    {% endfor %}
-{% endmacro %}
-
-{% macro check_overseas(player_name, data, pos) %}
-    {% for player in data %}
-        {% if player[2] | lower == player_name | lower %}
-            {% set overseas = player[6] %}
-			{% if overseas == 'Y' and pos == 'L' %}
-				<div class="d-flex align-items-center me-2"><img src="{{ url_for('static', filename= 'images/overseas2.png') }}" width="11px" height="11px"></div>
-			{% endif %}
-			{% if overseas == 'Y' and pos == 'R' %}
-				<div class="d-flex align-items-center ms-2"><img src="{{ url_for('static', filename= 'images/overseas2.png') }}" width="11px" height="11px"></div>
-			{% endif %}
-        {% endif %}
-    {% endfor %}
-{% endmacro %}
 
 <div style="padding-top: 55px;"></div>
 <section id="center" class="pt-3 pb-3 center_live">
@@ -133,7 +129,6 @@
         </div>
 	</div>
 </section>
-
 <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/theme.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/index.js') }}"></script>
@@ -160,6 +155,7 @@
     })
 })()
 </script>
+
 {% if source == 'displayFR' %}
   <a href="{{ url_for('main.displayFR', fteam=fteam) }}" class="floating-back-btn" title="Back to Fixtures">
     <i class="fa fa-arrow-left"></i>

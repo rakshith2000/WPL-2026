@@ -9,11 +9,11 @@
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bottom-nav.css') }}">
 <style>
     /* Add a bit of customization for a modern look */
-    body {
-    background: linear-gradient(90deg, hsl(324 100% 46%), #009fbe)!important;
-    background-size: cover;
-    background-attachment: fixed;
-    font-family: 'Exo 2', sans-serif;
+    body{
+        background: url('/static/images/headers/rounded-bg.png'), linear-gradient(90deg, #62003a, #b8006a);
+  background-size: 100%, cover;
+  background-position: center top -48px, center top;
+  background-repeat: repeat, repeat;
     }
     .form-container {
         background-color: white;
@@ -31,7 +31,7 @@
         color: white;
     }
     .form-container .btn {
-        background-color: #3b82f6;
+        background-color: #f63ba9;
         border: none;
         padding: 0.75rem 1.5rem;
         border-radius: 0.5rem;
@@ -68,7 +68,7 @@
     <div class="bottom-nav-item">
         <a href="{{ url_for('main.displayPT') }}">
       <span class="material-icons-round">table_chart</span>
-      <span class="bottom-nav-label">PTS TABLE</span>
+      <span class="bottom-nav-label">STANDINGS</span>
       </a>
     </div>
     <div class="bottom-nav-item spacer"></div>

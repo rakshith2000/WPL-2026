@@ -1,9 +1,9 @@
- body {
+body {
         font-family: 'Exo 2', sans-serif;
-       background: linear-gradient(90deg, hsl(324 100% 46%), #009fbe)!important;
-  background-image: url('/static/images/banner_bg.png');
-  background-size: 100%;
-  background-position: center top -48px;
+ background: url('/static/images/headers/rounded-bg.png'), linear-gradient(90deg, #62003a, #b8006a);
+  background-size: 100%, cover;
+  background-position: center top -48px, center top;
+  background-repeat: repeat, repeat;
     }
     .status{
         display: block;
@@ -14,7 +14,7 @@
   }
 
   .dropdown-toggle {
-    background-color: #25478A;
+    background-color: #8a0053;
     color: white;
     padding: 7px 3px;
     border: 0px solid #ffb09e;
@@ -58,7 +58,7 @@
   }
 
   .dropdown-menu a.activeD {
-    background-color: #25478A;
+    background-color: #8a0053;
     color: white;
   }
 
@@ -67,13 +67,29 @@
   }
 
   .dropdown.show .dropdown-menu {
-    max-height: 500px;
+    max-height: 250px;
+    overflow-y: auto;
     opacity: 1;
     transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+    scrollbar-width: thin;
+    scrollbar-color: #8a0053 #eaeaea;
+  }
+
+  .dropdown.show .dropdown-menu::-webkit-scrollbar {
+    width: 8px;
+    background: #eaeaea;
+    border-radius: 8px;
+  }
+  .dropdown.show .dropdown-menu::-webkit-scrollbar-thumb {
+    background: #8a0053;
+    border-radius: 8px;
+  }
+  .dropdown.show .dropdown-menu::-webkit-scrollbar-thumb:hover {
+    background: #5a163e;
   }
 
   .table-wrapper a {
-    color: #0398dc !important;
+    color: #e0218a !important;
   }
 
   .table-wrapper {
@@ -108,7 +124,7 @@ tr:last-child td {
   }
 
   thead tr {
-    background-color: #25478A;
+    background-color: #8a0053;
     color: white;
   }
 
@@ -123,5 +139,30 @@ tr:last-child td {
   }
 
   .logo-col {
+    text-align: center;
+  }
+
+  th, td {
+    text-align: center;
+    min-width: 40px;
+  }
+
+  th:nth-child(3), td:nth-child(3) {
+    text-align: left;
+  }
+
+  td:nth-child(4) {
+    background-color: #f0f0f0;
+  }
+
+  th:nth-child(1), td:nth-child(1) {
+    min-width: 25px;
+  }
+
+  p {
+    font-size: 14px;
+    color: #333;
+    margin-top: 10px;
+    margin-bottom: 10px;
     text-align: center;
   }

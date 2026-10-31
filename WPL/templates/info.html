@@ -19,10 +19,13 @@
     <style>
     body {
     	font-family: 'Exo 2', sans-serif;
-      background: linear-gradient(90deg, hsl(324 100% 46%), #009fbe)!important;
-        background-image: url('/static/images/banner_bg.jpg');
-        background-size: cover;
-        background-attachment: fixed;
+        background: url('/static/images/headers/rounded-bg.png'), linear-gradient(90deg, #62003a, #b8006a);
+  background-size: 100%, cover;
+  background-position: center top 30px, center top;
+  background-repeat: repeat, repeat;
+    }
+    nav.navbar {
+        background-position: left 26px top -40px, center;
     }
     </style>
 {% endblock %}
@@ -41,6 +44,7 @@
     </div>
  </div>
 </section>
+
 <!-- Floating Back Button -->
 <style>
 .floating-back-btn {
@@ -49,7 +53,7 @@
   left: 10px;
   z-index: 9999;
   background: #fff;
-  color: #25478A;
+  color: #8a0054;
   border-radius: 50%;
   box-shadow: 0 2px 8px rgba(0,0,0,0.15);
   width: 40px;

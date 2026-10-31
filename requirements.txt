@@ -6,10 +6,12 @@ requests
 gunicorn
 pytz
 psycopg2
+psycopg[binary]
 APScheduler
 flask_apscheduler
 newrelic
 matplotlib
+numpy
 selenium>=4.0.0
 webdriver-manager>=3.8.6
 bs4>=0.0.1
@@ -18,3 +20,5 @@ python-Levenshtein
 psycopg2-binary
 webauthn
 passlib
+lxml
+cloudscraper

@@ -27,6 +27,9 @@ class Pointstable(db.Model):
     Against = db.Column(db.JSON)
     Win_List = db.Column(db.String)
     qed = db.Column(db.String)
+    # Qual is the chance of finishing in the three that reach the playoffs;
+    # Top1 the chance of finishing first, which in this format is a bye past
+    # the Eliminator and straight into the Final.
     Qual = db.Column(db.Float)
     Top1 = db.Column(db.Float)
 
@@ -44,6 +47,7 @@ class Fixture(db.Model):
     Win_T = db.Column(db.String)
     Match_ID = db.Column(db.Integer)
     POTM = db.Column(db.JSON)
+    Rank = db.Column(db.JSON)
 
 class Squad(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -61,3 +65,8 @@ class Squad(db.Model):
     Debut = db.Column(db.String)
     URL_ID = db.Column(db.Integer)
     Player_URL = db.Column(db.String)
+
+class Toppers(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    category = db.Column(db.String(255))
+    stats = db.Column(db.JSON)

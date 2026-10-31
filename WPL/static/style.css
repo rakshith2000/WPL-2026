@@ -92,57 +92,6 @@ main.table {
     overflow: overlay;
 }
 
-.position-indicatorQ {
-            position: absolute;
-            display: none; /* Change this to make it visible */
-            top: 0;
-            left: 0;
-            width: 3rem; /* Adjust the size */
-            height: 3rem;
-            padding: 0px;
-            transform: translate(-1.5rem, -1.5rem);
-            z-index: 1;
-            background-color: #006400; /* You can modify color */
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 0.8rem;
-			clip-path: polygon(50% 50%, 100% 50%, 100% 100%, 50% 100%);
-        }
-.position-indicatorQ span {
-    position: relative;
-    bottom: -0.5rem; /* Adjust this to move Q vertically */
-    right: -0.5rem; /* Adjust this to move Q horizontally */
-}
-
-.position-indicatorE {
-            position: absolute;
-            display: none; /* Change this to make it visible */
-            top: 0;
-            left: 0;
-            width: 3rem; /* Adjust the size */
-            height: 3rem;
-            padding: 0px;
-            transform: translate(-1.5rem, -1.5rem);
-            z-index: 1;
-            background-color: #7d0000; /* You can modify color */
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 0.8rem;
-			clip-path: polygon(50% 50%, 100% 50%, 100% 100%, 50% 100%);
-        }
-.position-indicatorE span {
-    position: relative;
-    bottom: -0.6rem; /* Adjust this to move Q vertically */
-    right: -0.5rem; /* Adjust this to move Q horizontally */
-}
 
 .table__body::-webkit-scrollbar{
     width: 0.5rem;
@@ -162,12 +111,13 @@ main.table {
 
 table {
     width: 100%;
-    border-collapse: collapse; /* Change to separate to allow spacing */
+    border-collapse: collapse;
+    font-size: 0.9rem;
 }
 
 td img {
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
     margin-right: 0rem;
     border-radius: 0px;
     object-fit: cover;
@@ -176,8 +126,8 @@ td img {
 }
 
 .form-img {
-    width: 17px;
-    height: 17px;
+    width: 15px;
+    height: 15px;
     margin-right: .1rem;
     border-radius: 50%;
     object-fit: cover;
@@ -213,12 +163,16 @@ td:not(:nth-child(2)) {
     line-height: normal;
 }
 
+th:nth-child(3), td:nth-child(3) {
+    padding-left: .85rem!important;
+}
+
 
 thead th {
     position: sticky;
     top: 0;
     left: 0;
-    background: linear-gradient(180deg, #444, #2b2a29);
+    background-color: #44acc4;
     cursor: pointer;
     text-transform: capitalize;
 }
@@ -233,13 +187,27 @@ th:first-child, td:first-child {
 /* Freeze the second column */
 th:nth-child(2), td:nth-child(2) {
   position: sticky;
-  left: 35px; /* Adjust based on column width */
+  left: 47.5px; /* Adjust based on column width */
   /*background-color: #444444;*/
   z-index: 3;
 }
 
 tbody tr:nth-child(even) {
     background-color: #0000000b;
+}
+
+/* Add this to your CSS */
+tbody tr:nth-child(4) {
+    border-bottom: 2.5px dashed white; /* You can adjust color and style */
+    position: relative;
+}
+
+/* Optional: Add some spacing after the separator */
+tbody tr:nth-child(4)::after {
+    content: '';
+    display: block;
+    height: 10px; /* Adjust spacing as needed */
+    background: transparent;
 }
 
 tbody tr {
@@ -272,16 +240,8 @@ tbody tr td img {
     transition: .2s ease-in-out;
 }
 
-tr td:not(:nth-child(2)) {
+tr td:not(:nth-child(2)):not(:nth-child(13)):not(:nth-child(14)) {
     background: linear-gradient(180deg, var(--c1), var(--c2));
-}
-
-tr td:nth-child(13) {
-    background: linear-gradient(180deg, #444, #2b2a29);
-}
-
-tr td:nth-child(14) {
-    background: linear-gradient(180deg, #444, #2b2a29);
 }
 
 .logocol {
@@ -332,6 +292,7 @@ tbody tr.hide td img {
     }
 }
 
+
 thead th span.icon-arrow {
     display: inline-block;
     width: 1.3rem;
@@ -347,7 +308,7 @@ thead th span.icon-arrow {
 }
 
 thead th:hover span.icon-arrow{
-    border: 1.4px solid #6c00bd;
+    border: 1.4px solid #8a0053;
 }
 
 .team-name {
@@ -355,14 +316,16 @@ thead th:hover span.icon-arrow{
     font-weight: bold;
 }
 
-
+.table th, .table td {
+    padding: 0.50rem;
+}
 
 thead th:hover {
-    color: #6c00bd;
+    color: #8a0053;
 }
 
 thead th.active span.icon-arrow{
-    background-color: #6c00bd;
+    background-color: #8a0053;
     color: #fff;
 }
 
@@ -371,34 +334,61 @@ thead th.asc span.icon-arrow{
 }
 
 thead th.active,tbody td.active {
-    color: #6c00bd;
+    color: #8a0053;
 }
 
-.position-indicator {
+.position-indicatorQ {
             position: absolute;
             display: none; /* Change this to make it visible */
             top: 0;
             left: 0;
-            width: 3rem; /* Adjust the size */
-            height: 3rem;
+            width: 2.4rem; /* Adjust the size */
+            height: 2.4rem;
             padding: 0px;
-            transform: translate(-1.5rem, -1.5rem);
+            transform: translate(-1.2rem, -1.2rem);
             z-index: 1;
-            background-color: #444444; /* You can modify color */
+            background-color: #006400; /* You can modify color */
             color: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 0.8rem;
+            font-size: 0.6rem;
 			clip-path: polygon(50% 50%, 100% 50%, 100% 100%, 50% 100%);
         }
-.position-indicator span {
+.position-indicatorQ span {
     position: relative;
-    bottom: -0.5rem; /* Adjust this to move Q vertically */
-    right: -0.5rem; /* Adjust this to move Q horizontally */
+    bottom: -0.4rem; /* Adjust this to move Q vertically */
+    right: -0.4rem; /* Adjust this to move Q horizontally */
 }
+
+.position-indicatorE {
+            position: absolute;
+            display: none; /* Change this to make it visible */
+            top: 0;
+            left: 0;
+            width: 2.4rem; /* Adjust the size */
+            height: 2.4rem;
+            padding: 0px;
+            transform: translate(-1.2rem, -1.2rem);
+            z-index: 1;
+            background-color: #7d0000; /* You can modify color */
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.6rem;
+			clip-path: polygon(50% 50%, 100% 50%, 100% 100%, 50% 100%);
+        }
+.position-indicatorE span {
+    position: relative;
+    bottom: -0.4rem; /* Adjust this to move Q vertically */
+    right: -0.4rem; /* Adjust this to move Q horizontally */
+}
+
 .export__file {
     position: relative;
 }
@@ -474,3 +464,74 @@ thead th.active,tbody td.active {
     width: 2rem;
     height: auto;
 }
+
+.position-flex {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 0.01rem;
+}
+.pos-rank {
+    font-weight: bold;
+    font-size: 1em;
+    margin-bottom: 0.1em;
+}
+.rank-indicator-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15em;
+    font-size: 0.95em;
+}
+.rank-arrow.up {
+    color: #2ecc40;
+    font-size: 0.9em;
+}
+.rank-arrow.down {
+    color: #ff4136;
+    font-size: 0.9em;
+}
+.rank-arrow.same {
+    color: #888;
+    font-size: 0.9em;
+}
+.rank-diff.up {
+    color: #2ecc40;
+    font-size: 0.9em;
+}
+.rank-diff.down {
+    color: #ff4136;
+    font-size: 0.9em;
+}
+.rank-diff.same {
+    color: #888;
+    font-size: 0.9em;
+}
+.rank-diff.invisible {
+    visibility: hidden;
+}
+
+/* Fading effect to the right of the 2nd column when scrolled */
+.fade-right {
+    position: relative;
+}
+.table__body.scrolled .fade-right::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 6em;
+    width: 24px;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
+    background: linear-gradient(to left, rgba(68,68,68,0.0), rgba(68,68,68,0.40), rgba(68, 68, 68, 0.75), rgba(68,68,68,0));
+}
+
+.box-green        { background-color: #1fa940 !important; color: #fff !important; }
+.box-lightgreen   { background-color: #90ee90 !important; color: #fff !important; }
+.box-yellowgreen  { background-color: #c6e46b !important; color: #fff !important; }
+.box-yellow       { background-color: #ffe066 !important; color: #fff !important; }
+.box-orange       { background-color: #ffb347 !important; color: #fff !important; }
+.box-lightred     { background-color: #ff7f7f !important; color: #fff !important; }
+.box-red          { background-color: #ff4d4d !important; color: #fff !important; }
