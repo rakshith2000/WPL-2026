@@ -1,5 +1,5 @@
 /* ==========================================================================
-   WPL 2027 · Home page
+   WPL 2026 · Home page
    Season Toppers carousel + back-to-top.
 
    The markup ships as a scroll-snapping strip, so it already works with no
