@@ -577,7 +577,7 @@
                         <div class="match-label">Final</div>
                     </div>
                     <div class="champion{{ ' decided' if final and final.Win_T in [final.Team_A, final.Team_B] }}">
-                        <span class="material-icons-round trophy" aria-hidden="true">emoji_events</span>
+                        <img class="trophy" src="{{ url_for('static', filename='images/trophy.png') }}" alt="">
                         <span class="champion-name">{{ teams.get(final.Win_T, 'Winner') if final and final.Win_T in [final.Team_A, final.Team_B] else 'Winner' }}</span>
                     </div>
                 </div>
