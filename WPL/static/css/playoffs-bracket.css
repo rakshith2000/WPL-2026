@@ -176,14 +176,13 @@
 
 .hm-playoffs .champion {
   position: absolute;
-  top: 58px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
   width: 210px;
-  height: 48px;
-  padding: 0 14px;
+  min-height: 48px;
+  padding: 8px 14px;
   color: var(--br-gold);
   background: var(--br-panel);
   border: 1px solid var(--br-line);
@@ -200,14 +199,16 @@
 
 .hm-playoffs .champion .trophy {
   flex: none;
-  font-size: 18px;
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
 }
 
 .hm-playoffs .champion-name {
   min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
+  text-align: center;
+  line-height: 1.15;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -220,4 +221,21 @@
 
 @media (max-width: 600px) {
   .hm-playoffs { margin-top: 28px; }
+  .hm-playoffs .match { width: 260px; }
+  .hm-playoffs .match-label {
+    top: 140px;
+    width: 260px;
+  }
+  .hm-playoffs .slot {
+    width: 260px;
+    height: 60px;
+    padding: 0 16px;
+    font-size: 15px;
+  }
+  .hm-playoffs .slot:nth-child(2) { top: 68px; }
+  .hm-playoffs .slot .team-logo {
+    width: 32px;
+    height: 32px;
+  }
+  .hm-playoffs .champion { width: 210px; }
 }
