@@ -1,15 +1,17 @@
 (() => {
   'use strict';
 
-  const CARD_W = 220;
-  const SLOT_H = 48;
+  const MOBILE = window.matchMedia('(max-width: 600px)').matches;
+  const CARD_W = MOBILE ? 260 : 220;
+  const CHAMPION_W = 210;
+  const SLOT_H = MOBILE ? 60 : 48;
   const SLOT_GAP = 8;
   const MATCH_H = SLOT_H * 2 + SLOT_GAP;
   const BAR_GAP = 18;
   const BADGE_OFFSET = 24;
-  const COL = 330;
-  const STAGE_W = COL * 2 + 210;
-  const STAGE_H = 250;
+  const COL = CARD_W + 110;
+  const STAGE_W = COL * 2 + CHAMPION_W;
+  const STAGE_H = MOBILE ? 270 : 250;
 
   const matches = {
     eliminator: { x: 0, y: 90 },
@@ -48,7 +50,10 @@
     element.style.left = `${match.x}px`;
     element.style.top = `${match.y}px`;
   });
-  stage.querySelector('.champion').style.left = `${COL * 2}px`;
+  const champion = stage.querySelector('.champion');
+  champion.style.left = `${COL * 2}px`;
+  champion.style.top = '0px';
+  champion.style.top = `${matches.final.y + MATCH_H / 2 - champion.offsetHeight / 2}px`;
 
   const slotCenterY = (matchId, index) =>
     matches[matchId].y + index * (SLOT_H + SLOT_GAP) + SLOT_H / 2;
@@ -89,7 +94,7 @@
     const startY = match.y + MATCH_H / 2;
     const endX = to === 'champion' ? COL * 2 : matches[to].x - BAR_GAP;
     const endY = to === 'champion'
-      ? stage.querySelector('.champion').offsetTop + SLOT_H / 2
+      ? champion.offsetTop + champion.offsetHeight / 2
       : matches[to].y + MATCH_H / 2;
     const midX = endX - bend;
     const path = startY === endY
